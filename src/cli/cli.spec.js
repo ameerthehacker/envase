@@ -1,7 +1,7 @@
 const { version } = require('../../package.json');
 const { cmdVersion, cmdListFormulas } = require('./cli');
 
-jest.mock('../parser/parser', () => ({
+jest.mock('../util/util', () => ({
   readAllFormulas() {
     return ['mysql', 'hasura'];
   }
