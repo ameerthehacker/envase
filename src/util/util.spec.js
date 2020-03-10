@@ -1,14 +1,17 @@
 const fs = require('fs');
-const { readAllFormulas } = require('./util');
+const { readAllFormulas, getFilenameWithoutExt } = require('./util');
 
-describe('readAllFormulas()', () => {
-  it('should return all the formulas', () => {
-    const formulas = ['mysql', 'hasura'];
-
+describe('util', () => {
+  it('readAllFormulas() should return all the formulas', () => {
     fs.readdirSync = jest.fn().mockImplementation(() => {
-      return formulas;
+      return ['mysql.js', 'hasura.js'];
     });
 
-    expect(readAllFormulas()).toEqual(formulas);
+    expect(readAllFormulas()).toEqual(['mysql', 'hasura']);
+  });
+
+  it('getFilenameWithoutExt() should return filename without extension', () => {
+    expect(getFilenameWithoutExt('mysql.js')).toBe('mysql');
+    expect(getFilenameWithoutExt('mysql')).toBe('mysql');
   });
 });

@@ -1,5 +1,5 @@
 const { version } = require('../../package.json');
-const { readAllFormulas } = require('../parser/parser');
+const { readAllFormulas } = require('../util/util');
 
 function cmdVersion() {
   console.log(version);

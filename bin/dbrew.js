@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { cmdVersion, cmdListFormulas } = require('../src/cli');
+const { cmdVersion, cmdListFormulas } = require('../src/cli/cli');
 const { name } = require('../package.json');
 
 const argv = yargs
