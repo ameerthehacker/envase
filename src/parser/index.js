@@ -35,6 +35,15 @@ function validate(formulaName, formula) {
   }
 }
 
+function interpolate(template, data) {
+  for (let key in data) {
+    template = template.replace(new RegExp(`%${key}%`, "ig"), data[key]);
+  }
+
+  return template;
+}
+
 module.exports = {
-  validate
+  validate,
+  interpolate
 };

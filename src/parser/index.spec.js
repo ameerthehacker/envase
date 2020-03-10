@@ -1,4 +1,4 @@
-const { validate } = require("./index");
+const { validate, interpolate } = require("./index");
 
 describe("validate()", () => {
   it("should throw if image field is empty", () => {
@@ -48,4 +48,10 @@ describe("validate()", () => {
       });
     }).toThrow("mysql: field `password` has unknown type `unknown`");
   });
+});
+
+describe("interpolate()", () => {
+  expect(
+    interpolate("%password%-%password%", { password: "secret-password" })
+  ).toBe("secret-password-secret-password");
 });
