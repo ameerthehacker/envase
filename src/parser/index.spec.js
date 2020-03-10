@@ -1,4 +1,5 @@
-const { validate, interpolate } = require("./index");
+const { validate, interpolate, readAllFormulas } = require("./index");
+const fs = require("fs");
 
 describe("validate()", () => {
   it("should throw if image field is empty", () => {
@@ -54,4 +55,14 @@ describe("interpolate()", () => {
   expect(
     interpolate("%password%-%password%", { password: "secret-password" })
   ).toBe("secret-password-secret-password");
+});
+
+describe("readAllFormulas()", () => {
+  const formulas = ["mysql", "hasura"];
+
+  fs.readdirSync = jest.fn().mockImplementation(() => {
+    return formulas;
+  });
+
+  expect(readAllFormulas()).toEqual(formulas);
 });

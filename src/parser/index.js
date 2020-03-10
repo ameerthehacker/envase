@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 function validate(formulaName, formula) {
   const knownTypes = ["string", "number", "password"];
 
@@ -43,7 +46,16 @@ function interpolate(template, data) {
   return template;
 }
 
+function readAllFormulas() {
+  const formulaDir = path.join(process.cwd(), "src", "formulas");
+
+  const formulas = fs.readdirSync(formulaDir);
+
+  return formulas;
+}
+
 module.exports = {
   validate,
-  interpolate
+  interpolate,
+  readAllFormulas
 };

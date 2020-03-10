@@ -1,9 +1,17 @@
 const { version } = require("../package.json");
+const { readAllFormulas } = require("./parser");
 
-function run(argv) {
-  if (argv.version) {
-    console.log(version);
-  }
+function cmdVersion() {
+  console.log(version);
 }
 
-module.exports = run;
+function cmdListFormulas() {
+  const formulas = readAllFormulas().join("\n");
+
+  console.log(formulas);
+}
+
+module.exports = {
+  cmdVersion,
+  cmdListFormulas
+};

@@ -33,7 +33,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,html,json,scss,md,yml}": [
+    "*.{js,ts,html,json,scss,md,yml,spec}": [
       "yarn prettify"
     ],
     "*.{spec,js}": [
@@ -41,6 +41,7 @@
     ]
   },
   "dependencies": {
+    "chalk": "^3.0.0",
     "yargs": "^15.3.0"
   }
 }
