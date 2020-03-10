@@ -39,5 +39,8 @@
     "*.{spec,js}": [
       "yarn lint:staged"
     ]
+  },
+  "dependencies": {
+    "yargs": "^15.3.0"
   }
 }
