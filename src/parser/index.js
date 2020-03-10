@@ -1,11 +1,11 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 function validate(formulaName, formula) {
-  const knownTypes = ["string", "number", "password"];
+  const knownTypes = ['string', 'number', 'password'];
 
   // throw if image is not string
-  if (formula.image && typeof formula.image !== "string") {
+  if (formula.image && typeof formula.image !== 'string') {
     throw new Error(`${formulaName}: image property must be a string`);
   }
 
@@ -15,7 +15,7 @@ function validate(formulaName, formula) {
   }
 
   if (formula.data) {
-    if (typeof formula.data !== "object") {
+    if (typeof formula.data !== 'object') {
       // throw if type property is not given
       throw new Error(`${formulaName}: data proprty must be an object`);
     }
@@ -29,7 +29,7 @@ function validate(formulaName, formula) {
         );
       }
 
-      if (!knownTypes.find(knownType => knownType === fieldData.type)) {
+      if (!knownTypes.find((knownType) => knownType === fieldData.type)) {
         throw new Error(
           `${formulaName}: field \`${field}\` has unknown type \`${fieldData.type}\``
         );
@@ -40,14 +40,14 @@ function validate(formulaName, formula) {
 
 function interpolate(template, data) {
   for (let key in data) {
-    template = template.replace(new RegExp(`%${key}%`, "ig"), data[key]);
+    template = template.replace(new RegExp(`%${key}%`, 'ig'), data[key]);
   }
 
   return template;
 }
 
 function readAllFormulas() {
-  const formulaDir = path.join(process.cwd(), "src", "formulas");
+  const formulaDir = path.join(process.cwd(), 'src', 'formulas');
 
   const formulas = fs.readdirSync(formulaDir);
 
