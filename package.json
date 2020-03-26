@@ -1,5 +1,5 @@
 {
-  "name": "dbrew",
+  "name": "dockapp",
   "version": "0.0.0-development",
   "description": "Homebrew for docker apps",
   "main": "bin/dbrew.js",
@@ -7,13 +7,16 @@
     "dbrew": "bin/dbrew.js"
   },
   "scripts": {
-    "start": "node bin/dbrew.js",
+    "start": "node bin/dockapp.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage": "jest --coverage",
     "lint": "eslint . --ext .js --fix",
     "lint:staged": "eslint --fix",
     "prettify": "prettier --write"
+  },
+  "engines": {
+    "node": ">=10"
   },
   "repository": "https://github.com/ameerthehacker/dbrew.git",
   "author": "ameerthehacker",
