@@ -1,12 +1,16 @@
 const path = require('path');
 const fs = require('fs');
 
-function readAllFormulas() {
-  const formulaDir = path.join(process.cwd(), 'src', 'formulas');
+const FORMULA_DIR = path.join(process.cwd(), 'src', 'formulas');
 
-  const formulas = fs.readdirSync(formulaDir).map(getFilenameWithoutExt);
+function readAllFormulas() {
+  const formulas = fs.readdirSync(FORMULA_DIR).map(getFilenameWithoutExt);
 
   return formulas;
+}
+
+function isFormulaFound(formulaName) {
+  return fs.existsSync(path.join(FORMULA_DIR, formulaName));
 }
 
 function getFilenameWithoutExt(filename) {
@@ -23,5 +27,6 @@ function getFilenameWithoutExt(filename) {
 
 module.exports = {
   readAllFormulas,
-  getFilenameWithoutExt
+  getFilenameWithoutExt,
+  isFormulaFound
 };

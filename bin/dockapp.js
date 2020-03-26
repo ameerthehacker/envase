@@ -1,12 +1,21 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { cmdVersion, cmdListFormulas } = require('../src/cli/cli');
+const { cmdVersion, cmdListFormulas, cmdNewApp } = require('../src/cli/cli');
 const { name } = require('../package.json');
 
 const argv = yargs
-  .command('new [app]', 'create a new docker app', (args) => {
-    args.positional('app', 'name of the app');
-  })
+  .command(
+    'new [app]',
+    'create a new docker app',
+    (args) => {
+      args.positional('app', {
+        describe: 'name of the app'
+      });
+    },
+    (argv) => {
+      cmdNewApp(argv.name);
+    }
+  )
   .command('ls', 'list all available formulas', () => {
     cmdListFormulas();
   })
