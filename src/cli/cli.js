@@ -1,6 +1,12 @@
 const { version } = require('../../package.json');
-const { readAllFormulas, isFormulaFound } = require('../util/util');
+const {
+  readAllFormulas,
+  isFormulaFound,
+  readFormula
+} = require('../util/util');
 const { red } = require('chalk');
+const { toEnquirerJSON } = require('../parser/parser');
+const { prompt } = require('enquirer');
 
 function cmdVersion() {
   console.log(version);
@@ -12,13 +18,21 @@ function cmdListFormulas() {
   console.log(formulas);
 }
 
-function cmdNewApp(name) {
+async function cmdNewApp(name) {
   if (!name) {
     console.log(red('no app name was given, eg. mysql, redis'));
   } else if (!isFormulaFound(name)) {
     console.log(red(`app '${name}' was not found`));
   } else {
-    // create the app
+    // ask the required questions
+    try {
+      const formula = readFormula(name);
+      const enquirerJSON = toEnquirerJSON(formula);
+
+      await prompt(enquirerJSON);
+    } catch (err) {
+      /* eslint-disable no-empty */
+    }
   }
 }
 

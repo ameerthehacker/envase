@@ -2,21 +2,21 @@ module.exports = {
   data: {
     name: {
       type: 'string',
-      descrption: 'Name of the MySQL server instance',
+      description: 'Name of the MySQL server instance',
       required: true
     },
     port: {
       type: 'number',
-      descrption: 'Port on which MySQL server should run',
+      description: 'Port on which MySQL server should run',
       default: 3306
     },
     password: {
       type: 'password',
-      descrption: 'Password for the root user'
+      description: 'Password for the root user'
     },
     data: {
       type: 'string',
-      descrption: 'Database storage path for MySQL',
+      description: 'Database storage path for MySQL',
       required: true
     }
   },

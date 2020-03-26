@@ -43,7 +43,46 @@ function interpolate(template, data) {
   return template;
 }
 
+function getEnquirerType(type) {
+  switch (type) {
+    case 'string':
+      return 'input';
+    case 'password':
+      return 'password';
+    case 'number':
+      return 'input';
+    default:
+      throw new Error(
+        `getEnquirerType(): ${type} equivalent for enquirer was not found`
+      );
+  }
+}
+
+function toEnquirerJSON(formula) {
+  const enquiredJSON = [];
+  const { data } = formula;
+
+  for (const key in data) {
+    const question = {
+      name: key,
+      message: data[key].description,
+      type: getEnquirerType(data[key].type),
+      required: data[key].required
+    };
+
+    if (data[key].default) {
+      question.default = data[key].default;
+    }
+
+    enquiredJSON.push(question);
+  }
+
+  return enquiredJSON;
+}
+
 module.exports = {
   validate,
-  interpolate
+  interpolate,
+  toEnquirerJSON,
+  getEnquirerType
 };

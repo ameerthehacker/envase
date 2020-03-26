@@ -2,7 +2,8 @@ const fs = require('fs');
 const {
   readAllFormulas,
   getFilenameWithoutExt,
-  isFormulaFound
+  isFormulaFound,
+  readFormula
 } = require('./util');
 
 describe('util', () => {
@@ -29,5 +30,19 @@ describe('util', () => {
     fs.existsSync = jest.fn().mockReturnValue(true);
 
     expect(isFormulaFound('some-formula')).toBeTruthy();
+  });
+
+  it('readFormula() should return the formula JSON', () => {
+    jest.mock('../formulas/mysql', () => ({
+      data: {
+        name: 'my-own-formula'
+      }
+    }));
+
+    expect(readFormula('mysql')).toEqual({
+      data: {
+        name: 'my-own-formula'
+      }
+    });
   });
 });

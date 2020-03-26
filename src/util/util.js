@@ -10,7 +10,11 @@ function readAllFormulas() {
 }
 
 function isFormulaFound(formulaName) {
-  return fs.existsSync(path.join(FORMULA_DIR, formulaName));
+  return fs.existsSync(path.join(FORMULA_DIR, `${formulaName}.js`));
+}
+
+function readFormula(formulaName) {
+  return require(path.join(FORMULA_DIR, formulaName));
 }
 
 function getFilenameWithoutExt(filename) {
@@ -28,5 +32,6 @@ function getFilenameWithoutExt(filename) {
 module.exports = {
   readAllFormulas,
   getFilenameWithoutExt,
-  isFormulaFound
+  isFormulaFound,
+  readFormula
 };

@@ -1,4 +1,9 @@
-const { validate, interpolate } = require('./parser');
+const {
+  validate,
+  interpolate,
+  toEnquirerJSON,
+  getEnquirerType
+} = require('./parser');
 
 describe('validate()', () => {
   it('should throw if image field is empty', () => {
@@ -14,6 +19,12 @@ describe('validate()', () => {
     expect(() => validate('mysql', { image: {} })).toThrowError(
       'mysql: image property must be a string'
     );
+  });
+
+  it('getEnquirerType() should return correct enquirer types', () => {
+    expect(getEnquirerType('string')).toBe('input');
+    expect(getEnquirerType('password')).toBe('password');
+    expect(getEnquirerType('number')).toBe('input');
   });
 
   it('should throw when data has no type property', () => {
@@ -54,4 +65,27 @@ describe('interpolate()', () => {
   expect(
     interpolate('%password%-%password%', { password: 'secret-password' })
   ).toBe('secret-password-secret-password');
+});
+
+describe('toEnquirerJSON()', () => {
+  it('should convert string', () => {
+    expect(
+      toEnquirerJSON({
+        data: {
+          name: {
+            type: 'string',
+            description: 'Name of the MySQL server instance',
+            required: true
+          }
+        }
+      })
+    ).toEqual([
+      {
+        type: 'input',
+        name: 'name',
+        required: true,
+        message: 'Name of the MySQL server instance'
+      }
+    ]);
+  });
 });

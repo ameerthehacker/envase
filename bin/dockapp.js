@@ -12,8 +12,8 @@ const argv = yargs
         describe: 'name of the app'
       });
     },
-    (argv) => {
-      cmdNewApp(argv.name);
+    async (argv) => {
+      await cmdNewApp(argv.app);
     }
   )
   .command('ls', 'list all available formulas', () => {
