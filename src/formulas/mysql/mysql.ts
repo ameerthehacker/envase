@@ -1,4 +1,6 @@
-module.exports = {
+import { Formula } from '../../contracts/formula';
+
+const MYSQL: Formula = {
   data: {
     name: {
       type: 'string',
@@ -25,3 +27,5 @@ module.exports = {
     MYSQL_ROOT_PASSWORD: '%password%'
   }
 };
+
+export default MYSQL;
