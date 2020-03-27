@@ -2,13 +2,13 @@
   "name": "dockapp",
   "version": "0.0.0-development",
   "description": "Homebrew for docker apps",
-  "main": "bin/dbrew.js",
-  "bin": {
-    "dbrew": "bin/dbrew.js"
-  },
+  "main": "main.js",
   "scripts": {
-    "start": "node bin/dockapp.js",
-    "test": "jest",
+    "dev": "concurrently -k yarn:dev-electron yarn:dev-ui",
+    "dev-electron": "cross-env NODE_ENV=development electron ./main.js",
+    "dev-ui": "cross-env BROWSER=none react-scripts start",
+    "build-ui": "react-scripts build",
+    "test": "react-scripts test",
     "test:watch": "jest --watch",
     "coverage": "jest --coverage",
     "lint": "eslint . --ext .js --fix",
@@ -24,9 +24,13 @@
   "private": false,
   "devDependencies": {
     "@types/jest": "^25.1.4",
+    "axios": "^0.19.2",
+    "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
+    "electron-debug": "^3.0.1",
     "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1"
   },
@@ -44,8 +48,21 @@
     ]
   },
   "dependencies": {
-    "chalk": "^3.0.0",
-    "enquirer": "^2.3.4",
-    "yargs": "^15.3.0"
+    "electron": "^8.2.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
