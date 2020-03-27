@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../../components/navbar/navbar';
 import {
   Tabs,
@@ -11,12 +11,19 @@ import {
 } from '@chakra-ui/core';
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { IconText } from '../../components/icon-text/icon-text';
+import EmptyState from '../../components/empty-state/empty-state';
 
 export default function App() {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (index: number) => {
+    setTabIndex(index);
+  };
+
   return (
     <>
       <Navbar />
-      <Tabs>
+      <Tabs index={tabIndex} onChange={handleTabChange}>
         <TabList>
           <Tab p={4}>
             <IconText icon={<Box as={FaRocket} />} text="My Apps" />
@@ -29,7 +36,9 @@ export default function App() {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>my apps!</TabPanel>
+          <TabPanel>
+            <EmptyState onCreateClick={() => setTabIndex(1)} />
+          </TabPanel>
           <TabPanel>
             <p>all apps!</p>
           </TabPanel>
