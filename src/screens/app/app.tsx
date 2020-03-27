@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button } from '@chakra-ui/core';
+import Navbar from '../../components/navbar/navbar';
 
 export default function App() {
-  return (
-    <Button variantColor="teal">Hello</Button>
-  );
+  return <Navbar />;
 }
