@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button } from 'carbon-components-react';
+import { Button } from '@chakra-ui/core';
 
 export default function App() {
   return (
-    <Button>Hello</Button>
+    <Button variantColor="teal">Hello</Button>
   );
 }
