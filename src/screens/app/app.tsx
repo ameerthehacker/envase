@@ -29,8 +29,13 @@ export default function App() {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel></TabPanel>
-          <TabPanel></TabPanel>
+          <TabPanel>my apps!</TabPanel>
+          <TabPanel>
+            <p>all apps!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>settings!</p>
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
