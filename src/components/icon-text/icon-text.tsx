@@ -9,8 +9,8 @@ export interface IconTextProps {
 export function IconText({ text, icon }: IconTextProps) {
   return (
     <Stack alignItems="center" direction="row">
-      <Text>{text}</Text>
       {icon}
+      <Text>{text}</Text>
     </Stack>
   );
 }
