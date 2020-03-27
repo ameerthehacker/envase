@@ -5,8 +5,11 @@ export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
 
   return (
-    <Box width="auto" pos="fixed" right={0} top={0} borderWidth="1px">
+    <Box p={2} width="auto" pos="fixed" right={0} top={0}>
       <IconButton
+        opacity={0.65}
+        fontSize="xl"
+        variant="ghost"
         onClick={() => toggleColorMode()}
         icon={colorMode === 'light' ? 'moon' : 'sun'}
         aria-label="toggle-dark-mode"
