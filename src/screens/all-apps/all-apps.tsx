@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Formula } from '../../contracts/formula';
-import { Stack, useDisclosure } from '@chakra-ui/core';
+import { Stack, useDisclosure, Box } from '@chakra-ui/core';
 import AppCard from '../../components/app-card/app-card';
 import AppFormModal from '../../components/app-form-modal/app-form-modal';
 
@@ -15,15 +15,16 @@ export default function AllApps({ apps }: AllAppsProps) {
   return (
     <Stack direction="row">
       {apps.map((app, index) => (
-        <AppCard
-          key={index}
-          onCreateClick={() => {
-            setSelectedApp(apps[index]);
-            onOpen();
-          }}
-          name={app.name}
-          logo={app.logo}
-        />
+        <Box key={index}>
+          <AppCard
+            onCreateClick={() => {
+              setSelectedApp(apps[index]);
+              onOpen();
+            }}
+            name={app.name}
+            logo={app.logo}
+          />
+        </Box>
       ))}
       {/* modal to get app details like name, port etc. */}
       <AppFormModal app={selectedApp} isOpen={isOpen} onClose={onClose} />

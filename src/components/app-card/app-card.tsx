@@ -11,10 +11,10 @@ export default function AppCard({ name, logo, onCreateClick }: AppCardProps) {
   return (
     <Box borderRadius={5} p={4} borderWidth="1px" boxShadow="md">
       <Stack spacing={3}>
-        <Box>
+        <Box height="100px">
           <img
-            src={logo}
             width="100px"
+            src={logo}
             alt="app-logo"
             style={{
               objectFit: 'cover'
