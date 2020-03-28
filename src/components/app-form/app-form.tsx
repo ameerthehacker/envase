@@ -55,6 +55,12 @@ export default function AppForm({ app }: AppFormProps) {
     const isInputField = type === 'string' || type === 'password';
     const isNumberField = type === 'number';
     let validator: ((value: string) => string | undefined) | undefined;
+    // placeholder should show optional if it is not required
+    const placeholder = `${data[fieldName].description}${
+      data[fieldName].required ? '' : ' (optional)'
+    }`;
+    // unique id for each field
+    const fieldId = `${fieldName}-field`;
 
     if (data[fieldName].required) {
       validator = requiredValidator(fieldName);
@@ -69,22 +75,21 @@ export default function AppForm({ app }: AppFormProps) {
             <FormControl
               isInvalid={form.errors[fieldName] && form.touched[fieldName]}
             >
-              <FormLabel htmlFor={`${fieldName}-field`}>
-                {capitalize(fieldName)}
-              </FormLabel>
+              <FormLabel htmlFor={fieldId}>{capitalize(fieldName)}</FormLabel>
               {isInputField && (
                 <Input
                   type={getInputType(type)}
-                  id={`${fieldName}-field`}
-                  placeholder={data[fieldName].description}
+                  id={fieldId}
+                  placeholder={placeholder}
                   {...field}
                 />
               )}
               {isNumberField && (
-                <NumberInput {...field}>
+                <NumberInput>
                   <NumberInputField
-                    id={`${fieldName}-field`}
-                    placeholder={data[fieldName].description}
+                    id={fieldId}
+                    placeholder={placeholder}
+                    {...field}
                   />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -111,11 +116,13 @@ export default function AppForm({ app }: AppFormProps) {
         setSubmitting(false);
       }}
     >
-      {({ handleSubmit }) => (
-        <Form onSubmit={handleSubmit}>
-          <Stack spacing={2}>{formElements}</Stack>
-        </Form>
-      )}
+      {({ handleSubmit }) => {
+        return (
+          <Form onSubmit={handleSubmit}>
+            <Stack spacing={2}>{formElements}</Stack>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }

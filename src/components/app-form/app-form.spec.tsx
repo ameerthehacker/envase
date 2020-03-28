@@ -12,7 +12,8 @@ describe('AppForm', () => {
           data: {
             name: {
               description: 'Name of the MySQL instance',
-              type: 'string'
+              type: 'string',
+              required: true
             }
           }
         }}
@@ -33,18 +34,42 @@ describe('AppForm', () => {
         app={{
           ...FORMULA,
           data: {
-            name: {
+            password: {
               description: 'Password for root user',
-              type: 'password'
+              type: 'password',
+              required: true
             }
           }
         }}
       />
     );
 
-    const input = getByLabelText('Name');
+    const input = getByLabelText('Password');
 
     expect(input.getAttribute('placeholder')).toBe('Password for root user');
     expect(input.getAttribute('type')).toBe('password');
+  });
+
+  it('should say optional in placeholder when it is not required', () => {
+    const { getByLabelText } = render(
+      <AppForm
+        app={{
+          ...FORMULA,
+          data: {
+            password: {
+              description: 'Password for root user',
+              type: 'password',
+              required: false
+            }
+          }
+        }}
+      />
+    );
+
+    const input = getByLabelText('Password');
+
+    expect(input.getAttribute('placeholder')).toBe(
+      'Password for root user (optional)'
+    );
   });
 });

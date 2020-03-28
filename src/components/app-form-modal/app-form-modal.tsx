@@ -31,7 +31,6 @@ export default function AppFormModal({
         <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{app && <AppForm app={app} />}</ModalBody>
-
         <ModalFooter>
           <Stack direction="row">
             <Button variantColor="green" variant="outline">

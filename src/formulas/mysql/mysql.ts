@@ -13,7 +13,8 @@ const MYSQL: Formula = {
     port: {
       type: 'number',
       description: 'Port on which MySQL server should run',
-      default: 3306
+      default: 3306,
+      required: true
     },
     password: {
       type: 'password',
