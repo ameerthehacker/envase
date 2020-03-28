@@ -34,7 +34,7 @@ describe('AppForm', () => {
           ...FORMULA,
           data: {
             name: {
-              description: 'Name of the MySQL instance',
+              description: 'Password for root user',
               type: 'password'
             }
           }
@@ -44,9 +44,7 @@ describe('AppForm', () => {
 
     const input = getByLabelText('Name');
 
-    expect(input.getAttribute('placeholder')).toBe(
-      'Name of the MySQL instance'
-    );
+    expect(input.getAttribute('placeholder')).toBe('Password for root user');
     expect(input.getAttribute('type')).toBe('password');
   });
 });

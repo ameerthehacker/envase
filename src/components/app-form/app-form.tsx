@@ -1,6 +1,16 @@
 import React from 'react';
 import { Formula } from '../../contracts/formula';
-import { Box, FormLabel, Input, Stack } from '@chakra-ui/core';
+import {
+  Box,
+  FormLabel,
+  Input,
+  Stack,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper
+} from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
 
 export interface AppFormProps {
@@ -21,16 +31,32 @@ export default function AppForm({ app }: AppFormProps) {
   const fields = Object.keys(data);
 
   const formElements = fields.map((field, index) => {
-    const inputElementType = getInputType(data[field].type);
+    const type = data[field].type;
+    const isInputField = type === 'string' || type === 'password';
+    const isNumberField = type === 'number';
 
     return (
       <Box key={index}>
         <FormLabel htmlFor={`${field}-field`}>{capitalize(field)}</FormLabel>
-        <Input
-          type={inputElementType}
-          id={`${field}-field`}
-          placeholder={data[field].description}
-        />
+        {isInputField && (
+          <Input
+            type={getInputType(type)}
+            id={`${field}-field`}
+            placeholder={data[field].description}
+          />
+        )}
+        {isNumberField && (
+          <NumberInput>
+            <NumberInputField
+              id={`${field}-field`}
+              placeholder={data[field].description}
+            />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        )}
       </Box>
     );
   });
