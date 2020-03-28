@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/core';
 import { Formula } from '../../contracts/formula';
 import AppForm from '../app-form/app-form';
-import { withFormik } from 'formik';
+import { Formik } from 'formik';
 
 export interface AppFormModalProps {
   app?: Formula;
@@ -34,41 +34,36 @@ export default function AppFormModal({
     initialValues[fieldName] = String(data[fieldName].default || '');
   }
 
-  const EnhancedModalContent = withFormik({
-    mapPropsToValues: () => initialValues,
-    validateOnChange: true,
-    handleSubmit: (values) => {
-      // TODO: do something useful with these values
-      console.log(values);
-    },
-    validateOnMount: true
-  })(({ isValid, submitForm }) => (
-    <ModalContent>
-      <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
-      <ModalCloseButton />
-      <ModalBody>{app && <AppForm app={app} />}</ModalBody>
-      <ModalFooter>
-        <Stack direction="row">
-          <Button
-            isDisabled={!isValid}
-            onClick={submitForm}
-            variantColor="green"
-            variant="outline"
-          >
-            Create
-          </Button>
-          <Button variantColor="red" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-        </Stack>
-      </ModalFooter>
-    </ModalContent>
-  ));
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <EnhancedModalContent />
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ isValid, submitForm }) => (
+          <ModalContent>
+            <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{app && <AppForm app={app} />}</ModalBody>
+            <ModalFooter>
+              <Stack direction="row">
+                <Button
+                  isDisabled={!isValid}
+                  onClick={submitForm}
+                  variantColor="green"
+                  variant="outline"
+                >
+                  Create
+                </Button>
+                <Button variantColor="red" mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+              </Stack>
+            </ModalFooter>
+          </ModalContent>
+        )}
+      </Formik>
     </Modal>
   );
 }
