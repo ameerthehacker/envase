@@ -1,9 +1,5 @@
 import MYSQL from './mysql/mysql';
 
-const FORMULAS = [
-  {
-    mysql: MYSQL
-  }
-];
+const FORMULAS = [MYSQL];
 
 export { FORMULAS };

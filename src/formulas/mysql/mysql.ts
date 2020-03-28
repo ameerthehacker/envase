@@ -1,6 +1,9 @@
 import { Formula } from '../../contracts/formula';
+import logo from './logo.svg';
 
 const MYSQL: Formula = {
+  name: 'MySQL',
+  logo,
   data: {
     name: {
       type: 'string',

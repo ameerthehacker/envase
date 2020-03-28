@@ -12,9 +12,11 @@ import {
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { IconText } from '../../components/icon-text/icon-text';
 import EmptyState from '../../components/empty-state/empty-state';
+import AllApps from '../all-apps/all-apps';
+import { FORMULAS } from '../../formulas';
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
 
   const handleTabChange = (index: number) => {
     setTabIndex(index);
@@ -35,12 +37,15 @@ export default function App() {
             <IconText icon={<Icon name="settings" />} text="Preferences" />
           </Tab>
         </TabList>
-        <TabPanels>
+        <TabPanels p={6} pb={0}>
           <TabPanel>
-            <EmptyState onCreateClick={() => setTabIndex(1)} />
+            <EmptyState
+              height="calc(100vh - 90px)"
+              onCreateClick={() => setTabIndex(1)}
+            />
           </TabPanel>
           <TabPanel>
-            <p>all apps!</p>
+            <AllApps apps={FORMULAS} />
           </TabPanel>
           <TabPanel>
             <p>settings!</p>

@@ -1,4 +1,5 @@
 export interface Formula {
+  name: string;
   data: {
     [key: string]: FormulaField;
   };
@@ -6,6 +7,7 @@ export interface Formula {
     [key: string]: string;
   };
   image: string;
+  logo: string;
 }
 
 interface FormulaField {

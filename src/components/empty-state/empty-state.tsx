@@ -4,16 +4,17 @@ import { FaBoxOpen } from 'react-icons/fa';
 
 export interface EmptyStateProps {
   onCreateClick: () => void;
+  height: string;
 }
 
-export default function EmptyState({ onCreateClick }: EmptyStateProps) {
+export default function EmptyState({ onCreateClick, height }: EmptyStateProps) {
   return (
     <Stack
       spacing={2}
-      height="calc(100vh - 60px)"
       width="100%"
       alignItems="center"
       justifyContent="center"
+      height={height}
     >
       <Box fontSize="6xl" as={FaBoxOpen} />
       <Text fontSize="xl" fontWeight="light">
