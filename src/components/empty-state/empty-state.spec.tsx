@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '../../test-util';
+import { render } from '../../../tests/test-util';
 import EmptyState from './empty-state';
 import { fireEvent } from '@testing-library/react';
 

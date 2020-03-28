@@ -1,6 +1,6 @@
 import React from 'react';
 import AppCard from './app-card';
-import { render, fireEvent } from '../../test-util';
+import { render, fireEvent } from '../../../tests/test-util';
 
 describe('AppCard', () => {
   it('should render the logo image', async () => {

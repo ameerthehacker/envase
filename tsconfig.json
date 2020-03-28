@@ -16,5 +16,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src"]
+  "include": ["src", "tests/fixtures/app.fixture.ts", "tests/test-util.tsx"]
 }

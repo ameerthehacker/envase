@@ -1,4 +1,4 @@
-import { Formula } from '../../contracts/formula';
+import { Formula } from '../../src/contracts/formula';
 
 const FORMULA: Formula = {
   name: 'MySQL',

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from '../../test-util';
+import { render } from '../../../tests/test-util';
 import AppForm from './app-form';
-import { FORMULA } from './app.fixture';
+import { FORMULA } from '../../../tests/fixtures/app.fixture';
 
 describe('AppForm', () => {
   it('should render a input box', () => {
