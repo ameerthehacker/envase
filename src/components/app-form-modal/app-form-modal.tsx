@@ -11,6 +11,7 @@ import {
   Stack
 } from '@chakra-ui/core';
 import { Formula } from '../../contracts/formula';
+import AppForm from '../app-form/app-form';
 
 export interface AppFormModalProps {
   app?: Formula;
@@ -29,7 +30,7 @@ export default function AppFormModal({
       <ModalContent>
         <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>hello</ModalBody>
+        <ModalBody>{app && <AppForm app={app} />}</ModalBody>
 
         <ModalFooter>
           <Stack direction="row">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formula } from '../../contracts/formula';
-import { Box, FormLabel, Input } from '@chakra-ui/core';
+import { Box, FormLabel, Input, Stack } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
 
 export interface AppFormProps {
@@ -35,5 +35,5 @@ export default function AppForm({ app }: AppFormProps) {
     );
   });
 
-  return <Box>{formElements}</Box>;
+  return <Stack spacing={2}>{formElements}</Stack>;
 }
