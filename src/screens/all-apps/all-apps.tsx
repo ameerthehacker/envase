@@ -11,7 +11,12 @@ export default function AllApps({ apps }: AllAppsProps) {
   return (
     <Stack direction="row">
       {apps.map((app, index) => (
-        <AppCard key={index} name={app.name} logo={app.logo} />
+        <AppCard
+          key={index}
+          onCreateClick={() => null}
+          name={app.name}
+          logo={app.logo}
+        />
       ))}
     </Stack>
   );

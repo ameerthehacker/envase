@@ -1,10 +1,12 @@
 import React from 'react';
 import AppCard from './app-card';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '../../test-util';
 
 describe('AppCard', () => {
   it('should render the logo image', async () => {
-    const { getByAltText } = render(<AppCard name="mysql" logo="logo-url" />);
+    const { getByAltText } = render(
+      <AppCard name="mysql" logo="logo-url" onCreateClick={() => null} />
+    );
 
     const image = getByAltText('app-logo');
 
@@ -12,8 +14,22 @@ describe('AppCard', () => {
   });
 
   it('should render the app name', () => {
-    const { getByText } = render(<AppCard name="mysql" logo="logo-url" />);
+    const { getByText } = render(
+      <AppCard name="mysql" logo="logo-url" onCreateClick={() => null} />
+    );
 
     expect(getByText('mysql')).toBeTruthy();
+  });
+
+  it('should call onCreateClick() when create is clicked', () => {
+    const onCreateClick = jest.fn();
+    const { getByText } = render(
+      <AppCard name="mysql" logo="logo-url" onCreateClick={onCreateClick} />
+    );
+    const btnCreate = getByText('Create');
+
+    fireEvent.click(btnCreate);
+
+    expect(onCreateClick).toHaveBeenCalledTimes(1);
   });
 });
