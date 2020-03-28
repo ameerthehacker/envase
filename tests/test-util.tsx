@@ -6,6 +6,7 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return <ThemeProvider>{children}</ThemeProvider>;
 };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const customRender = (ui: ReactElement, options: any = {}) =>
   render(ui, { wrapper: AllTheProviders, ...options });
 

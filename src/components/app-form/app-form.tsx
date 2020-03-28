@@ -14,7 +14,7 @@ import {
   FormErrorMessage
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
-import { Formik, FormikHelpers, Field, Form } from 'formik';
+import { Field, Form } from 'formik';
 
 export interface AppFormProps {
   app: Formula;
@@ -32,11 +32,6 @@ function getInputType(type: string) {
 export default function AppForm({ app }: AppFormProps) {
   const { data } = app;
   const fieldNames = Object.keys(data);
-  const initialValues: { [name: string]: string } = {};
-
-  for (const fieldName of fieldNames) {
-    initialValues[fieldName] = String(data[fieldName].default || '');
-  }
 
   function requiredValidator(fieldName: string) {
     return (value: string) => {
@@ -69,6 +64,7 @@ export default function AppForm({ app }: AppFormProps) {
     }
 
     return (
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       <Box key={index}>
         <Field name={fieldName} validate={validator}>
           {({ field, form }: { field: any; form: any }) => (
@@ -106,23 +102,8 @@ export default function AppForm({ app }: AppFormProps) {
   });
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validateOnChange
-      onSubmit={(
-        values: { [name: string]: string },
-        { setSubmitting }: FormikHelpers<any>
-      ) => {
-        setSubmitting(false);
-      }}
-    >
-      {({ handleSubmit }) => {
-        return (
-          <Form onSubmit={handleSubmit}>
-            <Stack spacing={2}>{formElements}</Stack>
-          </Form>
-        );
-      }}
-    </Formik>
+    <Form>
+      <Stack spacing={2}>{formElements}</Stack>
+    </Form>
   );
 }
