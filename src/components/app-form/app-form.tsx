@@ -9,9 +9,12 @@ import {
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
-  NumberDecrementStepper
+  NumberDecrementStepper,
+  FormControl,
+  FormErrorMessage
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
+import { Formik, FormikHelpers, Field, Form } from 'formik';
 
 export interface AppFormProps {
   app: Formula;
@@ -28,38 +31,91 @@ function getInputType(type: string) {
 
 export default function AppForm({ app }: AppFormProps) {
   const { data } = app;
-  const fields = Object.keys(data);
+  const fieldNames = Object.keys(data);
+  const initialValues: { [name: string]: string } = {};
 
-  const formElements = fields.map((field, index) => {
-    const type = data[field].type;
+  for (const fieldName of fieldNames) {
+    initialValues[fieldName] = String(data[fieldName].default || '');
+  }
+
+  function requiredValidator(fieldName: string) {
+    return (value: string) => {
+      let error;
+
+      if (!value) {
+        error = `${fieldName} is required`;
+      }
+
+      return error;
+    };
+  }
+
+  const formElements = fieldNames.map((fieldName, index) => {
+    const type = data[fieldName].type;
     const isInputField = type === 'string' || type === 'password';
     const isNumberField = type === 'number';
+    let validator: ((value: string) => string | undefined) | undefined;
+
+    if (data[fieldName].required) {
+      validator = requiredValidator(fieldName);
+    } else {
+      validator = undefined;
+    }
 
     return (
       <Box key={index}>
-        <FormLabel htmlFor={`${field}-field`}>{capitalize(field)}</FormLabel>
-        {isInputField && (
-          <Input
-            type={getInputType(type)}
-            id={`${field}-field`}
-            placeholder={data[field].description}
-          />
-        )}
-        {isNumberField && (
-          <NumberInput>
-            <NumberInputField
-              id={`${field}-field`}
-              placeholder={data[field].description}
-            />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        )}
+        <Field name={fieldName} validate={validator}>
+          {({ field, form }: { field: any; form: any }) => (
+            <FormControl
+              isInvalid={form.errors[fieldName] && form.touched[fieldName]}
+            >
+              <FormLabel htmlFor={`${fieldName}-field`}>
+                {capitalize(fieldName)}
+              </FormLabel>
+              {isInputField && (
+                <Input
+                  type={getInputType(type)}
+                  id={`${fieldName}-field`}
+                  placeholder={data[fieldName].description}
+                  {...field}
+                />
+              )}
+              {isNumberField && (
+                <NumberInput {...field}>
+                  <NumberInputField
+                    id={`${fieldName}-field`}
+                    placeholder={data[fieldName].description}
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              )}
+              <FormErrorMessage>{form.errors[fieldName]}</FormErrorMessage>
+            </FormControl>
+          )}
+        </Field>
       </Box>
     );
   });
 
-  return <Stack spacing={2}>{formElements}</Stack>;
+  return (
+    <Formik
+      initialValues={initialValues}
+      validateOnChange
+      onSubmit={(
+        values: { [name: string]: string },
+        { setSubmitting }: FormikHelpers<any>
+      ) => {
+        setSubmitting(false);
+      }}
+    >
+      {({ handleSubmit }) => (
+        <Form onSubmit={handleSubmit}>
+          <Stack spacing={2}>{formElements}</Stack>
+        </Form>
+      )}
+    </Formik>
+  );
 }
