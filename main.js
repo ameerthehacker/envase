@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { IPC_CHANNELS } = require('./src/constants');
+const path = require('path');
 
 app.allowRendererProcessReuse = true;
 
@@ -8,7 +9,8 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 

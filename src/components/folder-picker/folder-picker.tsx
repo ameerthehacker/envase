@@ -4,9 +4,8 @@ import { IpcRendererEvent } from 'electron';
 import { Stack, Input, Box, Button } from '@chakra-ui/core';
 import { FaFolderOpen } from 'react-icons/fa';
 import { useFormikContext } from 'formik';
+import { ipcRenderer } from '../../services/native';
 
-// webpack fails us if we use normal import
-const { ipcRenderer } = window.require('electron');
 const { OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
 
 interface OpenFolderDialogResult {

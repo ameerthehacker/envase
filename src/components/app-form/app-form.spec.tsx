@@ -4,6 +4,8 @@ import AppForm from './app-form';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 import { Formik } from 'formik';
 
+jest.mock('../../services/native');
+
 const renderWitFormik = (children: ReactElement) =>
   render(
     /* eslint-disable @typescript-eslint/no-empty-function */
