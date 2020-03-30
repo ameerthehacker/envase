@@ -8,7 +8,7 @@ import { ipcRenderer } from '../../services/native';
 
 const { OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
 
-interface OpenFolderDialogResult {
+export interface OpenFolderDialogResult {
   error: boolean | string;
   selectedPath: null | string;
 }
@@ -51,6 +51,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
       <Stack direction="row">
         <Input ref={ref} id={id} placeholder={placeholder} {...rest} />
         <Button
+          role="browse-folder"
           variantColor="blue"
           onClick={() => ipcRenderer.send(OPEN_FOLDER_DIALOG)}
         >
