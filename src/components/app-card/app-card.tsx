@@ -1,9 +1,8 @@
 import React from 'react';
-import AppInfoCard from '../app-info-card/app-info-card';
 import { Button } from '@chakra-ui/core';
-export interface AppCardProps {
-  name: string;
-  logo: string;
+import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
+
+export interface AppCardProps extends AppInfoCardProps {
   onCreateClick: () => void;
 }
 

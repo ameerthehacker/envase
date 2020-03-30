@@ -26,7 +26,7 @@ describe('FolderPicker', () => {
         }
       );
 
-    const { getByPlaceholderText, getByRole } = render(
+    const { getByPlaceholderText, getByLabelText } = render(
       /* eslint-disable @typescript-eslint/no-empty-function */
       <Formik initialValues={{ data: '' }} onSubmit={() => {}}>
         <Form>
@@ -40,7 +40,7 @@ describe('FolderPicker', () => {
     );
 
     const inputField = getByPlaceholderText('select a path');
-    const btnBrowse = getByRole('browse-folder');
+    const btnBrowse = getByLabelText('browse-folder');
 
     fireEvent.click(btnBrowse);
 

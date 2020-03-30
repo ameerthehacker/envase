@@ -51,7 +51,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
       <Stack direction="row">
         <Input ref={ref} id={id} placeholder={placeholder} {...rest} />
         <Button
-          role="browse-folder"
+          aria-label="browse-folder"
           variantColor="blue"
           onClick={() => ipcRenderer.send(OPEN_FOLDER_DIALOG)}
         >
