@@ -17,7 +17,7 @@ const VSCODE: Formula = {
       required: true
     },
     project: {
-      type: 'string',
+      type: 'path',
       description: 'Projects folder',
       required: true
     }

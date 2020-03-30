@@ -21,7 +21,7 @@ const MYSQL: Formula = {
       description: 'Password for the root user'
     },
     data: {
-      type: 'string',
+      type: 'path',
       description: 'Database storage path for MySQL',
       required: true
     }

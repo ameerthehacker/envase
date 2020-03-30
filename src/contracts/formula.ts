@@ -11,7 +11,7 @@ export interface Formula {
 }
 
 interface FormulaField {
-  type: 'string' | 'number' | 'password';
+  type: 'string' | 'number' | 'password' | 'path';
   required?: boolean;
   description: string;
   default?: string | number;

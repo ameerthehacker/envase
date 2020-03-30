@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { IPC_CHANNELS } = require('./src/constants');
 
 app.allowRendererProcessReuse = true;
 
@@ -31,9 +32,34 @@ function createWindow() {
         .catch(() => console.log('Waiting for UI to start...'));
     }, 2000);
   }
+
+  return win;
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  const win = createWindow();
+
+  // listen for ipc
+  ipcMain.on(IPC_CHANNELS.OPEN_FOLDER_DIALOG, (evt) => {
+    dialog
+      .showOpenDialog(win, {
+        title: 'Select path',
+        properties: ['openDirectory']
+      })
+      .then((result) =>
+        evt.reply(IPC_CHANNELS.OPEN_FOLDER_DIALOG, {
+          error: false,
+          selectedPath: result.filePaths.length > 0 ? result.filePaths[0] : null
+        })
+      )
+      .catch((err) => {
+        evt.reply(IPC_CHANNELS.OPEN_FOLDER_DIALOG, {
+          error: err,
+          selectedPath: null
+        });
+      });
+  });
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

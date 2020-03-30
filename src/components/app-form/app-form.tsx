@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
 import { Field, Form } from 'formik';
+import FolderPicker from '../folder-picker/folder-picker';
 
 export interface AppFormProps {
   app: Formula;
@@ -49,6 +50,7 @@ export default function AppForm({ app }: AppFormProps) {
     const type = data[fieldName].type;
     const isInputField = type === 'string' || type === 'password';
     const isNumberField = type === 'number';
+    const isPathField = type === 'path';
     let validator: ((value: string) => string | undefined) | undefined;
     // placeholder should show optional if it is not required
     const placeholder = `${data[fieldName].description}${
@@ -92,6 +94,14 @@ export default function AppForm({ app }: AppFormProps) {
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
+              )}
+              {isPathField && (
+                <FolderPicker
+                  id={fieldId}
+                  placeholder={placeholder}
+                  {...field}
+                  {...form}
+                />
               )}
               <FormErrorMessage>{form.errors[fieldName]}</FormErrorMessage>
             </FormControl>

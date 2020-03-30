@@ -1,0 +1,5 @@
+const IPC_CHANNELS = {
+  OPEN_FOLDER_DIALOG: 'OPEN_FOLDER_DIALOG'
+};
+
+module.exports = { IPC_CHANNELS };
