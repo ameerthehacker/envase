@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Formula } from '../../contracts/formula';
 import { Stack, useDisclosure, Box } from '@chakra-ui/core';
-import AppCard from '../../components/app-card/app-card';
 import AppFormModal from '../../components/app-form-modal/app-form-modal';
+import AppCard from '../../components/app-card/app-card';
 
 export interface AllAppsProps {
   apps: Formula[];
