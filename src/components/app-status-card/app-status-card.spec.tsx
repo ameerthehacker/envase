@@ -91,4 +91,40 @@ describe('AppStatusCard', () => {
 
     expect(onInfoClick).toHaveBeenCalledTimes(1);
   });
+
+  it('should be disabled in state transition while running', () => {
+    const { getByLabelText } = render(
+      <AppStatusCard
+        onStartClick={() => null}
+        onStopClick={() => null}
+        onInfoClick={() => null}
+        inStateTransit={true}
+        name="mysql"
+        logo="mysql-logo"
+        status="running"
+      />
+    );
+
+    const btnStop = getByLabelText('stop-app');
+
+    expect(btnStop).toBeDisabled();
+  });
+
+  it('should be disabled in state transition while stopped', () => {
+    const { getByLabelText } = render(
+      <AppStatusCard
+        onStartClick={() => null}
+        onStopClick={() => null}
+        onInfoClick={() => null}
+        inStateTransit={true}
+        name="mysql"
+        logo="mysql-logo"
+        status="stopped"
+      />
+    );
+
+    const btnStart = getByLabelText('start-app');
+
+    expect(btnStart).toBeDisabled();
+  });
 });
