@@ -26,7 +26,7 @@ const MYSQL: Formula = {
       required: true
     }
   },
-  image: 'mysql',
+  image: 'library/mysql',
   env: {
     MYSQL_ROOT_PASSWORD: '%password%'
   }

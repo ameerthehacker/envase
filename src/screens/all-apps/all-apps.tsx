@@ -3,7 +3,6 @@ import { Formula } from '../../contracts/formula';
 import { Stack, useDisclosure, Box } from '@chakra-ui/core';
 import AppFormModal from '../../components/app-form-modal/app-form-modal';
 import AppCard from '../../components/app-card/app-card';
-import AppStatusCard from '../../components/app-status-card/app-status-card';
 
 export interface AllAppsProps {
   apps: Formula[];

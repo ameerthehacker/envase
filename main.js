@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { IPC_CHANNELS } = require('./src/constants');
 const path = require('path');
+const axios = require('axios').default;
+
+const { GET_IMAGE_TAGS, OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
 
 app.allowRendererProcessReuse = true;
 
@@ -49,17 +52,36 @@ app.whenReady().then(() => {
         properties: ['openDirectory']
       })
       .then((result) =>
-        evt.reply(IPC_CHANNELS.OPEN_FOLDER_DIALOG, {
+        evt.reply(OPEN_FOLDER_DIALOG, {
           error: false,
           selectedPath: result.filePaths.length > 0 ? result.filePaths[0] : null
         })
       )
       .catch((err) => {
-        evt.reply(IPC_CHANNELS.OPEN_FOLDER_DIALOG, {
+        evt.reply(OPEN_FOLDER_DIALOG, {
           error: err,
           selectedPath: null
         });
       });
+  });
+
+  ipcMain.on(GET_IMAGE_TAGS, (evt, args) => {
+    axios
+      .get(
+        `https://hub.docker.com/v2/repositories/${args.image}/tags?page_size=50`
+      )
+      .then((res) => res.data)
+      .then((res) =>
+        evt.reply(GET_IMAGE_TAGS, {
+          error: false,
+          res
+        })
+      )
+      .catch((error) =>
+        evt.reply(GET_IMAGE_TAGS, {
+          error
+        })
+      );
   });
 });
 

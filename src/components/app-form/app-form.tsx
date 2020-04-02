@@ -16,6 +16,7 @@ import {
 import { capitalize } from '../../utils/utils';
 import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
+import VersionDropdown from '../version-dropdown/version-dropdown';
 
 export interface AppFormProps {
   app: Formula;
@@ -113,7 +114,23 @@ export default function AppForm({ app }: AppFormProps) {
 
   return (
     <Form>
-      <Stack spacing={2}>{formElements}</Stack>
+      <Stack spacing={2}>
+        {formElements}
+        <Field name="version" validate={requiredValidator('version')}>
+          {({ field, form }: { field: any; form: any }) => (
+            <FormControl>
+              <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
+              <VersionDropdown
+                id="field-version"
+                image={app.image}
+                {...field}
+                {...form}
+                placeholder="Select the app version / tag"
+              />
+            </FormControl>
+          )}
+        </Field>
+      </Stack>
     </Form>
   );
 }

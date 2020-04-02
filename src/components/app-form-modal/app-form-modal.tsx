@@ -27,7 +27,9 @@ export default function AppFormModal({
 }: AppFormModalProps) {
   const data = app?.data || {};
   const fieldNames = Object.keys(data || {});
-  const initialValues: { [name: string]: string } = {};
+  const initialValues: { [name: string]: string } = {
+    version: ''
+  };
 
   // populate the initial values
   for (const fieldName of fieldNames) {

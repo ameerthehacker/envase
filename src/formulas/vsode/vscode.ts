@@ -22,7 +22,7 @@ const VSCODE: Formula = {
       required: true
     }
   },
-  image: 'vscode',
+  image: 'codercom/code-server',
   env: {}
 };
 
