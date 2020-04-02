@@ -11,12 +11,15 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   FormControl,
-  FormErrorMessage
+  FormErrorMessage,
+  Link
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
 import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
+import { getDockerHubLinkToTags } from '../../utils/utils';
+import { open } from '../../services/native';
 
 export interface AppFormProps {
   app: Formula;
@@ -127,6 +130,12 @@ export default function AppForm({ app }: AppFormProps) {
                 {...form}
                 placeholder="Select the app version / tag"
               />
+              <Link
+                onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
+                isExternal
+              >
+                View all images/tags
+              </Link>
             </FormControl>
           )}
         </Field>

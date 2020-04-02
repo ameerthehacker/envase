@@ -13,3 +13,16 @@ export function interpolate(template: string, data: { [key: string]: string }) {
 
   return template;
 }
+
+export function getDockerHubLinkToTags(name: string) {
+  const [namespace, image] = name.split('/');
+  let relativeURL;
+
+  if (namespace === 'library') {
+    relativeURL = `_/${image}/?tab=tags`;
+  } else {
+    relativeURL = `r/${name}/tags`;
+  }
+
+  return `https://hub.docker.com/${relativeURL}`;
+}
