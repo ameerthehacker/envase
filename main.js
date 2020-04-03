@@ -66,9 +66,11 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on(GET_IMAGE_TAGS, (evt, args) => {
+    const pageNo = args.pageNo || 1;
+
     axios
       .get(
-        `https://hub.docker.com/v2/repositories/${args.image}/tags?page_size=50`
+        `https://hub.docker.com/v2/repositories/${args.image}/tags?page_size=50&page=${pageNo}`
       )
       .then((res) => res.data)
       .then((res) =>

@@ -15,7 +15,7 @@ import {
   Link
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
-import { Field, Form } from 'formik';
+import { Field, Form, FieldProps, FormikProps, FieldInputProps } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
@@ -120,14 +120,20 @@ export default function AppForm({ app }: AppFormProps) {
       <Stack spacing={2}>
         {formElements}
         <Field name="version" validate={requiredValidator('version')}>
-          {({ field, form }: { field: any; form: any }) => (
+          {({
+            field,
+            form
+          }: {
+            field: FieldInputProps<string>;
+            form: FormikProps<any>;
+          }) => (
             <FormControl>
               <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
               <VersionDropdown
                 id="field-version"
                 image={app.image}
-                {...field}
-                {...form}
+                field={field}
+                form={form}
                 placeholder="Select the app version / tag"
               />
               <Link
