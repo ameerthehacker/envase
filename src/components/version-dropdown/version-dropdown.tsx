@@ -98,7 +98,11 @@ export default function VersionDropdown({
       options={options}
       onChange={(option: any) => form.setFieldValue(field.name, option?.value)}
       isDisabled={isLoading}
-      onBlur={field.onBlur}
+      onBlur={(evt) => {
+        field.onBlur(evt);
+        // field is no more tidy
+        form.setFieldTouched(field.name, true);
+      }}
       isClearable={true}
       isSearchable={true}
     ></Select>

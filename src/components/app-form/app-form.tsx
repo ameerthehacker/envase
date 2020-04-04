@@ -15,7 +15,7 @@ import {
   Link
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
-import { Field, Form, FormikProps, FieldInputProps } from 'formik';
+import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
@@ -34,6 +34,7 @@ function getInputType(type: string) {
   }
 }
 
+// TODO: use formprops and formikprops types
 export default function AppForm({ app }: AppFormProps) {
   const { data } = app;
   const fieldNames = Object.keys(data);
@@ -123,14 +124,10 @@ export default function AppForm({ app }: AppFormProps) {
           <Input id="image" value={app.image} isDisabled={true} />
         </FormControl>
         <Field name="version" validate={requiredValidator('version')}>
-          {({
-            field,
-            form
-          }: {
-            field: FieldInputProps<string>;
-            form: FormikProps<any>;
-          }) => (
-            <FormControl>
+          {({ field, form }: { field: any; form: any }) => (
+            <FormControl
+              isInvalid={form.errors.version && form.touched.version}
+            >
               <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
               <VersionDropdown
                 id="field-version"
@@ -146,6 +143,7 @@ export default function AppForm({ app }: AppFormProps) {
               >
                 View all images/tags
               </Link>
+              <FormErrorMessage>{form.errors.version}</FormErrorMessage>
             </FormControl>
           )}
         </Field>
