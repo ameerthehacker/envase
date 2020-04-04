@@ -119,34 +119,38 @@ export default function AppForm({ app }: AppFormProps) {
   return (
     <Form>
       <Stack spacing={2}>
-        <FormControl>
-          <FormLabel htmlFor="image">Image</FormLabel>
-          <Input id="image" value={app.image} isDisabled={true} />
-        </FormControl>
-        <Field name="version" validate={requiredValidator('version')}>
-          {({ field, form }: { field: any; form: any }) => (
-            <FormControl
-              isInvalid={form.errors.version && form.touched.version}
-            >
-              <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
-              <VersionDropdown
-                id="field-version"
-                image={app.image}
-                field={field}
-                form={form}
-                placeholder="Select the app version / tag"
-              />
-              <Link
-                fontSize="small"
-                onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
-                isExternal
+        <Box>
+          <FormControl>
+            <FormLabel htmlFor="image">Image</FormLabel>
+            <Input id="image" value={app.image} isDisabled={true} />
+          </FormControl>
+        </Box>
+        <Box>
+          <Field name="version" validate={requiredValidator('version')}>
+            {({ field, form }: { field: any; form: any }) => (
+              <FormControl
+                isInvalid={form.errors.version && form.touched.version}
               >
-                View all images/tags
-              </Link>
-              <FormErrorMessage>{form.errors.version}</FormErrorMessage>
-            </FormControl>
-          )}
-        </Field>
+                <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
+                <VersionDropdown
+                  id="field-version"
+                  image={app.image}
+                  field={field}
+                  form={form}
+                  placeholder="Select the app version / tag"
+                />
+                <Link
+                  fontSize="small"
+                  onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
+                  isExternal
+                >
+                  View all images/tags
+                </Link>
+                <FormErrorMessage>{form.errors.version}</FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+        </Box>
         {formElements}
       </Stack>
     </Form>
