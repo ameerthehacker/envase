@@ -76,7 +76,7 @@ export default function VersionDropdown({
         });
       }
     },
-    [setOptions, setIsLoading, image]
+    [setOptions, setIsLoading, image, toast]
   );
 
   useEffect(() => {

@@ -15,7 +15,7 @@ import {
   Link
 } from '@chakra-ui/core';
 import { capitalize } from '../../utils/utils';
-import { Field, Form, FieldProps, FormikProps, FieldInputProps } from 'formik';
+import { Field, Form, FormikProps, FieldInputProps } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
