@@ -1,18 +1,28 @@
 import React from 'react';
-import { render, fireEvent } from '../../../tests/test-util';
+import { render, fireEvent, waitFor } from '../../../tests/test-util';
 import AppFormModal from './app-form-modal';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 
+jest.mock('../../services/native', () => ({
+  ipcRenderer: {
+    on: () => null,
+    send: () => null,
+    removeListener: () => null
+  }
+}));
+
 describe('AppFormModal', () => {
-  it('should render the heading', () => {
+  it('should render the heading', async () => {
     const { getByText } = render(
       <AppFormModal isOpen={true} onClose={() => null} app={FORMULA} />
     );
 
-    expect(getByText('Create MySQL App').tagName).toBe('HEADER');
+    await waitFor(() =>
+      expect(getByText('Create MySQL App').tagName).toBe('HEADER')
+    );
   });
 
-  it('should call onClose when cancel is clicked', () => {
+  it('should call onClose when cancel is clicked', async () => {
     const onClose = jest.fn();
     const { getByText } = render(
       <AppFormModal isOpen={true} onClose={onClose} app={FORMULA} />
@@ -21,6 +31,6 @@ describe('AppFormModal', () => {
 
     fireEvent.click(btnCancel);
 
-    expect(onClose).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
   });
 });

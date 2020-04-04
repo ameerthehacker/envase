@@ -4,7 +4,13 @@ import AppForm from './app-form';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 import { Formik } from 'formik';
 
-jest.mock('../../services/native');
+jest.mock('../../services/native', () => ({
+  ipcRenderer: {
+    on: () => null,
+    send: () => null,
+    removeListener: () => null
+  }
+}));
 
 const renderWitFormik = (children: ReactElement) =>
   render(
