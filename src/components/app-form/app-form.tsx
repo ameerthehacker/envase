@@ -118,7 +118,10 @@ export default function AppForm({ app }: AppFormProps) {
   return (
     <Form>
       <Stack spacing={2}>
-        {formElements}
+        <FormControl>
+          <FormLabel htmlFor="image">Image</FormLabel>
+          <Input id="image" value={app.image} isDisabled={true} />
+        </FormControl>
         <Field name="version" validate={requiredValidator('version')}>
           {({
             field,
@@ -137,6 +140,7 @@ export default function AppForm({ app }: AppFormProps) {
                 placeholder="Select the app version / tag"
               />
               <Link
+                fontSize="small"
                 onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
                 isExternal
               >
@@ -145,6 +149,7 @@ export default function AppForm({ app }: AppFormProps) {
             </FormControl>
           )}
         </Field>
+        {formElements}
       </Stack>
     </Form>
   );
