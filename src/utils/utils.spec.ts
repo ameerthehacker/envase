@@ -1,4 +1,17 @@
-import { capitalize, interpolate, getDockerHubLinkToTags } from './utils';
+import {
+  capitalize,
+  interpolate,
+  getDockerHubLinkToTags,
+  getFormulaByName
+} from './utils';
+
+jest.mock('../formulas', () => ({
+  FORMULAS: [
+    {
+      name: 'my-formula'
+    }
+  ]
+}));
 
 describe('utils', () => {
   it('capitalize() should capitalize the string', () => {
@@ -22,5 +35,15 @@ describe('utils', () => {
     expect(getDockerHubLinkToTags('ameerthehacker/node')).toBe(
       'https://hub.docker.com/r/ameerthehacker/node/tags'
     );
+  });
+
+  it('getFormulaByName() should return formula with given name', () => {
+    expect(getFormulaByName('my-formula')).toEqual({
+      name: 'my-formula'
+    });
+  });
+
+  it('getFormulaByName() should return undefined when formula is not present', () => {
+    expect(getFormulaByName('something')).toEqual(undefined);
   });
 });

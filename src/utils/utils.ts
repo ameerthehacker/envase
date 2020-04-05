@@ -1,3 +1,5 @@
+import { FORMULAS } from '../formulas';
+
 export function capitalize(text: string) {
   if (text.length > 0) {
     return `${text[0].toUpperCase()}${text.substring(1)}`;
@@ -25,4 +27,8 @@ export function getDockerHubLinkToTags(name: string) {
   }
 
   return `https://hub.docker.com/${relativeURL}`;
+}
+
+export function getFormulaByName(name: string) {
+  return FORMULAS.find((formula) => formula.name === name);
 }

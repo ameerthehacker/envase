@@ -18,16 +18,20 @@ export interface AppFormModalProps {
   app?: Formula;
   isOpen: boolean;
   onClose: () => void;
+  isValidating?: boolean;
+  onSubmit: (result: Record<string, any>) => void;
 }
 
 export default function AppFormModal({
   app,
   isOpen,
-  onClose
+  onClose,
+  isValidating,
+  onSubmit
 }: AppFormModalProps) {
   const data = app?.data || {};
   const fieldNames = Object.keys(data || {});
-  const initialValues: { [name: string]: string } = {
+  const initialValues: Record<string, any> = {
     version: ''
   };
 
@@ -39,11 +43,7 @@ export default function AppFormModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <Formik
-        validateOnMount
-        initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
-      >
+      <Formik validateOnMount initialValues={initialValues} onSubmit={onSubmit}>
         {({ isValid, submitForm }) => (
           <ModalContent>
             <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
@@ -52,10 +52,12 @@ export default function AppFormModal({
             <ModalFooter>
               <Stack direction="row">
                 <Button
+                  isLoading={isValidating}
                   isDisabled={!isValid}
                   onClick={submitForm}
                   variantColor="green"
                   variant="outline"
+                  loadingText="Validating..."
                 >
                   Create
                 </Button>

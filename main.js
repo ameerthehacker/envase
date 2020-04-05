@@ -3,7 +3,7 @@ const { IPC_CHANNELS } = require('./src/constants');
 const path = require('path');
 const axios = require('axios').default;
 
-const { GET_IMAGE_TAGS, OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
+const { GET_IMAGE_TAGS, OPEN_FOLDER_DIALOG, CHECK_IMAGE_EXISTS } = IPC_CHANNELS;
 
 app.allowRendererProcessReuse = true;
 
@@ -84,6 +84,31 @@ app.whenReady().then(() => {
           error
         })
       );
+  });
+
+  ipcMain.on(CHECK_IMAGE_EXISTS, (evt, args) => {
+    const { image, tag } = args;
+
+    axios
+      .get(`https://index.docker.io/v1/repositories/${image}/tags/${tag}`)
+      .then((res) => {
+        evt.reply(CHECK_IMAGE_EXISTS, {
+          error: false,
+          exists: true
+        });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          evt.reply(CHECK_IMAGE_EXISTS, {
+            error: false,
+            exists: false
+          });
+        } else {
+          evt.reply(CHECK_IMAGE_EXISTS, {
+            error
+          });
+        }
+      });
   });
 });
 
