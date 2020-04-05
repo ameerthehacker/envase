@@ -18,7 +18,7 @@ const { GET_IMAGE_TAGS } = IPC_CHANNELS;
 export interface GetImageTagsResponse {
   error: boolean | string;
   res: {
-    next: string;
+    next: string | null;
     results: {
       name: string;
     }[];
@@ -36,6 +36,7 @@ export interface VersionDropdownProps {
   placeholder?: string;
   field: FieldInputProps<string>;
   form: FormikProps<any>;
+  alwaysShowSuggestions?: boolean;
 }
 
 export default function VersionDropdown({
@@ -43,7 +44,8 @@ export default function VersionDropdown({
   image,
   placeholder,
   field,
-  form
+  form,
+  alwaysShowSuggestions
 }: VersionDropdownProps) {
   const [options, setOptions] = useState<Option[] | undefined>([]);
   const [suggestions, setSuggestions] = useState<Option[] | undefined>([]);
@@ -144,13 +146,15 @@ export default function VersionDropdown({
           }
         });
 
-        // increment the page number
-        currentPage.current++;
+        if (res.next) {
+          // increment the page number
+          currentPage.current++;
 
-        ipcRenderer.send(GET_IMAGE_TAGS, {
-          image,
-          pageNo: currentPage.current
-        });
+          ipcRenderer.send(GET_IMAGE_TAGS, {
+            image,
+            pageNo: currentPage.current
+          });
+        }
       } else {
         toast({
           title: 'Oops!',
@@ -165,9 +169,9 @@ export default function VersionDropdown({
   );
 
   useEffect(() => {
-    ipcRenderer.send(GET_IMAGE_TAGS, { image });
-
     ipcRenderer.on(GET_IMAGE_TAGS, onGetImageTagsResult);
+
+    ipcRenderer.send(GET_IMAGE_TAGS, { image });
 
     return () => {
       ipcRenderer.removeListener(GET_IMAGE_TAGS, onGetImageTagsResult);
@@ -194,6 +198,7 @@ export default function VersionDropdown({
       }}
       renderInputComponent={renderInputComponent}
       renderSuggestionsContainer={renderSuggestionContainer}
+      alwaysRenderSuggestions={alwaysShowSuggestions}
     />
   );
 }

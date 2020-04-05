@@ -44,6 +44,6 @@ describe('FolderPicker', () => {
 
     fireEvent.click(btnBrowse);
 
-    waitFor(() => expect(inputField).toHaveValue('my-path'));
+    await waitFor(() => expect(inputField).toHaveValue('my-path'));
   });
 });
