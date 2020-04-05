@@ -3,11 +3,10 @@ export interface Formula {
   data: {
     [key: string]: FormulaField;
   };
-  env: {
-    [key: string]: string;
-  };
+  env: Record<string, string>;
   image: string;
   logo: string;
+  ports: Record<string, string>;
 }
 
 interface FormulaField {
