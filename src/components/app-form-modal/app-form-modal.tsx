@@ -19,7 +19,12 @@ export interface AppFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   isValidating?: boolean;
-  onSubmit: (result: Record<string, any>) => void;
+  onSubmit: (result: AppFormResult) => void;
+}
+
+export interface AppFormResult {
+  [key: string]: any;
+  version: string;
 }
 
 export default function AppFormModal({
@@ -31,7 +36,7 @@ export default function AppFormModal({
 }: AppFormModalProps) {
   const data = app?.data || {};
   const fieldNames = Object.keys(data || {});
-  const initialValues: Record<string, any> = {
+  const initialValues: AppFormResult = {
     version: ''
   };
 

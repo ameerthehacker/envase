@@ -32,6 +32,20 @@ interface CheckImageExistenceResult {
   availableLocally: boolean;
 }
 
+export interface DockerStream {
+  destroy: () => void;
+}
+
+export interface PullProgressEvent {
+  id: string;
+  status: string;
+  progress: string;
+  progressDetail?: {
+    current: number;
+    total: number;
+  };
+}
+
 export function checkImageExistence(
   image: string,
   tag: string
@@ -70,5 +84,24 @@ export function checkImageExistence(
           }
         });
       });
+  });
+}
+
+export function pullImage(
+  image: string,
+  tag: string,
+  onProgress: (evt: PullProgressEvent) => void,
+  onFinished: () => void
+): Promise<DockerStream> {
+  return new Promise((resolve, reject) => {
+    dockerode.pull(`${image}:${tag}`, (err: any, stream: DockerStream) => {
+      if (!err) {
+        dockerode.modem.followProgress(stream, onFinished, onProgress);
+
+        resolve(stream);
+      } else {
+        reject(err);
+      }
+    });
   });
 }

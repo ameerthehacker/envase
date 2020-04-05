@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Formula } from '../../contracts/formula';
 import { Stack, useDisclosure, Box, useToast } from '@chakra-ui/core';
-import AppFormModal from '../../components/app-form-modal/app-form-modal';
+import AppFormModal, {
+  AppFormResult
+} from '../../components/app-form-modal/app-form-modal';
 import AppCard from '../../components/app-card/app-card';
-import { checkImageExistence } from '../../services/docker';
+import {
+  checkImageExistence,
+  pullImage,
+  PullProgressEvent,
+  DockerStream
+} from '../../services/docker';
+import ProgressModal from '../../components/progress-modal/progress-modal';
 
 export interface AllAppsProps {
   apps: Formula[];
 }
 
 export default function AllApps({ apps }: AllAppsProps) {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isFormOpen,
+    onClose: onFormClose,
+    onOpen: onFormOpen
+  } = useDisclosure();
+  const {
+    isOpen: isProgressOpen,
+    onClose: onProgressClose,
+    onOpen: onProgressOpen
+  } = useDisclosure();
   const [selectedApp, setSelectedApp] = useState<Formula>();
   const [isValidating, setIsValidating] = useState(false);
+  const [pullProgress, setPullProgress] = useState<
+    Record<string, PullProgressEvent>
+  >();
   const toast = useToast();
+  const appFormResult = useRef<AppFormResult>();
+  const currentStream = useRef<DockerStream>();
 
   return (
     <Stack direction="row">
@@ -22,25 +44,37 @@ export default function AllApps({ apps }: AllAppsProps) {
           <AppCard
             onCreateClick={() => {
               setSelectedApp(apps[index]);
-              onOpen();
+              onFormOpen();
             }}
             name={app.name}
             logo={app.logo}
           />
         </Box>
       ))}
+      {/* modal to show image pull progress */}
+      <ProgressModal
+        tag={appFormResult.current?.version || ''}
+        image={selectedApp?.image || ''}
+        isOpen={isProgressOpen}
+        onClose={() => {
+          onProgressClose();
+          currentStream.current?.destroy();
+        }}
+        progress={pullProgress}
+      />
       {/* modal to get app details like name, port etc. */}
       <AppFormModal
         isValidating={isValidating}
         app={selectedApp}
-        isOpen={isOpen}
+        isOpen={isFormOpen}
         onSubmit={async (values) => {
           setIsValidating(true);
 
           if (selectedApp) {
+            appFormResult.current = values;
+
             const { image } = selectedApp;
             const { version } = values;
-
             const {
               errorWhileChecking,
               exists,
@@ -48,11 +82,30 @@ export default function AllApps({ apps }: AllAppsProps) {
             } = await checkImageExistence(image, version);
 
             if (!errorWhileChecking && exists) {
+              onFormClose();
               // the image is available locally
               if (availableLocally) {
                 console.log('Creating container...');
               } else {
-                console.log('Pulling image...');
+                onProgressOpen();
+
+                const stream = await pullImage(
+                  image,
+                  version,
+                  (evt) => {
+                    setPullProgress((pullProgress) => ({
+                      ...pullProgress,
+                      [evt.id]: {
+                        ...evt
+                      }
+                    }));
+                  },
+                  () => {
+                    onProgressClose();
+                  }
+                );
+
+                currentStream.current = stream;
               }
             } else if (!errorWhileChecking && !exists) {
               toast({
@@ -74,7 +127,7 @@ export default function AllApps({ apps }: AllAppsProps) {
           }
         }}
         onClose={() => {
-          onClose();
+          onFormClose();
           setIsValidating(false);
         }}
       />
