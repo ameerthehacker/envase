@@ -19,7 +19,7 @@ import MyApps from '../my-apps/my-apps';
 import MYSQL from '../../formulas/mysql/mysql';
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const { status, dispatch } = useAppStatus();
 
   const handleTabChange = (index: number) => {
