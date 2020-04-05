@@ -6,7 +6,7 @@ export interface Formula {
   env: Record<string, string>;
   image: string;
   logo: string;
-  ports: Record<string, string>;
+  ports?: Record<string, string>;
 }
 
 interface FormulaField {

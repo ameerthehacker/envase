@@ -29,6 +29,9 @@ const MYSQL: Formula = {
   image: 'library/mysql',
   env: {
     MYSQL_ROOT_PASSWORD: '%password%'
+  },
+  ports: {
+    3306: '%port%'
   }
 };
 

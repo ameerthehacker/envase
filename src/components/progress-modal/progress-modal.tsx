@@ -33,12 +33,14 @@ function getProgressPercentage(progress: PullProgressEvent) {
     if (progress.status.startsWith('Download complete')) return 100;
     if (progress.status.startsWith('Pull complete')) return 100;
     if (progress.status.startsWith('Verifying')) return 100;
+    if (progress.status.startsWith('Already exists')) return 100;
+    if (progress.status.startsWith('Extracting')) return 100;
 
-    return Math.round(
+    return (
       (progress.progressDetail.current / progress.progressDetail.total) * 100
     );
   } else {
-    return 0;
+    return 100;
   }
 }
 
@@ -56,6 +58,10 @@ function getOverallProgress(progress: Record<string, PullProgressEvent>) {
       return 0;
     }
   }, 0);
+
+  // to avoid showing 100% in the start itself
+  if (Object.values(progress).filter((el) => el.progressDetail).length === 0)
+    return 0;
 
   return Math.round(totalSum / ids.length);
 }
@@ -76,7 +82,13 @@ export default function ProgressModal({
   }
 
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+    <Modal
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      size="xl"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{`Pulling ${imageRepoTag} (${overallPercentage}%)`}</ModalHeader>
