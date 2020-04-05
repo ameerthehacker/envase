@@ -70,7 +70,7 @@ app.whenReady().then(() => {
 
     axios
       .get(
-        `https://hub.docker.com/v2/repositories/${args.image}/tags?page_size=50&page=${pageNo}`
+        `https://hub.docker.com/v2/repositories/${args.image}/tags?page_size=20&page=${pageNo}`
       )
       .then((res) => res.data)
       .then((res) =>

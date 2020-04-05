@@ -48,7 +48,7 @@ export default function VersionDropdown({
   alwaysShowSuggestions
 }: VersionDropdownProps) {
   const [options, setOptions] = useState<Option[] | undefined>([]);
-  const [suggestions, setSuggestions] = useState<Option[] | undefined>([]);
+  const [suggestions, setSuggestions] = useState<Option[]>([]);
   const currentPage = useRef(1);
   const toast = useToast();
   const [inputValue, setInputValue] = useState<string>('');
@@ -67,9 +67,9 @@ export default function VersionDropdown({
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
-    return inputLength === 0
+    return inputLength === 0 || !options
       ? []
-      : options?.filter(
+      : options.filter(
           (option) =>
             option.label.toLowerCase().slice(0, inputLength) === inputValue
         );
@@ -89,7 +89,8 @@ export default function VersionDropdown({
       p={1}
       px={3}
       className="suggestions-container"
-      bg={isHighlighted ? highlightColor[colorMode] : ''}
+      color={isHighlighted ? 'white' : undefined}
+      bg={isHighlighted ? highlightColor[colorMode] : undefined}
     >
       {suggestion.label}
     </Box>
@@ -180,7 +181,7 @@ export default function VersionDropdown({
 
   return (
     <Autosuggest
-      suggestions={suggestions || []}
+      suggestions={suggestions}
       onSuggestionsClearRequested={onSuggestionsClearRequested}
       onSuggestionsFetchRequested={onSuggestionsFetchRequested}
       getSuggestionValue={getSuggestionValue}
