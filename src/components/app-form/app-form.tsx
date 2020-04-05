@@ -131,20 +131,20 @@ export default function AppForm({ app }: AppFormProps) {
               <FormControl
                 isInvalid={form.errors.version && form.touched.version}
               >
-                <FormLabel htmlFor="field-version">Version / Tag</FormLabel>
+                <FormLabel htmlFor="field-version">Version/Tag</FormLabel>
                 <VersionDropdown
                   id="field-version"
                   image={app.image}
                   field={field}
                   form={form}
-                  placeholder="Select the app version / tag"
+                  placeholder="App version/tag"
                 />
                 <Link
                   fontSize="small"
                   onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
                   isExternal
                 >
-                  View all images/tags
+                  View all available versions/tags
                 </Link>
                 <FormErrorMessage>{form.errors.version}</FormErrorMessage>
               </FormControl>

@@ -61,6 +61,7 @@ export default function VersionDropdown({
     light: theme.colors.white,
     dark: theme.colors.gray[700]
   };
+  const [isTagsLoading, setIsTagLoading] = useState(false);
 
   // Teach Autosuggest how to calculate suggestions for any given input value.
   const getSuggestions = (value: string) => {
@@ -69,16 +70,15 @@ export default function VersionDropdown({
 
     return inputLength === 0 || !options
       ? []
-      : options.filter(
-          (option) =>
-            option.label.toLowerCase().slice(0, inputLength) === inputValue
+      : options.filter((option) =>
+          option.label.toLowerCase().startsWith(inputValue)
         );
   };
 
   // When suggestion is clicked, Autosuggest needs to populate the input
   // based on the clicked suggestion. Teach Autosuggest how to calculate the
   // input value for every given suggestion.
-  const getSuggestionValue = (suggestion: Option) => suggestion.label;
+  const getSuggestionValue = (suggestion: Option) => suggestion.value;
 
   // Use your imagination to render suggestions.
   const renderSuggestion = (
@@ -135,6 +135,8 @@ export default function VersionDropdown({
 
   const onGetImageTagsResult = useCallback(
     (evt: IpcRendererEvent, { res, error }: GetImageTagsResponse) => {
+      setIsTagLoading(false);
+
       if (!error) {
         const newOptions = res.results
           .map((result) => result.name)
@@ -170,6 +172,8 @@ export default function VersionDropdown({
   );
 
   useEffect(() => {
+    setIsTagLoading(true);
+
     ipcRenderer.on(GET_IMAGE_TAGS, onGetImageTagsResult);
 
     ipcRenderer.send(GET_IMAGE_TAGS, { image });
@@ -187,10 +191,11 @@ export default function VersionDropdown({
       getSuggestionValue={getSuggestionValue}
       renderSuggestion={renderSuggestion}
       inputProps={{
-        placeholder,
+        placeholder: isTagsLoading ? 'Loading...' : placeholder,
         id,
         ...form,
         ...field,
+        disabled: isTagsLoading,
         value: inputValue,
         onChange: (evt, { newValue }) => {
           setInputValue(newValue);
