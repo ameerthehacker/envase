@@ -2,6 +2,8 @@
 // this also makes it easy to mock them
 const { ipcRenderer } = require('electron');
 const open = require('open');
+const Docker = require('dockerode');
 
 window.ipcRenderer = ipcRenderer;
 window.open = open;
+window.dockerode = new Docker();
