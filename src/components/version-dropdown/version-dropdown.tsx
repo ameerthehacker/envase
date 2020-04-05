@@ -133,14 +133,14 @@ export default function VersionDropdown({
   const onGetImageTagsResult = useCallback(
     (evt: IpcRendererEvent, { res, error }: GetImageTagsResponse) => {
       if (!error) {
-        const options = res.results
+        const newOptions = res.results
           .map((result) => result.name)
           .map((tag) => ({ label: tag, value: tag }));
         setOptions((oldOptions): Option[] => {
           if (oldOptions) {
-            return [...oldOptions, ...options];
+            return [...oldOptions, ...newOptions];
           } else {
-            return options;
+            return newOptions;
           }
         });
 
