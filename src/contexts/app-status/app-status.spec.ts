@@ -1,55 +1,76 @@
 import { reducer, AppStatus } from './app-status';
+import MY_FORMULA from './formula.fixture';
 
 describe('AppStatus reducer', () => {
   it('should update the state with start action', () => {
-    const state: AppStatus[] = [
+    const status: AppStatus[] = [
       {
         name: 'mysql',
-        state: 'running'
+        state: 'running',
+        formula: MY_FORMULA
       },
       {
         name: 'vscode',
-        state: 'stopped'
+        state: 'stopped',
+        formula: MY_FORMULA
       }
     ];
 
     expect(
-      reducer(state, { type: 'START', payload: { name: 'vscode' } })
-    ).toEqual([
-      {
-        name: 'mysql',
-        state: 'running'
-      },
-      {
-        name: 'vscode',
-        state: 'running'
-      }
-    ]);
+      reducer(
+        { isFetching: false, status },
+        { type: 'START', payload: { name: 'vscode' } }
+      )
+    ).toEqual({
+      isFetching: false,
+      status: [
+        {
+          name: 'mysql',
+          state: 'running',
+          formula: MY_FORMULA
+        },
+        {
+          name: 'vscode',
+          state: 'running',
+          formula: MY_FORMULA
+        }
+      ]
+    });
   });
 
   it('should update the state with stop action', () => {
-    const state: AppStatus[] = [
+    const status: AppStatus[] = [
       {
         name: 'mysql',
-        state: 'running'
+        state: 'running',
+        formula: MY_FORMULA
       },
       {
         name: 'vscode',
-        state: 'stopped'
+        state: 'stopped',
+        formula: MY_FORMULA
       }
     ];
 
     expect(
-      reducer(state, { type: 'STOP', payload: { name: 'mysql' } })
-    ).toEqual([
-      {
-        name: 'mysql',
-        state: 'stopped'
-      },
-      {
-        name: 'vscode',
-        state: 'stopped'
-      }
-    ]);
+      reducer(
+        { isFetching: false, status },
+        { type: 'STOP', payload: { name: 'mysql' } }
+      )
+    ).toEqual({
+      isFetching: false,
+      status: [
+        {
+          name: 'mysql',
+          state: 'stopped',
+          formula: MY_FORMULA
+        },
+        {
+          name: 'vscode',
+          state: 'stopped',
+          formula: MY_FORMULA
+        }
+      ]
+    });
   });
 });

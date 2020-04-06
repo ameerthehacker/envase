@@ -4,11 +4,11 @@ import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 
 export default function MyApps() {
-  const { status, dispatch } = useAppStatus();
+  const { allAppStatus, dispatch } = useAppStatus();
 
   return (
     <Stack direction="row">
-      {status.map((status, index) => (
+      {allAppStatus.status.map((status, index) => (
         <Box key={index}>
           <AppStatusCard
             name={status.name}

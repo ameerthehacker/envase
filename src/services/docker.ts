@@ -177,8 +177,6 @@ export function listContainerApps(): Promise<AppStatus[]> {
           formula: JSON.parse(container.Labels['dockapp'])
         }));
 
-        console.log(containers);
-
         resolve(appStatus);
       })
       .catch((err) => reject(err));

@@ -2,43 +2,66 @@ import React, { useContext, useReducer, Dispatch } from 'react';
 import { createContext, ReactNode } from 'react';
 import { Formula } from '../../contracts/formula';
 
+export interface AllAppStatus {
+  error?: string;
+  isFetching: boolean;
+  status: AppStatus[];
+}
+
 export interface AppStatus {
   name: string;
   formula: Formula;
   state: 'running' | 'stopped';
 }
 
-const AppStatusStateContext = createContext<AppStatus[] | null>(null);
+const AppStatusStateContext = createContext<AllAppStatus | null>(null);
 const AppStatusDispatchContext = createContext<Dispatch<Action> | null>(null);
 
-const reducer = (state: AppStatus[], action: Action) => {
+const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
   switch (action.type) {
     case 'START': {
-      const appIndex = state.findIndex((el) => el.name === action.payload.name);
+      const appIndex = state.status.findIndex(
+        (el) => el.name === action.payload.name
+      );
 
       if (~appIndex) {
-        state[appIndex] = {
-          ...state[appIndex],
+        state.status[appIndex] = {
+          ...state.status[appIndex],
           state: 'running'
         };
       }
 
-      return [...state];
+      state.status = [...state.status];
+
+      return { ...state };
     }
     case 'STOP': {
-      const appIndex = state.findIndex((el) => el.name === action.payload.name);
+      const appIndex = state.status.findIndex(
+        (el) => el.name === action.payload.name
+      );
 
       if (~appIndex) {
-        state[appIndex] = {
-          ...state[appIndex],
+        state.status[appIndex] = {
+          ...state.status[appIndex],
           state: 'stopped'
         };
       }
 
-      return [...state];
+      state.status = [...state.status];
+
+      return { ...state };
     }
-    case 'INIT': {
-      return [...action.payload.status];
+    case 'SET_STATUS': {
+      return { ...state, status: [...action.payload.status] };
+    }
+    case 'SET_FETCHING': {
+      return { ...state };
+    }
+    case 'SET_ERROR': {
+      return {
+        ...state,
+        error: action.payload.error
+      };
     }
 
     default:
@@ -47,10 +70,13 @@ const reducer = (state: AppStatus[], action: Action) => {
 };
 
 const AppStatusProvider = ({ children }: { children: ReactNode }) => {
-  const [status, dispatch] = useReducer(reducer, []);
+  const [allAppStatus, dispatch] = useReducer(reducer, {
+    isFetching: false,
+    status: []
+  });
 
   return (
-    <AppStatusStateContext.Provider value={status}>
+    <AppStatusStateContext.Provider value={allAppStatus}>
       <AppStatusDispatchContext.Provider value={dispatch}>
         {children}
       </AppStatusDispatchContext.Provider>
@@ -67,7 +93,7 @@ const useAppStatus = () => {
   }
 
   return {
-    status: appStatusStateContext,
+    allAppStatus: appStatusStateContext,
     dispatch: appStatusDispatchContext
   };
 };
@@ -78,9 +104,21 @@ type Action =
       payload: { name: string };
     }
   | {
-      type: 'INIT';
+      type: 'SET_STATUS';
       payload: {
         status: AppStatus[];
+      };
+    }
+  | {
+      type: 'SET_FETCHING';
+      payload: {
+        isFetching: boolean;
+      };
+    }
+  | {
+      type: 'SET_ERROR';
+      payload: {
+        error?: string;
       };
     };
 

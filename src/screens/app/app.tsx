@@ -16,27 +16,19 @@ import AllApps from '../all-apps/all-apps';
 import { FORMULAS } from '../../formulas';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import MyApps from '../my-apps/my-apps';
-import MYSQL from '../../formulas/mysql/mysql';
-import { listContainerApps } from '../../services/docker';
+import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(1);
-  const { status, dispatch } = useAppStatus();
-
+  const { allAppStatus } = useAppStatus();
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
+  const loadApps = useLoadApps();
 
   useEffect(() => {
-    listContainerApps().then((appStatus) => {
-      dispatch({
-        type: 'INIT',
-        payload: {
-          status: appStatus
-        }
-      });
-    });
-  }, [dispatch, listContainerApps]);
+    loadApps(true);
+  }, [loadApps]);
 
   return (
     <>
@@ -55,7 +47,7 @@ export default function App() {
         </TabList>
         <TabPanels p={6} pb={0}>
           <TabPanel>
-            {status.length > 0 ? (
+            {allAppStatus.status.length > 0 ? (
               <MyApps />
             ) : (
               <EmptyState
