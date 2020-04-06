@@ -5,11 +5,15 @@ describe('AppStatus reducer', () => {
   it('should update the state with start action', () => {
     const status: AppStatus[] = [
       {
+        id: 'mysql',
+        inTransit: false,
         name: 'mysql',
         state: 'running',
         formula: MY_FORMULA
       },
       {
+        id: 'vscode',
+        inTransit: false,
         name: 'vscode',
         state: 'stopped',
         formula: MY_FORMULA
@@ -19,17 +23,21 @@ describe('AppStatus reducer', () => {
     expect(
       reducer(
         { isFetching: false, status },
-        { type: 'START', payload: { name: 'vscode' } }
+        { type: 'START', payload: { id: 'vscode' } }
       )
     ).toEqual({
       isFetching: false,
       status: [
         {
+          id: 'mysql',
+          inTransit: false,
           name: 'mysql',
           state: 'running',
           formula: MY_FORMULA
         },
         {
+          id: 'vscode',
+          inTransit: false,
           name: 'vscode',
           state: 'running',
           formula: MY_FORMULA
@@ -41,11 +49,15 @@ describe('AppStatus reducer', () => {
   it('should update the state with stop action', () => {
     const status: AppStatus[] = [
       {
+        id: 'mysql',
+        inTransit: false,
         name: 'mysql',
         state: 'running',
         formula: MY_FORMULA
       },
       {
+        id: 'vscode',
+        inTransit: false,
         name: 'vscode',
         state: 'stopped',
         formula: MY_FORMULA
@@ -55,17 +67,21 @@ describe('AppStatus reducer', () => {
     expect(
       reducer(
         { isFetching: false, status },
-        { type: 'STOP', payload: { name: 'mysql' } }
+        { type: 'STOP', payload: { id: 'mysql' } }
       )
     ).toEqual({
       isFetching: false,
       status: [
         {
+          id: 'mysql',
+          inTransit: false,
           name: 'mysql',
           state: 'stopped',
           formula: MY_FORMULA
         },
         {
+          id: 'vscode',
+          inTransit: false,
           name: 'vscode',
           state: 'stopped',
           formula: MY_FORMULA
