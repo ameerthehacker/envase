@@ -28,9 +28,14 @@ export function useLoadApps() {
             }
           })
         )
-        .finally(() => {
-          dispatch({ type: 'SET_FETCHING', payload: { isFetching: false } });
-        });
+        .finally(() =>
+          dispatch({
+            type: 'SET_FETCHING',
+            payload: {
+              isFetching: false
+            }
+          })
+        );
     },
     [dispatch]
   );

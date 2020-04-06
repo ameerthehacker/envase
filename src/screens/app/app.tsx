@@ -17,9 +17,10 @@ import { FORMULAS } from '../../formulas';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import MyApps from '../my-apps/my-apps';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
+import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const { allAppStatus } = useAppStatus();
   const handleTabChange = (index: number) => {
     setTabIndex(index);
@@ -47,13 +48,15 @@ export default function App() {
         </TabList>
         <TabPanels p={6} pb={0}>
           <TabPanel>
-            {allAppStatus.status.length > 0 ? (
-              <MyApps />
-            ) : (
+            {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
+            {!allAppStatus.isFetching && allAppStatus.status.length === 0 && (
               <EmptyState
                 height="calc(100vh - 90px)"
                 onCreateClick={() => setTabIndex(1)}
               />
+            )}
+            {!allAppStatus.isFetching && allAppStatus.status.length > 0 && (
+              <MyApps />
             )}
           </TabPanel>
           <TabPanel>

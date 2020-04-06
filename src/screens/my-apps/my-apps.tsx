@@ -8,28 +8,29 @@ export default function MyApps() {
 
   return (
     <Stack direction="row">
-      {allAppStatus.status.map((status, index) => (
-        <Box key={index}>
-          <AppStatusCard
-            name={status.name}
-            logo={status.formula.logo}
-            status={status.state}
-            onStartClick={() =>
-              dispatch({
-                type: 'START',
-                payload: { name: status.name }
-              })
-            }
-            onStopClick={() =>
-              dispatch({
-                type: 'STOP',
-                payload: { name: status.name }
-              })
-            }
-            onInfoClick={() => null}
-          />
-        </Box>
-      ))}
+      {!allAppStatus.isFetching &&
+        allAppStatus.status.map((status, index) => (
+          <Box key={index}>
+            <AppStatusCard
+              name={status.name}
+              logo={status.formula.logo}
+              status={status.state}
+              onStartClick={() =>
+                dispatch({
+                  type: 'START',
+                  payload: { name: status.name }
+                })
+              }
+              onStopClick={() =>
+                dispatch({
+                  type: 'STOP',
+                  payload: { name: status.name }
+                })
+              }
+              onInfoClick={() => null}
+            />
+          </Box>
+        ))}
     </Stack>
   );
 }

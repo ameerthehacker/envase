@@ -55,7 +55,7 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
       return { ...state, status: [...action.payload.status] };
     }
     case 'SET_FETCHING': {
-      return { ...state };
+      return { ...state, isFetching: action.payload.isFetching };
     }
     case 'SET_ERROR': {
       return {
