@@ -9,9 +9,11 @@ export interface AllAppStatus {
 }
 
 export interface AppStatus {
+  id: string;
   name: string;
   formula: Formula;
   state: 'running' | 'stopped';
+  inTransit: boolean;
 }
 
 const AppStatusStateContext = createContext<AllAppStatus | null>(null);
@@ -21,7 +23,7 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
   switch (action.type) {
     case 'START': {
       const appIndex = state.status.findIndex(
-        (el) => el.name === action.payload.name
+        (el) => el.id === action.payload.id
       );
 
       if (~appIndex) {
@@ -37,13 +39,29 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
     }
     case 'STOP': {
       const appIndex = state.status.findIndex(
-        (el) => el.name === action.payload.name
+        (el) => el.id === action.payload.id
       );
 
       if (~appIndex) {
         state.status[appIndex] = {
           ...state.status[appIndex],
           state: 'stopped'
+        };
+      }
+
+      state.status = [...state.status];
+
+      return { ...state };
+    }
+    case 'SET_IN_TRANSIT': {
+      const appIndex = state.status.findIndex(
+        (el) => el.id === action.payload.id
+      );
+
+      if (~appIndex) {
+        state.status[appIndex] = {
+          ...state.status[appIndex],
+          inTransit: action.payload.inTransit
         };
       }
 
@@ -101,7 +119,11 @@ const useAppStatus = () => {
 type Action =
   | {
       type: 'START' | 'STOP';
-      payload: { name: string };
+      payload: { id: string };
+    }
+  | {
+      type: 'SET_IN_TRANSIT';
+      payload: { id: string; inTransit: boolean };
     }
   | {
       type: 'SET_STATUS';

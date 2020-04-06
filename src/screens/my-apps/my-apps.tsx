@@ -1,10 +1,13 @@
 import React from 'react';
-import { Stack, Box } from '@chakra-ui/core';
+import { Stack, Box, useToast } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { useAppStatus } from '../../contexts/app-status/app-status';
+import { useApp } from '../../hooks/use-app/use-app';
 
 export default function MyApps() {
-  const { allAppStatus, dispatch } = useAppStatus();
+  const { allAppStatus } = useAppStatus();
+  const { start, stop } = useApp();
+  const toast = useToast();
 
   return (
     <Stack direction="row">
@@ -15,16 +18,25 @@ export default function MyApps() {
               name={status.name}
               logo={status.formula.logo}
               status={status.state}
+              inStateTransit={status.inTransit}
               onStartClick={() =>
-                dispatch({
-                  type: 'START',
-                  payload: { name: status.name }
+                start(status.id).catch((err) => {
+                  toast({
+                    title: `Unable to start ${status.name}`,
+                    description: `${err}`,
+                    isClosable: true,
+                    status: 'error'
+                  });
                 })
               }
               onStopClick={() =>
-                dispatch({
-                  type: 'STOP',
-                  payload: { name: status.name }
+                stop(status.id).catch((err) => {
+                  toast({
+                    title: `Unable to stop ${status.name}`,
+                    description: `${err}`,
+                    isClosable: true,
+                    status: 'error'
+                  });
                 })
               }
               onInfoClick={() => null}
