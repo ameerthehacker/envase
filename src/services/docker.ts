@@ -115,7 +115,7 @@ export function pullImage(
   });
 }
 
-export function createApp(values: AppFormResult, app: Formula) {
+export function createContainerFromApp(values: AppFormResult, app: Formula) {
   const interpolatedFormula = interpolateFormula(app, values);
   const envList = getEnvForDockerAPI(interpolatedFormula.env);
   let exposedPorts, portBindings;
@@ -133,6 +133,7 @@ export function createApp(values: AppFormResult, app: Formula) {
   }
 
   return dockerode.createContainer({
+    name: values.name,
     Image: getImageRepoTag(app.image, values.version),
     Env: envList,
     Labels: {

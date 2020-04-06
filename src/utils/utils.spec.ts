@@ -109,14 +109,14 @@ describe('utils', () => {
       })
     ).toEqual({
       portBindings: {
-        'tcp/3000': [
+        '3000/tcp': [
           {
             HostPort: '3001'
           }
         ]
       },
       exposedPorts: {
-        'tcp/3000': {}
+        '3000/tcp': {}
       }
     });
   });

@@ -76,12 +76,12 @@ export function getExposedPortsForDockerAPI(ports: Record<string, string>) {
   const exposedPorts: Record<string, {}> = {};
 
   for (const port in ports) {
-    portBindings[`tcp/${port}`] = [
+    portBindings[`${port}/tcp`] = [
       {
         HostPort: ports[port]
       }
     ];
-    exposedPorts[`tcp/${port}`] = {};
+    exposedPorts[`${port}/tcp`] = {};
   }
 
   return { portBindings, exposedPorts };

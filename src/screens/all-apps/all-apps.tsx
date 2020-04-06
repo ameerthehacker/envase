@@ -9,7 +9,8 @@ import {
   checkImageExistence,
   pullImage,
   PullProgressEvent,
-  DockerStream
+  DockerStream,
+  createContainerFromApp
 } from '../../services/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
 
@@ -36,6 +37,24 @@ export default function AllApps({ apps }: AllAppsProps) {
   const toast = useToast();
   const appFormResult = useRef<AppFormResult>();
   const currentStream = useRef<DockerStream>();
+
+  function createNewApp(values: AppFormResult, app: Formula) {
+    createContainerFromApp(values, app)
+      .then(() => {
+        toast({
+          title: 'Done',
+          description: `A new ${app.name} has been created you can start it in My Apps section`,
+          status: 'success'
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: `Error creating ${app.name} app`,
+          description: err,
+          status: 'error'
+        });
+      });
+  }
 
   return (
     <Stack direction="row">
@@ -85,7 +104,7 @@ export default function AllApps({ apps }: AllAppsProps) {
               onFormClose();
               // the image is available locally
               if (availableLocally) {
-                console.log('Creating container...');
+                createNewApp(values, selectedApp);
               } else {
                 onProgressOpen();
 
@@ -109,7 +128,7 @@ export default function AllApps({ apps }: AllAppsProps) {
                       currentStream.current &&
                       !currentStream.current.aborted
                     ) {
-                      console.log('completed');
+                      createNewApp(values, selectedApp);
                     } else {
                       console.log('aborted');
                     }

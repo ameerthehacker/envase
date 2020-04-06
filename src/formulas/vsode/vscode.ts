@@ -10,10 +10,15 @@ const VSCODE: Formula = {
       description: 'Name of the VS Code instance',
       required: true
     },
+    password: {
+      type: 'password',
+      description: 'Password to login to your vscode',
+      required: true
+    },
     port: {
       type: 'number',
       description: 'Port on which VS Code server should run',
-      default: 3306,
+      default: 8080,
       required: true
     },
     project: {
@@ -23,7 +28,15 @@ const VSCODE: Formula = {
     }
   },
   image: 'codercom/code-server',
-  env: {}
+  env: {
+    PASSWORD: '%password%'
+  },
+  ports: {
+    8080: '%port%'
+  },
+  volumes: {
+    '/home/coder/project': '%project%'
+  }
 };
 
 export default VSCODE;
