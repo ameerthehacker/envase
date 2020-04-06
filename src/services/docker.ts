@@ -34,6 +34,7 @@ interface CheckImageExistenceResult {
 
 export interface DockerStream {
   destroy: () => void;
+  aborted: boolean;
 }
 
 export interface PullProgressEvent {

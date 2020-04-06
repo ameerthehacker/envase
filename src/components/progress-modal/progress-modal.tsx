@@ -95,30 +95,32 @@ export default function ProgressModal({
         <ModalCloseButton />
         <ModalBody>
           <Stack>
-            {progress && <Progress value={overallPercentage} />}
             {progress && (
-              <Button
-                size="xs"
-                variant="ghost"
-                onClick={() => setShowLogs((showLogs) => !showLogs)}
-              >{`${showLogs ? 'Hide' : 'Show'} Logs`}</Button>
+              <>
+                <Progress value={overallPercentage} />
+                <Button
+                  size="xs"
+                  variant="ghost"
+                  onClick={() => setShowLogs((showLogs) => !showLogs)}
+                >{`${showLogs ? 'Hide' : 'Show'} Logs`}</Button>
+                <Collapse isOpen={showLogs}>
+                  <Code width="100%" p={3}>
+                    {Object.keys(progress || {}).map((id, index) => {
+                      return (
+                        progress &&
+                        progress[id] &&
+                        progress[id].progressDetail && (
+                          <Stack key={index}>
+                            <Text>{`${progress[id].status} ${id}`}</Text>
+                            <Text>{progress[id].progress}</Text>
+                          </Stack>
+                        )
+                      );
+                    })}
+                  </Code>
+                </Collapse>
+              </>
             )}
-            <Collapse isOpen={showLogs}>
-              <Code width="100%" p={3}>
-                {Object.keys(progress || {}).map((id, index) => {
-                  return (
-                    progress &&
-                    progress[id] &&
-                    progress[id].progressDetail && (
-                      <Stack key={index}>
-                        <Text>{`${progress[id].status} ${id}`}</Text>
-                        <Text>{progress[id].progress}</Text>
-                      </Stack>
-                    )
-                  );
-                })}
-              </Code>
-            </Collapse>
             {!progress && (
               <Stack alignItems="center" justifyContent="center">
                 <Spinner size="xl" />

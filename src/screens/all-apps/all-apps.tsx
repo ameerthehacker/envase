@@ -102,6 +102,17 @@ export default function AllApps({ apps }: AllAppsProps) {
                   },
                   () => {
                     onProgressClose();
+                    // clear the previous progress messages
+                    setPullProgress(undefined);
+
+                    if (
+                      currentStream.current &&
+                      !currentStream.current.aborted
+                    ) {
+                      console.log('completed');
+                    } else {
+                      console.log('aborted');
+                    }
                   }
                 );
 
