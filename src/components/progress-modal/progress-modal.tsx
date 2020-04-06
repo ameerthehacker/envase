@@ -93,7 +93,7 @@ export default function ProgressModal({
         <ModalBody>
           <Stack>
             {progress && (
-              <>
+              <Stack>
                 <Progress value={overallPercentage} />
                 <Button
                   size="xs"
@@ -116,7 +116,7 @@ export default function ProgressModal({
                     })}
                   </Code>
                 </Collapse>
-              </>
+              </Stack>
             )}
             {!progress && (
               <Stack alignItems="center" justifyContent="center">

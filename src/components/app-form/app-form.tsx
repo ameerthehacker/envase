@@ -125,6 +125,7 @@ export default function AppForm({ app }: AppFormProps) {
             <Input id="image" value={app.image} isDisabled={true} />
           </FormControl>
         </Box>
+        {formElements}
         <Box>
           <Field name="version" validate={requiredValidator('version')}>
             {({ field, form }: { field: any; form: any }) => (
@@ -151,7 +152,6 @@ export default function AppForm({ app }: AppFormProps) {
             )}
           </Field>
         </Box>
-        {formElements}
       </Stack>
     </Form>
   );

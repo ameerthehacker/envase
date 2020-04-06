@@ -45,7 +45,7 @@ export default function AllApps({ apps }: AllAppsProps) {
       .then(() => {
         toast({
           title: 'Done',
-          description: `A new ${app.name} has been created you can start it in My Apps section`,
+          description: `A new ${app.name} has been created, you can start it in My Apps section`,
           status: 'success'
         });
       })
