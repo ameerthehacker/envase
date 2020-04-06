@@ -6,7 +6,7 @@ import { useApp } from '../../hooks/use-app/use-app';
 
 export default function MyApps() {
   const { allAppStatus } = useAppStatus();
-  const { start, stop } = useApp();
+  const { start, stop, del } = useApp();
   const toast = useToast();
 
   return (
@@ -17,8 +17,9 @@ export default function MyApps() {
             <AppStatusCard
               name={status.name}
               logo={status.formula.logo}
-              status={status.state}
+              state={status.state}
               inStateTransit={status.inTransit}
+              isDeleting={status.isDeleting}
               onStartClick={() =>
                 start(status.id).catch((err) => {
                   toast({
@@ -33,6 +34,16 @@ export default function MyApps() {
                 stop(status.id).catch((err) => {
                   toast({
                     title: `Unable to stop ${status.name}`,
+                    description: `${err}`,
+                    isClosable: true,
+                    status: 'error'
+                  });
+                })
+              }
+              onDeleteClick={() =>
+                del(status.id).catch((err) => {
+                  toast({
+                    title: `Unable to delete ${status.name}`,
                     description: `${err}`,
                     isClosable: true,
                     status: 'error'

@@ -4,26 +4,30 @@ import { Stack, Button, Box, IconButton } from '@chakra-ui/core';
 import { FaPlay, FaStop } from 'react-icons/fa';
 
 export interface AppStatucCardProps extends AppInfoCardProps {
-  status: 'running' | 'stopped';
+  state: 'running' | 'stopped';
   inStateTransit?: boolean;
+  isDeleting: boolean;
   onStartClick: () => void;
   onStopClick: () => void;
   onInfoClick: () => void;
+  onDeleteClick: () => void;
 }
 
 export default function AppStatusCard({
   name,
   logo,
-  status,
+  state,
   inStateTransit,
   onStartClick,
   onStopClick,
-  onInfoClick
+  onInfoClick,
+  onDeleteClick,
+  isDeleting
 }: AppStatucCardProps) {
   return (
     <AppInfoCard name={name} logo={logo}>
       <Stack direction="row">
-        {status === 'stopped' && (
+        {state === 'stopped' && (
           <Button
             isLoading={inStateTransit}
             onClick={onStartClick}
@@ -33,7 +37,7 @@ export default function AppStatusCard({
             <Box as={FaPlay} />
           </Button>
         )}
-        {status === 'running' && (
+        {state === 'running' && (
           <Button
             isLoading={inStateTransit}
             onClick={onStopClick}
@@ -43,6 +47,14 @@ export default function AppStatusCard({
             <Box as={FaStop} />
           </Button>
         )}
+        <IconButton
+          variantColor="red"
+          onClick={onDeleteClick}
+          icon="delete"
+          isLoading={isDeleting}
+          aria-label="delete-app"
+          isDisabled={state === 'running'}
+        />
         <IconButton
           variantColor="orange"
           onClick={onInfoClick}

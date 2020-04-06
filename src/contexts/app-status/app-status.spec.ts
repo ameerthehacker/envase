@@ -9,14 +9,16 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'mysql',
         state: 'running',
-        formula: MY_FORMULA
+        formula: MY_FORMULA,
+        isDeleting: false
       },
       {
         id: 'vscode',
         inTransit: false,
         name: 'vscode',
         state: 'stopped',
-        formula: MY_FORMULA
+        formula: MY_FORMULA,
+        isDeleting: false
       }
     ];
 
@@ -33,14 +35,16 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'mysql',
           state: 'running',
-          formula: MY_FORMULA
+          formula: MY_FORMULA,
+          isDeleting: false
         },
         {
           id: 'vscode',
           inTransit: false,
           name: 'vscode',
           state: 'running',
-          formula: MY_FORMULA
+          formula: MY_FORMULA,
+          isDeleting: false
         }
       ]
     });
@@ -53,14 +57,16 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'mysql',
         state: 'running',
-        formula: MY_FORMULA
+        formula: MY_FORMULA,
+        isDeleting: false
       },
       {
         id: 'vscode',
         inTransit: false,
         name: 'vscode',
         state: 'stopped',
-        formula: MY_FORMULA
+        formula: MY_FORMULA,
+        isDeleting: false
       }
     ];
 
@@ -77,14 +83,16 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'mysql',
           state: 'stopped',
-          formula: MY_FORMULA
+          formula: MY_FORMULA,
+          isDeleting: false
         },
         {
           id: 'vscode',
           inTransit: false,
           name: 'vscode',
           state: 'stopped',
-          formula: MY_FORMULA
+          formula: MY_FORMULA,
+          isDeleting: false
         }
       ]
     });

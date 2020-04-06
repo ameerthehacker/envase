@@ -9,9 +9,10 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={() => null}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         name="mysql"
         logo="mysql-logo"
-        status="stopped"
+        state="stopped"
       />
     );
     const btnStart = getByLabelText('start-app');
@@ -26,9 +27,10 @@ describe('AppStatusCard', () => {
         onStartClick={onStartClick}
         onStopClick={() => null}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         name="mysql"
         logo="mysql-logo"
-        status="stopped"
+        state="stopped"
       />
     );
     const btnStart = getByLabelText('start-app');
@@ -45,9 +47,10 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={onStopClick}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         name="mysql"
         logo="mysql-logo"
-        status="running"
+        state="running"
       />
     );
     const btnStop = getByLabelText('stop-app');
@@ -63,9 +66,10 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={() => null}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         name="mysql"
         logo="mysql-logo"
-        status="running"
+        state="running"
       />
     );
     const btnStop = getByLabelText('stop-app');
@@ -80,9 +84,10 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={() => null}
         onInfoClick={onInfoClick}
+        onDeleteClick={() => null}
         name="mysql"
         logo="mysql-logo"
-        status="running"
+        state="running"
       />
     );
     const btnInfo = getByLabelText('info');
@@ -98,10 +103,11 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={() => null}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         inStateTransit={true}
         name="mysql"
         logo="mysql-logo"
-        status="running"
+        state="running"
       />
     );
 
@@ -116,10 +122,11 @@ describe('AppStatusCard', () => {
         onStartClick={() => null}
         onStopClick={() => null}
         onInfoClick={() => null}
+        onDeleteClick={() => null}
         inStateTransit={true}
         name="mysql"
         logo="mysql-logo"
-        status="stopped"
+        state="stopped"
       />
     );
 

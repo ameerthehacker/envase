@@ -169,6 +169,10 @@ export function stopApp(containerId: string) {
   return dockerode.getContainer(containerId).stop();
 }
 
+export function deleteApp(containerId: string) {
+  return dockerode.getContainer(containerId).remove();
+}
+
 export function listContainerApps(): Promise<AppStatus[]> {
   return new Promise((resolve, reject) => {
     dockerode
@@ -184,7 +188,8 @@ export function listContainerApps(): Promise<AppStatus[]> {
           inTransit: false,
           name: container.Names[0].substring(1),
           state: getAppContainerState(container),
-          formula: JSON.parse(container.Labels['dockapp'])
+          formula: JSON.parse(container.Labels['dockapp']),
+          isDeleting: false
         }));
 
         resolve(appStatus);

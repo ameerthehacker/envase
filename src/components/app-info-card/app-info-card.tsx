@@ -14,7 +14,7 @@ export default function AppInfoCard({
 }: AppInfoCardProps) {
   return (
     <Box borderRadius={5} p={4} borderWidth="1px" boxShadow="md">
-      <Stack spacing={3}>
+      <Stack alignItems="center" spacing={3}>
         <Box height="100px">
           <img
             width="100px"

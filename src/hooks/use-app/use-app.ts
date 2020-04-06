@@ -1,6 +1,6 @@
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useCallback } from 'react';
-import { startApp, stopApp } from '../../services/docker';
+import { startApp, stopApp, deleteApp } from '../../services/docker';
 
 export function useApp() {
   const { dispatch } = useAppStatus();
@@ -77,5 +77,41 @@ export function useApp() {
     [dispatch]
   );
 
-  return { start, stop };
+  const del = useCallback(
+    (id: string) => {
+      return new Promise((resolve, reject) => {
+        dispatch({
+          type: 'SET_IS_DELETING',
+          payload: {
+            id,
+            isDeleting: true
+          }
+        });
+
+        deleteApp(id)
+          .then(() => {
+            dispatch({
+              type: 'DELETE',
+              payload: {
+                id
+              }
+            });
+
+            resolve();
+          })
+          .catch((err) => reject(err));
+      }).finally(() =>
+        dispatch({
+          type: 'SET_IS_DELETING',
+          payload: {
+            id,
+            isDeleting: false
+          }
+        })
+      );
+    },
+    [dispatch]
+  );
+
+  return { start, stop, del };
 }

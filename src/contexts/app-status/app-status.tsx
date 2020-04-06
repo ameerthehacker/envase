@@ -14,6 +14,7 @@ export interface AppStatus {
   formula: Formula;
   state: 'running' | 'stopped';
   inTransit: boolean;
+  isDeleting: boolean;
 }
 
 const AppStatusStateContext = createContext<AllAppStatus | null>(null);
@@ -53,6 +54,19 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
 
       return { ...state };
     }
+    case 'DELETE': {
+      const appIndex = state.status.findIndex(
+        (el) => el.id === action.payload.id
+      );
+
+      if (~appIndex) {
+        state.status.splice(appIndex, 1);
+      }
+
+      state.status = [...state.status];
+
+      return { ...state };
+    }
     case 'SET_IN_TRANSIT': {
       const appIndex = state.status.findIndex(
         (el) => el.id === action.payload.id
@@ -62,6 +76,22 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
         state.status[appIndex] = {
           ...state.status[appIndex],
           inTransit: action.payload.inTransit
+        };
+      }
+
+      state.status = [...state.status];
+
+      return { ...state };
+    }
+    case 'SET_IS_DELETING': {
+      const appIndex = state.status.findIndex(
+        (el) => el.id === action.payload.id
+      );
+
+      if (~appIndex) {
+        state.status[appIndex] = {
+          ...state.status[appIndex],
+          isDeleting: action.payload.isDeleting
         };
       }
 
@@ -118,12 +148,16 @@ const useAppStatus = () => {
 
 type Action =
   | {
-      type: 'START' | 'STOP';
+      type: 'START' | 'STOP' | 'DELETE';
       payload: { id: string };
     }
   | {
       type: 'SET_IN_TRANSIT';
       payload: { id: string; inTransit: boolean };
+    }
+  | {
+      type: 'SET_IS_DELETING';
+      payload: { id: string; isDeleting: boolean };
     }
   | {
       type: 'SET_STATUS';
