@@ -6,7 +6,7 @@ export function useLoadApps() {
   const { dispatch } = useAppStatus();
 
   const loadApps = useCallback(
-    async (isInitializing: boolean) => {
+    async (isInitializing = false) => {
       if (isInitializing) {
         dispatch({ type: 'SET_FETCHING', payload: { isFetching: true } });
       }

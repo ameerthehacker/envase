@@ -13,6 +13,7 @@ import {
   createContainerFromApp
 } from '../../services/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
+import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 
 export interface AllAppsProps {
   apps: Formula[];
@@ -37,6 +38,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   const toast = useToast();
   const appFormResult = useRef<AppFormResult>();
   const currentStream = useRef<DockerStream>();
+  const loadApps = useLoadApps();
 
   function createNewApp(values: AppFormResult, app: Formula) {
     createContainerFromApp(values, app)
@@ -53,7 +55,8 @@ export default function AllApps({ apps }: AllAppsProps) {
           description: err,
           status: 'error'
         });
-      });
+      })
+      .finally(() => loadApps());
   }
 
   return (
