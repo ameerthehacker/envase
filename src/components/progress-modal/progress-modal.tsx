@@ -16,6 +16,7 @@ import {
   Collapse
 } from '@chakra-ui/core';
 import { PullProgressEvent } from '../../services/docker';
+import { getImageRepoTag } from '../../utils/utils';
 
 export interface ProgressModalProps {
   image: string;
@@ -42,10 +43,6 @@ function getProgressPercentage(progress: PullProgressEvent) {
   } else {
     return 100;
   }
-}
-
-function getImageRepoTag(image: string, tag: string) {
-  return `${image} ${tag}`;
 }
 
 function getOverallProgress(progress: Record<string, PullProgressEvent>) {

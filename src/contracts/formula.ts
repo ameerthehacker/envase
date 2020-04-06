@@ -7,6 +7,7 @@ export interface Formula {
   image: string;
   logo: string;
   ports?: Record<string, string>;
+  volumes?: Record<string, string>;
 }
 
 interface FormulaField {

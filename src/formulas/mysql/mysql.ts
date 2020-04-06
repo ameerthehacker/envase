@@ -32,6 +32,9 @@ const MYSQL: Formula = {
   },
   ports: {
     3306: '%port%'
+  },
+  volumes: {
+    '/var/lib/mysql': '%data%'
   }
 };
 

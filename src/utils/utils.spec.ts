@@ -2,7 +2,12 @@ import {
   capitalize,
   interpolate,
   getDockerHubLinkToTags,
-  getFormulaByName
+  getFormulaByName,
+  getImageRepoTag,
+  interpolateFormula,
+  getEnvForDockerAPI,
+  getExposedPortsForDockerAPI,
+  getVolumesForDockerAPI
 } from './utils';
 
 jest.mock('../formulas', () => ({
@@ -45,5 +50,83 @@ describe('utils', () => {
 
   it('getFormulaByName() should return undefined when formula is not present', () => {
     expect(getFormulaByName('something')).toEqual(undefined);
+  });
+
+  it('getImageRepoTag() should return repo with tag', () => {
+    expect(getImageRepoTag('library/mysql', '2')).toBe('library/mysql:2');
+  });
+
+  it('interpolateFormula should interpolate env, ports, volumes', () => {
+    expect(
+      interpolateFormula(
+        {
+          data: {},
+          env: {
+            PASSWORD: '%password%'
+          },
+          volumes: {
+            '/data': '%volume%'
+          },
+          image: 'library/mysql',
+          logo: 'some-logo',
+          name: 'mysql',
+          ports: {
+            '3000': '%port%'
+          }
+        },
+        { password: 'my-pass', volume: 'my-volume', port: '3001' }
+      )
+    ).toEqual({
+      data: {},
+      env: {
+        PASSWORD: 'my-pass'
+      },
+      volumes: {
+        '/data': 'my-volume'
+      },
+      image: 'library/mysql',
+      logo: 'some-logo',
+      name: 'mysql',
+      ports: {
+        '3000': '3001'
+      }
+    });
+  });
+
+  it('getEnvForDockerAPI() should return envlist', () => {
+    expect(
+      getEnvForDockerAPI({
+        PASSWORD: 'my-pass',
+        USER: 'ameer'
+      })
+    ).toEqual(['PASSWORD=my-pass', 'USER=ameer']);
+  });
+
+  it('getExposedPortsForDockerAPI() should return port list', () => {
+    expect(
+      getExposedPortsForDockerAPI({
+        '3000': '3001'
+      })
+    ).toEqual({
+      portBindings: {
+        'tcp/3000': [
+          {
+            HostPort: '3001'
+          }
+        ]
+      },
+      exposedPorts: {
+        'tcp/3000': {}
+      }
+    });
+  });
+
+  it('getVolumesForDockerAPI() should return volume list', () => {
+    expect(
+      getVolumesForDockerAPI({
+        '/tmp': '/users/my-dir',
+        '/bin': '/users/more-dir'
+      })
+    ).toEqual(['/users/my-dir:/tmp', '/users/more-dir:/bin']);
   });
 });

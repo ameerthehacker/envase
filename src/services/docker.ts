@@ -1,6 +1,14 @@
 import { dockerode, ipcRenderer } from './native';
 import { IPC_CHANNELS } from '../constants';
 import { IpcRendererEvent } from 'electron';
+import { AppFormResult } from '../components/app-form-modal/app-form-modal';
+import { Formula } from '../contracts/formula';
+import {
+  getImageRepoTag,
+  interpolateFormula,
+  getEnvForDockerAPI,
+  getExposedPortsForDockerAPI
+} from '../utils/utils';
 
 const { CHECK_IMAGE_EXISTS } = IPC_CHANNELS;
 
@@ -104,5 +112,36 @@ export function pullImage(
         reject(err);
       }
     });
+  });
+}
+
+export function createApp(values: AppFormResult, app: Formula) {
+  const interpolatedFormula = interpolateFormula(app, values);
+  const envList = getEnvForDockerAPI(interpolatedFormula.env);
+  let exposedPorts, portBindings;
+  let volList: string[] = [];
+
+  if (interpolatedFormula.ports) {
+    const portConfig = getExposedPortsForDockerAPI(interpolatedFormula.ports);
+
+    exposedPorts = portConfig.exposedPorts;
+    portBindings = portConfig.portBindings;
+  }
+
+  if (interpolatedFormula.volumes) {
+    volList = getEnvForDockerAPI(interpolatedFormula.volumes);
+  }
+
+  return dockerode.createContainer({
+    Image: getImageRepoTag(app.image, values.version),
+    Env: envList,
+    Labels: {
+      dockapp: JSON.stringify(interpolatedFormula)
+    },
+    ExposedPorts: exposedPorts,
+    HostConfig: {
+      PortBindings: portBindings,
+      Binds: volList
+    }
   });
 }
