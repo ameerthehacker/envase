@@ -17,6 +17,7 @@ import { FORMULAS } from '../../formulas';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import MyApps from '../my-apps/my-apps';
 import MYSQL from '../../formulas/mysql/mysql';
+import { listContainerApps } from '../../services/docker';
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(1);
@@ -27,20 +28,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    // TODO: fetch and initialize from real source
-    dispatch({
-      type: 'INIT',
-      payload: {
-        status: [
-          {
-            formula: MYSQL,
-            name: 'mysql',
-            state: 'stopped'
-          }
-        ]
-      }
+    listContainerApps().then((appStatus) => {
+      dispatch({
+        type: 'INIT',
+        payload: {
+          status: appStatus
+        }
+      });
     });
-  }, [dispatch]);
+  }, [dispatch, listContainerApps]);
 
   return (
     <>

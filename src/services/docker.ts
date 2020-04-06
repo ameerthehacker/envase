@@ -9,6 +9,8 @@ import {
   getEnvForDockerAPI,
   getExposedPortsForDockerAPI
 } from '../utils/utils';
+import { AppStatus } from '../contexts/app-status/app-status';
+import { ContainerInfo } from 'dockerode';
 
 const { CHECK_IMAGE_EXISTS } = IPC_CHANNELS;
 
@@ -137,12 +139,48 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     Image: getImageRepoTag(app.image, values.version),
     Env: envList,
     Labels: {
-      dockapp: JSON.stringify(interpolatedFormula)
+      dockapp: JSON.stringify(interpolatedFormula),
+      'created-by-dockapp': 'yes'
     },
     ExposedPorts: exposedPorts,
     HostConfig: {
       PortBindings: portBindings,
       Binds: volList
     }
+  });
+}
+
+function getAppContainerState(container: ContainerInfo) {
+  switch (container.State) {
+    case 'running':
+      return 'running';
+    case 'exited':
+      return 'stopped';
+    default:
+      return 'stopped';
+  }
+}
+
+export function listContainerApps(): Promise<AppStatus[]> {
+  return new Promise((resolve, reject) => {
+    dockerode
+      .listContainers({
+        all: true,
+        filters: {
+          label: ['created-by-dockapp=yes']
+        }
+      })
+      .then((containers) => {
+        const appStatus: AppStatus[] = containers.map((container) => ({
+          name: container.Names[0].substring(1),
+          state: getAppContainerState(container),
+          formula: JSON.parse(container.Labels['dockapp'])
+        }));
+
+        console.log(containers);
+
+        resolve(appStatus);
+      })
+      .catch((err) => reject(err));
   });
 }
