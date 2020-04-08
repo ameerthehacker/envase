@@ -9,7 +9,6 @@ import LogsModal from '../../components/logs-modal/logs-modal';
 export default function MyApps() {
   const { allAppStatus } = useAppStatus();
   const { start, stop, del } = useApp();
-  const toast = useToast();
   const [selectedApp, setSelectedApp] = useState<AppStatus>();
   const [selectedAppLogs, setSelectedAppLogs] = useState('');
   const currentLogsStream = useRef<NodeJS.ReadableStream>();
@@ -24,6 +23,7 @@ export default function MyApps() {
     onClose: onLogsClose,
     onOpen: onLogsOpen
   } = useDisclosure();
+  const toast = useToast();
 
   return (
     <Stack direction="row">
@@ -70,18 +70,27 @@ export default function MyApps() {
               onActionClick={(action) => {
                 if (action === 'SHOW_LOGS') {
                   setSelectedApp(status);
-                  getContainerAppLogs(status.id).then((stream) => {
-                    currentLogsStream.current = stream;
-                    setSelectedAppLogs('');
+                  getContainerAppLogs(status.id)
+                    .then((stream) => {
+                      currentLogsStream.current = stream;
+                      setSelectedAppLogs('');
 
-                    stream.on('data', (data) => {
-                      setSelectedAppLogs(
-                        (logs) => `${logs}${data.toString('utf-8')}`
-                      );
+                      stream.on('data', (data) => {
+                        setSelectedAppLogs(
+                          (logs) => `${logs}${data.toString('utf8')}`
+                        );
+                      });
+
+                      onLogsOpen();
+                    })
+                    .catch((err) => {
+                      toast({
+                        title: 'Unable to read logs',
+                        description: `${err}`,
+                        status: 'error',
+                        isClosable: true
+                      });
                     });
-
-                    onLogsOpen();
-                  });
                 }
               }}
             />
