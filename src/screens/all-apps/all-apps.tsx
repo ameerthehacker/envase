@@ -60,7 +60,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   }
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" flexWrap="wrap">
       {apps.map((app, index) => (
         <Box key={index}>
           <AppCard
