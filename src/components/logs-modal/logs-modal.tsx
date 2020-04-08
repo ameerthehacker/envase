@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -6,7 +6,10 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Code
+  Code,
+  Switch,
+  Stack,
+  FormLabel
 } from '@chakra-ui/core';
 
 export interface LogsModalProps {
@@ -22,6 +25,16 @@ export default function LogsModal({
   isOpen,
   onClose
 }: LogsModalProps) {
+  const [followTail, setFollowTail] = useState(true);
+
+  useEffect(() => {
+    const logsContainer = document.getElementById('logs-container');
+
+    if (logsContainer && followTail) {
+      logsContainer.scrollTop = logsContainer.scrollHeight;
+    }
+  }, [followTail, logs]);
+
   return (
     <Modal size="xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -29,15 +42,26 @@ export default function LogsModal({
         <ModalHeader>{`${appName} logs`}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Code
-            overflow="auto"
-            style={{ whiteSpace: 'pre-wrap' }}
-            maxHeight={500}
-            width="100%"
-            p={2}
-          >
-            {logs}
-          </Code>
+          <Stack>
+            <Stack direction="row" alignItems="center">
+              <Switch
+                id="switch-follow-tail"
+                isChecked={followTail}
+                onChange={() => setFollowTail((followTail) => !followTail)}
+              />
+              <FormLabel htmlFor="switch-follow-tail">Follow tail</FormLabel>
+            </Stack>
+            <Code
+              id="logs-container"
+              overflow="auto"
+              style={{ whiteSpace: 'pre-wrap' }}
+              maxHeight={500}
+              width="100%"
+              p={2}
+            >
+              {logs}
+            </Code>
+          </Stack>
         </ModalBody>
       </ModalContent>
     </Modal>
