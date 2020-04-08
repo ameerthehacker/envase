@@ -197,3 +197,11 @@ export function listContainerApps(): Promise<AppStatus[]> {
       .catch((err) => reject(err));
   });
 }
+
+export function getContainerAppLogs(id: string) {
+  return dockerode.getContainer(id).logs({
+    stdout: true,
+    stderr: true,
+    follow: true
+  });
+}
