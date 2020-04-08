@@ -1,7 +1,21 @@
 import React from 'react';
 import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
-import { Stack, Button, Box, IconButton } from '@chakra-ui/core';
-import { FaPlay, FaStop } from 'react-icons/fa';
+import {
+  Stack,
+  Button,
+  Box,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
+} from '@chakra-ui/core';
+import { FaPlay, FaStop, FaWrench } from 'react-icons/fa';
+
+export interface Option {
+  text: string;
+  value: string;
+}
 
 export interface AppStatucCardProps extends AppInfoCardProps {
   state: 'running' | 'stopped';
@@ -9,7 +23,8 @@ export interface AppStatucCardProps extends AppInfoCardProps {
   isDeleting: boolean;
   onStartClick: () => void;
   onStopClick: () => void;
-  onInfoClick: () => void;
+  actions: Option[];
+  onActionClick: (actionValue: string) => void;
   onDeleteClick: () => void;
 }
 
@@ -20,7 +35,8 @@ export default function AppStatusCard({
   inStateTransit,
   onStartClick,
   onStopClick,
-  onInfoClick,
+  actions,
+  onActionClick,
   onDeleteClick,
   isDeleting
 }: AppStatucCardProps) {
@@ -55,12 +71,18 @@ export default function AppStatusCard({
           aria-label="delete-app"
           isDisabled={state === 'running'}
         />
-        <IconButton
-          variantColor="orange"
-          onClick={onInfoClick}
-          icon="info"
-          aria-label="info"
-        />
+        <Menu>
+          <MenuButton as={Button} aria-label="action-button">
+            <Box as={FaWrench} />
+          </MenuButton>
+          <MenuList>
+            {actions.map((action, index) => (
+              <MenuItem onClick={() => onActionClick(action.value)} key={index}>
+                {action.text}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
       </Stack>
     </AppInfoCard>
   );

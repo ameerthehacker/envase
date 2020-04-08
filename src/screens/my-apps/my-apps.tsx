@@ -8,6 +8,12 @@ export default function MyApps() {
   const { allAppStatus } = useAppStatus();
   const { start, stop, del } = useApp();
   const toast = useToast();
+  const actions = [
+    {
+      text: 'Show logs',
+      value: 'SHOW_LOGS'
+    }
+  ];
 
   return (
     <Stack direction="row">
@@ -50,7 +56,10 @@ export default function MyApps() {
                   });
                 })
               }
-              onInfoClick={() => null}
+              actions={actions}
+              onActionClick={(action) => {
+                console.log(action);
+              }}
             />
           </Box>
         ))}
