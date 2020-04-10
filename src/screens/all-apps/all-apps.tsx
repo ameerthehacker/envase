@@ -52,7 +52,7 @@ export default function AllApps({ apps }: AllAppsProps) {
       .catch((err) => {
         toast({
           title: `Error creating ${app.name} app`,
-          description: err,
+          description: `${err}`,
           status: 'error'
         });
       })
@@ -90,6 +90,7 @@ export default function AllApps({ apps }: AllAppsProps) {
         app={selectedApp}
         isOpen={isFormOpen}
         onSubmit={async (values) => {
+          console.log(values);
           setIsValidating(true);
 
           if (selectedApp) {
