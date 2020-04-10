@@ -10,7 +10,8 @@ import {
   pullImage,
   PullProgressEvent,
   DockerStream,
-  createContainerFromApp
+  createContainerFromApp,
+  getAppsWithName
 } from '../../services/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
@@ -90,11 +91,26 @@ export default function AllApps({ apps }: AllAppsProps) {
         app={selectedApp}
         isOpen={isFormOpen}
         onSubmit={async (values) => {
-          console.log(values);
           setIsValidating(true);
 
           if (selectedApp) {
             appFormResult.current = values;
+
+            const { name } = values;
+            const appsWithSameName = await getAppsWithName(name);
+
+            // there is already an app with same name
+            if (appsWithSameName.length > 0) {
+              toast({
+                title: 'Sorry!',
+                description: 'There is already an app with same name',
+                status: 'error',
+                isClosable: true
+              });
+              setIsValidating(false);
+
+              return;
+            }
 
             const { image } = selectedApp;
             const { version } = values;

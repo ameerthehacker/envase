@@ -57,6 +57,15 @@ export interface PullProgressEvent {
   };
 }
 
+export function getAppsWithName(name: string) {
+  return dockerode.listContainers({
+    all: true,
+    filters: {
+      name: [name]
+    }
+  });
+}
+
 export function checkImageExistence(
   image: string,
   tag: string
