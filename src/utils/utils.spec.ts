@@ -7,7 +7,8 @@ import {
   interpolateFormula,
   getEnvForDockerAPI,
   getExposedPortsForDockerAPI,
-  getVolumesForDockerAPI
+  getVolumesForDockerAPI,
+  keyToLabelText
 } from './utils';
 
 jest.mock('../formulas', () => ({
@@ -128,5 +129,9 @@ describe('utils', () => {
         '/bin': '/users/more-dir'
       })
     ).toEqual(['/users/my-dir:/tmp', '/users/more-dir:/bin']);
+  });
+
+  it('keyToLabelText() should convert key to label text', () => {
+    expect(keyToLabelText('name_the_path')).toBe('Name the path');
   });
 });

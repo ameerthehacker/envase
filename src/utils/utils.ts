@@ -9,6 +9,14 @@ export function capitalize(text: string) {
   }
 }
 
+export function keyToLabelText(text: string) {
+  const words = text.split('_');
+  // capitalize the first world
+  words[0] = capitalize(words[0]);
+
+  return words.join(' ');
+}
+
 export function interpolate(template: string, data: Record<string, string>) {
   for (const key in data) {
     template = template.replace(new RegExp(`%${key}%`, 'ig'), data[key]);

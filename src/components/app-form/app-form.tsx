@@ -14,7 +14,7 @@ import {
   FormErrorMessage,
   Link
 } from '@chakra-ui/core';
-import { capitalize } from '../../utils/utils';
+import { keyToLabelText } from '../../utils/utils';
 import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
@@ -78,7 +78,9 @@ export default function AppForm({ app }: AppFormProps) {
             <FormControl
               isInvalid={form.errors[fieldName] && form.touched[fieldName]}
             >
-              <FormLabel htmlFor={fieldId}>{capitalize(fieldName)}</FormLabel>
+              <FormLabel htmlFor={fieldId}>
+                {keyToLabelText(fieldName)}
+              </FormLabel>
               {isInputField && (
                 <Input
                   type={getInputType(type)}
