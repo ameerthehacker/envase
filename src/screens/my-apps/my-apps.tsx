@@ -1,10 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { getContainerAppLogs } from '../../services/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
+import { ipcRenderer } from '../../services/native';
+import { IPC_CHANNELS } from '../../constants';
+
+const { ATTACH_SHELL } = IPC_CHANNELS;
 
 export default function MyApps() {
   const { allAppStatus } = useAppStatus();
@@ -16,6 +20,10 @@ export default function MyApps() {
     {
       text: 'Show logs',
       value: 'SHOW_LOGS'
+    },
+    {
+      text: 'Attach Shell',
+      value: 'ATTACH_SHELL'
     }
   ];
   const {
@@ -24,6 +32,44 @@ export default function MyApps() {
     onOpen: onLogsOpen
   } = useDisclosure();
   const toast = useToast();
+
+  const handleAction = useCallback(
+    (status: AppStatus, action: string) => {
+      switch (action) {
+        case 'SHOW_LOGS': {
+          setSelectedApp(status);
+          getContainerAppLogs(status.id)
+            .then((stream) => {
+              currentLogsStream.current = stream;
+              setSelectedAppLogs('');
+
+              stream.on('data', (data) => {
+                setSelectedAppLogs((logs) => `${logs}${data.toString('utf8')}`);
+              });
+
+              onLogsOpen();
+            })
+            .catch((err) => {
+              toast({
+                title: 'Unable to read logs',
+                description: `${err}`,
+                status: 'error',
+                isClosable: true
+              });
+            });
+
+          break;
+        }
+        case 'ATTACH_SHELL': {
+          ipcRenderer.send(ATTACH_SHELL, {
+            containerId: status.id
+          });
+          break;
+        }
+      }
+    },
+    [onLogsOpen, toast]
+  );
 
   return (
     <Stack direction="row">
@@ -67,32 +113,7 @@ export default function MyApps() {
                 })
               }
               actions={actions}
-              onActionClick={(action) => {
-                if (action === 'SHOW_LOGS') {
-                  setSelectedApp(status);
-                  getContainerAppLogs(status.id)
-                    .then((stream) => {
-                      currentLogsStream.current = stream;
-                      setSelectedAppLogs('');
-
-                      stream.on('data', (data) => {
-                        setSelectedAppLogs(
-                          (logs) => `${logs}${data.toString('utf8')}`
-                        );
-                      });
-
-                      onLogsOpen();
-                    })
-                    .catch((err) => {
-                      toast({
-                        title: 'Unable to read logs',
-                        description: `${err}`,
-                        status: 'error',
-                        isClosable: true
-                      });
-                    });
-                }
-              }}
+              onActionClick={(action) => handleAction(status, action)}
             />
           </Box>
         ))}

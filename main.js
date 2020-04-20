@@ -3,26 +3,58 @@ const { IPC_CHANNELS } = require('./src/constants');
 const path = require('path');
 const axios = require('axios').default;
 
-const { GET_IMAGE_TAGS, OPEN_FOLDER_DIALOG, CHECK_IMAGE_EXISTS } = IPC_CHANNELS;
+const {
+  GET_IMAGE_TAGS,
+  OPEN_FOLDER_DIALOG,
+  CHECK_IMAGE_EXISTS,
+  ATTACH_SHELL
+} = IPC_CHANNELS;
+let uiURL;
 
-app.allowRendererProcessReuse = true;
+if (process.env.NODE_ENV === 'development') {
+  uiURL = 'http://localhost:3000';
+}
 
-function createWindow() {
-  const win = new BrowserWindow({
+app.allowRendererProcessReuse = false;
+
+function createWindow(url, parent = null) {
+  const config = {
     width: 800,
     height: 600,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(app.getAppPath(), 'preload.js')
     }
+  };
+
+  if (parent !== null) {
+    config.parent = parent;
+  }
+
+  const win = new BrowserWindow({
+    ...config
   });
+
+  if (process.env.NODE_ENV === 'development') {
+    win.loadURL(url);
+
+    win.on('ready-to-show', () => win.show());
+  }
+
+  return win;
+}
+
+app.whenReady().then(() => {
+  let win = null;
 
   if (process.env.NODE_ENV === 'development') {
     const debug = require('electron-debug');
     const axios = require('axios').default;
-    const uiURL = 'http://localhost:3000';
     // adds helpful debugging capabilities
-    debug();
+    debug({
+      showDevTools: false
+    });
     // keep checking whether the dev server for react is ready or not
     const timer = setInterval(() => {
       axios
@@ -31,18 +63,15 @@ function createWindow() {
           axios.Cancel();
           // UI started
           console.log('UI server started...');
+
+          if (!win) {
+            win = createWindow(uiURL);
+          }
           clearInterval(timer);
-          win.loadURL(uiURL);
         })
         .catch(() => console.log('Waiting for UI to start...'));
     }, 2000);
   }
-
-  return win;
-}
-
-app.whenReady().then(() => {
-  const win = createWindow();
 
   // listen for ipc
   ipcMain.on(IPC_CHANNELS.OPEN_FOLDER_DIALOG, (evt) => {
@@ -63,6 +92,10 @@ app.whenReady().then(() => {
           selectedPath: null
         });
       });
+  });
+
+  ipcMain.on(ATTACH_SHELL, (evt, args) => {
+    createWindow(`${uiURL}/shell/${args.containerId}`, win);
   });
 
   ipcMain.on(GET_IMAGE_TAGS, (evt, args) => {
@@ -120,6 +153,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createWindow(uiURL);
   }
 });
