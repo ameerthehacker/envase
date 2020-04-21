@@ -126,6 +126,15 @@ export function pullImage(
   });
 }
 
+export function shellIntoApp(containerId: string) {
+  return dockerode.getContainer(containerId).exec({
+    AttachStdin: true,
+    AttachStdout: true,
+    AttachStderr: true,
+    Cmd: ['/bin/sh']
+  });
+}
+
 export function createContainerFromApp(values: AppFormResult, app: Formula) {
   const interpolatedFormula = interpolateFormula(app, values);
   const envList = getEnvForDockerAPI(interpolatedFormula.env);
