@@ -131,7 +131,8 @@ export function shellIntoApp(containerId: string) {
     AttachStdin: true,
     AttachStdout: true,
     AttachStderr: true,
-    Cmd: ['/bin/sh']
+    Cmd: ['/bin/bash'],
+    Tty: true
   });
 }
 
