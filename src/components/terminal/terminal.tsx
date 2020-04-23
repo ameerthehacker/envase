@@ -50,6 +50,16 @@ export default function Terminal({ stream }: TerminalProps) {
           if (ev.ctrlKey) {
             if (ev.key === 'c') stream.write('\x03');
           }
+          // Tab
+          else if (ev.keyCode === 9) stream.write('\x09');
+          // LArrow
+          else if (ev.keyCode === 37) stream.write('\u001b[D');
+          // UArrow
+          else if (ev.keyCode === 38) stream.write('\u001b[A');
+          // RArrow
+          else if (ev.keyCode === 39) stream.write('\u001b[C');
+          // DArrow
+          else if (ev.keyCode === 40) stream.write('\u001b[B');
           // enter key
           else if (ev.keyCode === 13) stream.write('\r');
           // backspace key
