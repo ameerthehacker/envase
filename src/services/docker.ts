@@ -12,7 +12,7 @@ import {
 import { AppStatus } from '../contexts/app-status/app-status';
 import { ContainerInfo } from 'dockerode';
 
-const { CHECK_IMAGE_EXISTS } = IPC_CHANNELS;
+const { CHECK_IMAGE_EXISTS, ATTACH_SHELL } = IPC_CHANNELS;
 
 interface CheckImageExistsReponse {
   error: boolean | string;
@@ -127,12 +127,18 @@ export function pullImage(
 }
 
 export function shellIntoApp(containerId: string) {
-  return dockerode.getContainer(containerId).exec({
-    AttachStdin: true,
-    AttachStdout: true,
-    AttachStderr: true,
-    Cmd: ['/bin/bash'],
-    Tty: true
+  const container = dockerode.getContainer(containerId);
+
+  return container.inspect().then((containerInfo) => {
+    const formula: Formula = JSON.parse(containerInfo.Config.Labels.dockapp);
+
+    return dockerode.getContainer(containerId).exec({
+      AttachStdin: true,
+      AttachStdout: true,
+      AttachStderr: true,
+      Cmd: [formula.shell],
+      Tty: true
+    });
   });
 }
 
@@ -141,6 +147,18 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   const envList = getEnvForDockerAPI(interpolatedFormula.env);
   let exposedPorts, portBindings;
   let volList: string[] = [];
+  // prevents containers from stopping
+  const infiniteLoopScript = `
+  exit_script() {
+    exit;
+  }
+  trap exit_script SIGINT SIGTERM
+  while true
+  do
+  	echo "Press CTRL+C to stop the script execution"
+  done
+  `;
+  const Cmd = app.isCli ? [app.shell, '-c', infiniteLoopScript] : [];
 
   if (interpolatedFormula.ports) {
     const portConfig = getExposedPortsForDockerAPI(interpolatedFormula.ports);
@@ -161,6 +179,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
       dockapp: JSON.stringify(interpolatedFormula),
       'created-by-dockapp': 'yes'
     },
+    Cmd,
     ExposedPorts: exposedPorts,
     HostConfig: {
       PortBindings: portBindings,
@@ -181,7 +200,26 @@ function getAppContainerState(container: ContainerInfo) {
 }
 
 export function startApp(containerId: string) {
-  return dockerode.getContainer(containerId).start();
+  const container = dockerode.getContainer(containerId);
+
+  return container.inspect().then((containerInfo) => {
+    const formula: Formula = JSON.parse(containerInfo.Config.Labels.dockapp);
+
+    if (formula.isCli) {
+      return new Promise((resolve, reject) => {
+        container
+          .start()
+          .then(() => {
+            ipcRenderer.send(ATTACH_SHELL, { containerId: container.id });
+
+            resolve();
+          })
+          .catch(reject);
+      });
+    } else {
+      return container.start();
+    }
+  });
 }
 
 export function stopApp(containerId: string) {

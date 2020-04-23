@@ -4,6 +4,7 @@ import logo from './logo.svg';
 const MYSQL: Formula = {
   name: 'MySQL',
   logo,
+  shell: '/bin/bash',
   data: {
     name: {
       type: 'string',

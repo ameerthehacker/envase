@@ -3,6 +3,7 @@ import logo from './logo.svg';
 
 const REDIS: Formula = {
   name: 'Redis',
+  shell: '/bin/bash',
   logo,
   data: {
     name: {

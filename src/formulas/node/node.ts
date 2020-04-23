@@ -3,6 +3,7 @@ import logo from './logo.svg';
 
 const NODE: Formula = {
   name: 'Node.js',
+  shell: '/bin/sh',
   logo,
   data: {
     name: {
@@ -16,6 +17,7 @@ const NODE: Formula = {
       required: true
     }
   },
+  isCli: true,
   image: 'library/node',
   env: {}
 };
