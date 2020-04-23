@@ -49,6 +49,9 @@ export default function Terminal({ stream }: TerminalProps) {
 
           if (ev.ctrlKey) {
             if (ev.key === 'c') stream.write('\x03');
+            if (ev.key === 'a') stream.write('\x01');
+            if (ev.key === 'e') stream.write('\x05');
+            if (ev.key === 'z') stream.write('\x1A');
           }
           // Tab
           else if (ev.keyCode === 9) stream.write('\x09');
