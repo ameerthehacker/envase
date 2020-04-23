@@ -53,6 +53,8 @@ export default function Terminal({ stream }: TerminalProps) {
             if (ev.key === 'e') stream.write('\x05');
             if (ev.key === 'z') stream.write('\x1A');
           }
+          // ESC
+          else if (ev.keyCode === 27) stream.write('\x1B');
           // Tab
           else if (ev.keyCode === 9) stream.write('\x09');
           // LArrow

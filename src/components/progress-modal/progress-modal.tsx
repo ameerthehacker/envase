@@ -31,6 +31,7 @@ function getProgressPercentage(progress: PullProgressEvent) {
     // special cases
     if (progress.status.startsWith('Pulling')) return 0;
     if (progress.status.startsWith('Waiting')) return 0;
+    if (progress.status.startsWith('Retrying')) return 0;
     if (progress.status.startsWith('Download complete')) return 100;
     if (progress.status.startsWith('Pull complete')) return 100;
     if (progress.status.startsWith('Verifying')) return 100;
