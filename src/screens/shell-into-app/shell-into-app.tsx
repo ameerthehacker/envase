@@ -12,7 +12,7 @@ export default function ShellIntoApp() {
     if (containerId) {
       shellIntoApp(containerId).then((exec) => {
         exec.start(
-          { hijack: true, stdin: true },
+          { hijack: true, stdin: true, stdout: true, tty: true },
           (err: any, stream: NodeJS.ReadWriteStream) => {
             setStream(stream);
           }
