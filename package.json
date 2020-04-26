@@ -65,6 +65,7 @@
     "axios": "^0.19.2",
     "dockerode": "^3.2.0",
     "electron": "^8.2.0",
+    "electron-store": "^5.1.1",
     "emotion-theming": "^10.0.27",
     "formik": "^2.1.4",
     "open": "^7.0.3",

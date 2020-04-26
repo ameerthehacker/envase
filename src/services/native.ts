@@ -7,11 +7,13 @@ import Dockerode from 'dockerode';
 const {
   ipcRenderer,
   open,
-  dockerode
+  Docker
 }: {
   ipcRenderer: IpcRenderer;
   open: (URI: string) => void;
-  dockerode: Dockerode;
+  Docker: any;
 } = window as any;
+
+const dockerode: Dockerode = new Docker();
 
 export { ipcRenderer, open, dockerode };

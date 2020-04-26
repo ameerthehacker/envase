@@ -1,15 +1,30 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const { IPC_CHANNELS } = require('./src/constants');
+const { IPC_CHANNELS, ALL_SETTINGS } = require('./src/constants');
 const path = require('path');
 const axios = require('axios').default;
+const Store = require('electron-store');
+const fs = require('fs');
+const Docker = require('dockerode');
 
 const {
   GET_IMAGE_TAGS,
   OPEN_FOLDER_DIALOG,
   CHECK_IMAGE_EXISTS,
-  ATTACH_SHELL
+  ATTACH_SHELL,
+  SAVE_SETTINGS,
+  READ_SETTINGS
 } = IPC_CHANNELS;
 let uiURL;
+const store = new Store();
+
+if (!fs.existsSync(store.path)) {
+  const dockerConfig = new Docker().modem;
+  const terminalConfig = {
+    terminalFontSize: 16
+  };
+
+  store.set(ALL_SETTINGS, { ...dockerConfig, ...terminalConfig });
+}
 
 if (process.env.NODE_ENV === 'development') {
   uiURL = 'http://localhost:3000';
@@ -74,7 +89,7 @@ app.whenReady().then(() => {
   }
 
   // listen for ipc
-  ipcMain.on(IPC_CHANNELS.OPEN_FOLDER_DIALOG, (evt) => {
+  ipcMain.on(OPEN_FOLDER_DIALOG, (evt) => {
     dialog
       .showOpenDialog(win, {
         title: 'Select path',
@@ -92,6 +107,14 @@ app.whenReady().then(() => {
           selectedPath: null
         });
       });
+  });
+
+  ipcMain.on(SAVE_SETTINGS, (evt, args) => {
+    store.set(ALL_SETTINGS, args);
+  });
+
+  ipcMain.on(READ_SETTINGS, (evt) => {
+    evt.reply(store.get(ALL_SETTINGS));
   });
 
   ipcMain.on(ATTACH_SHELL, (evt, args) => {

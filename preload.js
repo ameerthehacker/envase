@@ -6,4 +6,4 @@ const Docker = require('dockerode');
 
 window.ipcRenderer = ipcRenderer;
 window.open = open;
-window.dockerode = new Docker();
+window.Docker = Docker;
