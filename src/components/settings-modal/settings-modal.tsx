@@ -20,13 +20,16 @@ export interface SettingsModalProps {
   onSubmit: (result: DockerConfig) => void;
 }
 
+interface AllSettings extends DockerConfig {
+  terminalFontSize: number;
+}
+
 export default function SettingsModal({
   isOpen,
   onClose,
   onSubmit
 }: SettingsModalProps) {
   const dockerConfig = getConfig();
-
   // if anyone of them is undefined the input would become uncontrolled
   if (!dockerConfig.socketPath) dockerConfig.socketPath = '';
   if (!dockerConfig.host) dockerConfig.host = '';
@@ -34,14 +37,15 @@ export default function SettingsModal({
   if (!dockerConfig.username) dockerConfig.username = '';
   if (!dockerConfig.password) dockerConfig.password = '';
 
+  const settings: AllSettings = {
+    ...dockerConfig,
+    terminalFontSize: 16
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <Formik
-        validateOnMount
-        initialValues={{ ...dockerConfig }}
-        onSubmit={onSubmit}
-      >
+      <Formik validateOnMount initialValues={settings} onSubmit={onSubmit}>
         {({ submitForm, resetForm }) => (
           <ModalContent>
             <ModalHeader>Preferences</ModalHeader>

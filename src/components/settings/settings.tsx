@@ -9,7 +9,12 @@ import {
   TabList,
   Tab,
   TabPanels,
-  TabPanel
+  TabPanel,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper
 } from '@chakra-ui/core';
 import { Form, Field } from 'formik';
 import { IconText } from '../icon-text/icon-text';
@@ -104,7 +109,28 @@ export default function Settings() {
                 </Box>
               </Stack>
             </TabPanel>
-            <TabPanel pt={3}>terminal</TabPanel>
+            <TabPanel pt={3}>
+              <Field name="terminalFontSize">
+                {({ field }: { field: any }) => (
+                  <FormControl>
+                    <FormLabel htmlFor="terminal-font-size">
+                      Font Size
+                    </FormLabel>
+                    <NumberInput>
+                      <NumberInputField
+                        id="terminal-font-size"
+                        placeholder="Font size of the terminal"
+                        {...field}
+                      />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                )}
+              </Field>
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </Stack>
