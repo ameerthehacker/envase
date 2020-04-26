@@ -1,7 +1,7 @@
 import { IpcRenderer } from 'electron';
 import Dockerode from 'dockerode';
 import { IPC_CHANNELS } from '../constants';
-import { AllSettings } from '../components/settings-modal/settings-modal';
+import { AllSettings } from '../contracts/all-settings';
 
 // window.ipcRenderer, window.open, window.dockerode is set in the preload.js script
 // all these preloaded native modules will be used in src/services/native.ts
@@ -9,19 +9,19 @@ import { AllSettings } from '../components/settings-modal/settings-modal';
 const {
   ipcRenderer,
   open,
-  Docker,
-  allSettings
+  Docker
 }: {
   ipcRenderer: IpcRenderer;
   open: (URI: string) => void;
   Docker: any;
   allSettings: AllSettings;
 } = window as any;
-
+let { allSettings } = window as any;
 let dockerode: Dockerode = new Docker(allSettings);
 
 ipcRenderer.on(IPC_CHANNELS.SAVE_SETTINGS, (evt, newSettings) => {
+  allSettings = newSettings;
   dockerode = new Docker(newSettings);
 });
 
-export { ipcRenderer, open, dockerode };
+export { ipcRenderer, open, dockerode, allSettings };

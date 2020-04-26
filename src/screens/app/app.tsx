@@ -45,7 +45,7 @@ export default function App() {
     loadApps(true);
 
     ipcRenderer.on(SAVE_SETTINGS, () => {
-      loadApps(true);
+      loadApps();
     });
   }, [loadApps]);
 

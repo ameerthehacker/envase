@@ -19,14 +19,6 @@ interface CheckImageExistsReponse {
   exists: boolean;
 }
 
-export interface DockerConfig {
-  socketPath: string;
-  host: string;
-  port: string;
-  username: string;
-  password: string;
-}
-
 function doesImageExistsInDockerHub(
   image: string,
   tag: string
@@ -72,10 +64,6 @@ export function getAppsWithName(name: string) {
       name: [name]
     }
   });
-}
-
-export function getConfig(): DockerConfig {
-  return dockerode.modem;
 }
 
 export function checkImageExistence(

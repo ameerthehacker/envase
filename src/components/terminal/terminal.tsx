@@ -6,6 +6,7 @@ import { Unicode11Addon } from 'xterm-addon-unicode11';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { ResizeObserver } from 'resize-observer';
 import ansiColors from 'ansi-colors';
+import { allSettings } from '../../services/native';
 
 export interface TerminalProps {
   stream: NodeJS.ReadWriteStream;
@@ -16,7 +17,9 @@ export default function Terminal({ stream }: TerminalProps) {
   const isStreamOpen = useRef<boolean>(true);
 
   useLayoutEffect(() => {
-    const terminal = new XTerm();
+    const terminal = new XTerm({
+      fontSize: allSettings.terminalFontSize
+    });
     const fitAddon = new FitAddon();
     const unicodeAddon = new Unicode11Addon();
     const webLinksAddon = new WebLinksAddon();
