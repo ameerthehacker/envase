@@ -1,5 +1,9 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const { IPC_CHANNELS, ALL_SETTINGS } = require('./src/constants');
+const {
+  IPC_CHANNELS,
+  ALL_SETTINGS,
+  WIN_DIMENSION
+} = require('./src/constants');
 const path = require('path');
 const axios = require('axios').default;
 const Store = require('electron-store');
@@ -14,6 +18,7 @@ const {
   SAVE_SETTINGS
 } = IPC_CHANNELS;
 let uiURL;
+let win = null;
 const store = new Store();
 
 if (!fs.existsSync(store.path)) {
@@ -32,9 +37,13 @@ if (process.env.NODE_ENV === 'development') {
 app.allowRendererProcessReuse = false;
 
 function createWindow(url, parent = null) {
+  const winDimension = store.get(WIN_DIMENSION);
+  const width = (winDimension && winDimension.width) || 900;
+  const height = (winDimension && winDimension.height) || 600;
+
   const config = {
-    width: 800,
-    height: 600,
+    width,
+    height,
     show: false,
     webPreferences: {
       nodeIntegration: true,
@@ -60,8 +69,6 @@ function createWindow(url, parent = null) {
 }
 
 app.whenReady().then(() => {
-  let win = null;
-
   if (process.env.NODE_ENV === 'development') {
     const debug = require('electron-debug');
     const axios = require('axios').default;
@@ -83,7 +90,7 @@ app.whenReady().then(() => {
           }
           clearInterval(timer);
         })
-        .catch(() => console.log('Waiting for UI to start...'));
+        .catch((err) => console.log('Waiting for UI to start...'));
     }, 2000);
   }
 
@@ -173,5 +180,16 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow(uiURL);
+  }
+});
+
+app.on('quit', () => {
+  if (win) {
+    const [width, height] = win.getSize();
+
+    store.set(WIN_DIMENSION, {
+      height,
+      width
+    });
   }
 });

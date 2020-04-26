@@ -7,5 +7,6 @@ const IPC_CHANNELS = {
 };
 
 const ALL_SETTINGS = 'all-settings';
+const WIN_DIMENSION = 'WIN_DIMENSION';
 
-module.exports = { IPC_CHANNELS, ALL_SETTINGS };
+module.exports = { IPC_CHANNELS, ALL_SETTINGS, WIN_DIMENSION };
