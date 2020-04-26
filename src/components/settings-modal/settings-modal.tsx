@@ -20,7 +20,7 @@ export interface SettingsModalProps {
   onSubmit: (result: DockerConfig) => void;
 }
 
-interface AllSettings extends DockerConfig {
+export interface AllSettings extends DockerConfig {
   terminalFontSize: number;
 }
 

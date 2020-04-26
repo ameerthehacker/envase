@@ -22,6 +22,10 @@ import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleto
 import NoConnection from '../../components/no-connection/no-connection';
 import './app.scss';
 import Preferences from '../preferences/preferences';
+import { ipcRenderer } from '../../services/native';
+import { IPC_CHANNELS } from '../../constants';
+
+const { SAVE_SETTINGS } = IPC_CHANNELS;
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -39,11 +43,15 @@ export default function App() {
 
   useEffect(() => {
     loadApps(true);
+
+    ipcRenderer.on(SAVE_SETTINGS, () => {
+      loadApps(true);
+    });
   }, [loadApps]);
 
   return (
     <>
-      {allAppStatus.error?.errno === 'ECONNREFUSED' && (
+      {allAppStatus.error?.errno && (
         <>
           <NoConnection
             isRetrying={allAppStatus.isFetching}
@@ -65,7 +73,7 @@ export default function App() {
           />
         </>
       )}
-      {allAppStatus.error?.errno !== 'ECONNREFUSED' && (
+      {!allAppStatus.error?.errno && (
         <>
           <Navbar />
           <Tabs index={tabIndex} onChange={handleTabChange}>
@@ -81,7 +89,7 @@ export default function App() {
               <TabPanel>
                 {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
                 {!allAppStatus.isFetching &&
-                  allAppStatus.error?.errno !== 'ECONNREFUSED' &&
+                  !allAppStatus.error?.errno &&
                   allAppStatus.status.length === 0 && (
                     <EmptyState
                       height="calc(100vh - 90px)"

@@ -11,8 +11,7 @@ const {
   OPEN_FOLDER_DIALOG,
   CHECK_IMAGE_EXISTS,
   ATTACH_SHELL,
-  SAVE_SETTINGS,
-  READ_SETTINGS
+  SAVE_SETTINGS
 } = IPC_CHANNELS;
 let uiURL;
 const store = new Store();
@@ -111,10 +110,7 @@ app.whenReady().then(() => {
 
   ipcMain.on(SAVE_SETTINGS, (evt, args) => {
     store.set(ALL_SETTINGS, args);
-  });
-
-  ipcMain.on(READ_SETTINGS, (evt) => {
-    evt.reply(store.get(ALL_SETTINGS));
+    evt.reply(SAVE_SETTINGS, args);
   });
 
   ipcMain.on(ATTACH_SHELL, (evt, args) => {
