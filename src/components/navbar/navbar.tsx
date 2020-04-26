@@ -1,13 +1,31 @@
 import React from 'react';
-import { Box, IconButton, useColorMode, Tooltip } from '@chakra-ui/core';
+import {
+  Box,
+  IconButton,
+  useColorMode,
+  Tooltip,
+  useDisclosure
+} from '@chakra-ui/core';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
+import Preferences from '../../screens/preferences/preferences';
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
   const loadApps = useLoadApps();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <Box p={2} width="auto" pos="fixed" right={0} top={0}>
+      <Tooltip label="Preferences" aria-label="Open preferences">
+        <IconButton
+          opacity={0.65}
+          fontSize="xl"
+          variant="ghost"
+          icon="settings"
+          onClick={onOpen}
+          aria-label="Open preferences"
+        />
+      </Tooltip>
       <Tooltip label="Reload apps" aria-label="Reload apps">
         <IconButton
           opacity={0.65}
@@ -31,6 +49,7 @@ export default function Navbar() {
           aria-label="toggle-dark-mode"
         />
       </Tooltip>
+      <Preferences isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 }

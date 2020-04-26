@@ -11,31 +11,37 @@ export function useLoadApps() {
         dispatch({ type: 'SET_FETCHING', payload: { isFetching: true } });
       }
 
-      listContainerApps()
-        .then((appStatus) => {
-          dispatch({
-            type: 'SET_STATUS',
-            payload: {
-              status: appStatus
-            }
-          });
-        })
-        .catch((err) =>
-          dispatch({
-            type: 'SET_ERROR',
-            payload: {
-              error: err
-            }
+      return new Promise((resolve, reject) => {
+        listContainerApps()
+          .then((appStatus) => {
+            resolve(appStatus);
+
+            dispatch({
+              type: 'SET_STATUS',
+              payload: {
+                status: appStatus
+              }
+            });
           })
-        )
-        .finally(() =>
-          dispatch({
-            type: 'SET_FETCHING',
-            payload: {
-              isFetching: false
-            }
+          .catch((err) => {
+            reject(err);
+
+            dispatch({
+              type: 'SET_ERROR',
+              payload: {
+                error: err
+              }
+            });
           })
-        );
+          .finally(() =>
+            dispatch({
+              type: 'SET_FETCHING',
+              payload: {
+                isFetching: false
+              }
+            })
+          );
+      });
     },
     [dispatch]
   );
