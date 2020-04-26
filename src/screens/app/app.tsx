@@ -18,6 +18,7 @@ import { useAppStatus } from '../../contexts/app-status/app-status';
 import MyApps from '../my-apps/my-apps';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
+import NoConnection from '../../components/no-connection/no-connection';
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -48,13 +49,20 @@ export default function App() {
         </TabList>
         <TabPanels p={6} pb={0} pt={0}>
           <TabPanel>
-            {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
-            {!allAppStatus.isFetching && allAppStatus.status.length === 0 && (
-              <EmptyState
-                height="calc(100vh - 90px)"
-                onCreateClick={() => setTabIndex(1)}
+            {allAppStatus.error?.errno === 'ECONNREFUSED' && (
+              <NoConnection
+                onUpdateDockerSettingsClick={() => setTabIndex(2)}
               />
             )}
+            {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
+            {!allAppStatus.isFetching &&
+              allAppStatus.error?.errno !== 'ECONNREFUSED' &&
+              allAppStatus.status.length === 0 && (
+                <EmptyState
+                  height="calc(100vh - 90px)"
+                  onCreateClick={() => setTabIndex(1)}
+                />
+              )}
             {!allAppStatus.isFetching && allAppStatus.status.length > 0 && (
               <MyApps />
             )}

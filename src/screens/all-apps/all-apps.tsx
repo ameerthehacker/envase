@@ -15,6 +15,7 @@ import {
 } from '../../services/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
+import { useAppStatus } from '../../contexts/app-status/app-status';
 
 export interface AllAppsProps {
   apps: Formula[];
@@ -39,6 +40,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   const toast = useToast();
   const appFormResult = useRef<AppFormResult>();
   const currentStream = useRef<DockerStream>();
+  const { allAppStatus } = useAppStatus();
   const loadApps = useLoadApps();
 
   function createNewApp(values: AppFormResult, app: Formula) {
@@ -65,6 +67,7 @@ export default function AllApps({ apps }: AllAppsProps) {
       {apps.map((app, index) => (
         <Box key={index} marginTop={4}>
           <AppCard
+            isDisabled={allAppStatus.error !== undefined}
             onCreateClick={() => {
               setSelectedApp(apps[index]);
               onFormOpen();

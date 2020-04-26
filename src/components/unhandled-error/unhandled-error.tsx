@@ -30,7 +30,9 @@ export default class UnhandledError extends Component<{}, UnhandledErrorState> {
         <Stack height="100vh" alignItems="center" justifyContent="center">
           <Stack alignItems="center" spacing={3}>
             <Box as={FaSadCry} size="xs" />
-            <Text fontSize="4xl">Sorry, something went wrong!</Text>
+            <Text fontSize="2xl" fontWeight="light">
+              Sorry, something went wrong!
+            </Text>
             <Button
               onClick={() => {
                 const issueBody = `${this.state.error}${this.errorInfo.componentStack}`;

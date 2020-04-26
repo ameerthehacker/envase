@@ -2,8 +2,13 @@ import React, { useContext, useReducer, Dispatch } from 'react';
 import { createContext, ReactNode } from 'react';
 import { Formula } from '../../contracts/formula';
 
+export interface DockerError {
+  errno: 'ECONNREFUSED';
+  code: 'ECONNREFUSED';
+}
+
 export interface AllAppStatus {
-  error?: string;
+  error?: DockerError;
   isFetching: boolean;
   status: AppStatus[];
 }
@@ -100,7 +105,7 @@ const reducer = (state: AllAppStatus, action: Action): AllAppStatus => {
       return { ...state };
     }
     case 'SET_STATUS': {
-      return { ...state, status: [...action.payload.status] };
+      return { ...state, error: undefined, status: [...action.payload.status] };
     }
     case 'SET_FETCHING': {
       return { ...state, isFetching: action.payload.isFetching };
@@ -174,7 +179,7 @@ type Action =
   | {
       type: 'SET_ERROR';
       payload: {
-        error?: string;
+        error?: DockerError;
       };
     };
 
