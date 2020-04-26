@@ -20,9 +20,10 @@ import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
 import NoConnection from '../../components/no-connection/no-connection';
 import './app.scss';
+import Settings from '../settings/settings';
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(2);
   const { allAppStatus } = useAppStatus();
   const handleTabChange = (index: number) => {
     setTabIndex(index);
@@ -72,7 +73,7 @@ export default function App() {
             <AllApps apps={FORMULAS} />
           </TabPanel>
           <TabPanel>
-            <p>settings!</p>
+            <Settings />
           </TabPanel>
         </TabPanels>
       </Tabs>
