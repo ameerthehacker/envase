@@ -1,3 +1,4 @@
+// this file is shared between electron and the react client
 const IPC_CHANNELS = {
   OPEN_FOLDER_DIALOG: 'OPEN_FOLDER_DIALOG',
   GET_IMAGE_TAGS: 'GET_IMAGE_TAGS',

@@ -1,15 +1,15 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const {
-  IPC_CHANNELS,
-  ALL_SETTINGS,
-  WIN_DIMENSION
-} = require('./src/constants');
+
 const path = require('path');
 const axios = require('axios').default;
 const Store = require('electron-store');
 const fs = require('fs');
 const Docker = require('dockerode');
-
+const {
+  IPC_CHANNELS,
+  ALL_SETTINGS,
+  WIN_DIMENSION
+} = require('./src/constants');
 const {
   GET_IMAGE_TAGS,
   OPEN_FOLDER_DIALOG,
@@ -32,6 +32,8 @@ if (!fs.existsSync(store.path)) {
 
 if (process.env.NODE_ENV === 'development') {
   uiURL = 'http://localhost:3000';
+} else {
+  uiUrl = `file:///${path.join(__dirname, 'index.html')}`;
 }
 
 app.allowRendererProcessReuse = false;
@@ -59,11 +61,9 @@ function createWindow(url, parent = null) {
     ...config
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    win.loadURL(url);
+  win.loadURL(url);
 
-    win.on('ready-to-show', () => win.show());
-  }
+  win.on('ready-to-show', () => win.show());
 
   return win;
 }
@@ -92,6 +92,8 @@ app.whenReady().then(() => {
         })
         .catch((err) => console.log('Waiting for UI to start...'));
     }, 2000);
+  } else {
+    win = createWindow(uiURL);
   }
 
   // listen for ipc
