@@ -72,7 +72,7 @@ export default function MyApps() {
   );
 
   return (
-    <Stack direction="row">
+    <Stack flexWrap="wrap" direction="row">
       {!allAppStatus.isFetching &&
         allAppStatus.status.map((status, index) => (
           <Box marginTop={4} key={index}>
