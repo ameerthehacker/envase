@@ -46,7 +46,7 @@ export default function App() {
             <IconText icon={<Icon name="settings" />} text="Preferences" />
           </Tab>
         </TabList>
-        <TabPanels p={6} pb={0}>
+        <TabPanels p={6} pb={0} pt={0}>
           <TabPanel>
             {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
             {!allAppStatus.isFetching && allAppStatus.status.length === 0 && (

@@ -63,7 +63,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   return (
     <Stack direction="row" flexWrap="wrap">
       {apps.map((app, index) => (
-        <Box key={index}>
+        <Box key={index} marginTop={4}>
           <AppCard
             onCreateClick={() => {
               setSelectedApp(apps[index]);

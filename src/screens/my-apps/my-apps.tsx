@@ -75,7 +75,7 @@ export default function MyApps() {
     <Stack direction="row">
       {!allAppStatus.isFetching &&
         allAppStatus.status.map((status, index) => (
-          <Box key={index}>
+          <Box marginTop={4} key={index}>
             <AppStatusCard
               name={status.name}
               logo={status.formula.logo}
