@@ -19,6 +19,7 @@ import MyApps from '../my-apps/my-apps';
 import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
 import NoConnection from '../../components/no-connection/no-connection';
+import './app.scss';
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -37,13 +38,13 @@ export default function App() {
       <Navbar />
       <Tabs index={tabIndex} onChange={handleTabChange}>
         <TabList>
-          <Tab p={4}>
+          <Tab p={4} className="no-box-shadow">
             <IconText icon={<Box as={FaRocket} />} text="My Apps" />
           </Tab>
-          <Tab p={4}>
+          <Tab p={4} className="no-box-shadow">
             <IconText icon={<Box as={FaListUl} />} text="All Apps" />
           </Tab>
-          <Tab p={4}>
+          <Tab p={4} className="no-box-shadow">
             <IconText icon={<Icon name="settings" />} text="Preferences" />
           </Tab>
         </TabList>
