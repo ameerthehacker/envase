@@ -15,29 +15,33 @@ export default function NoConnection({
 }: NoConnectionProps) {
   return (
     <Stack height="100vh" alignItems="center" justifyContent="center">
-      <Stack alignItems="center" spacing={3}>
+      <Stack alignItems="center" spacing={5}>
         <Box as={FaSkullCrossbones} size="xs" />
-        <Text fontSize="2xl" fontWeight="light">
-          Sorry, unable to connect to docker!
-        </Text>
-        <Stack direction="row">
-          <Button
-            isLoading={isRetrying}
-            loadingText="Retrying..."
-            onClick={onRetryClick}
-            leftIcon="repeat"
-            variantColor="green"
-          >
-            Retry
-          </Button>
-          <Button
-            leftIcon="settings"
-            onClick={onPreferencesClick}
-            variantColor="orange"
-          >
-            Preferences
-          </Button>
-        </Stack>
+        <Box>
+          <Text fontSize="2xl" fontWeight="light">
+            Sorry, unable to connect to docker!
+          </Text>
+        </Box>
+        <Box>
+          <Stack direction="row">
+            <Button
+              isLoading={isRetrying}
+              loadingText="Retrying..."
+              onClick={onRetryClick}
+              leftIcon="repeat"
+              variantColor="green"
+            >
+              Retry
+            </Button>
+            <Button
+              leftIcon="settings"
+              onClick={onPreferencesClick}
+              variantColor="orange"
+            >
+              Preferences
+            </Button>
+          </Stack>
+        </Box>
       </Stack>
     </Stack>
   );

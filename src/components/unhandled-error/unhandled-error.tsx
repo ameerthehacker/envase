@@ -28,24 +28,28 @@ export default class UnhandledError extends Component<{}, UnhandledErrorState> {
     if (this.state.hasError) {
       return (
         <Stack height="100vh" alignItems="center" justifyContent="center">
-          <Stack alignItems="center" spacing={3}>
+          <Stack alignItems="center" spacing={5}>
             <Box as={FaSadCry} size="xs" />
-            <Text fontSize="2xl" fontWeight="light">
-              Sorry, something went wrong!
-            </Text>
-            <Button
-              onClick={() => {
-                const issueBody = `${this.state.error}${this.errorInfo.componentStack}`;
-                const issueLink = encodeURI(
-                  `https://github.com/ameerthehacker/dockapp/issues/new?title=Unhandled Error&body=${issueBody}`
-                );
+            <Box>
+              <Text fontSize="2xl" fontWeight="light">
+                Sorry, something went wrong!
+              </Text>
+            </Box>
+            <Box>
+              <Button
+                onClick={() => {
+                  const issueBody = `${this.state.error}${this.errorInfo.componentStack}`;
+                  const issueLink = encodeURI(
+                    `https://github.com/ameerthehacker/dockapp/issues/new?title=Unhandled Error&body=${issueBody}`
+                  );
 
-                open(issueLink);
-              }}
-              variantColor="orange"
-            >
-              Report Issue
-            </Button>
+                  open(issueLink);
+                }}
+                variantColor="orange"
+              >
+                Report Issue
+              </Button>
+            </Box>
           </Stack>
         </Stack>
       );
