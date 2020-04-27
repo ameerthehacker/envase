@@ -3,7 +3,7 @@ import logo from './logo.svg';
 
 const VSCODE: Formula = {
   name: 'VS Code',
-  shell: '/bin/bash',
+  defaultShell: '/bin/bash',
   logo,
   data: {
     name: {

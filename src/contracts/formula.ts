@@ -6,7 +6,7 @@ export interface Formula {
   env: Record<string, string>;
   image: string;
   logo: string;
-  shell: string;
+  defaultShell: string;
   ports?: Record<string, string>;
   volumes?: Record<string, string>;
   isCli?: boolean;

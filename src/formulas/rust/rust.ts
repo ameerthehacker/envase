@@ -3,7 +3,7 @@ import logo from './logo.png';
 
 const RUST: Formula = {
   name: 'Rust',
-  shell: '/bin/bash',
+  defaultShell: '/bin/bash',
   logo,
   data: {
     name: {

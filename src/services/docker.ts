@@ -133,12 +133,16 @@ export function shellIntoApp(containerId: string) {
 
   return container.inspect().then((containerInfo) => {
     const formula: Formula = JSON.parse(containerInfo.Config.Labels.dockapp);
+    const version = containerInfo.Config.Labels.version;
+    // alpine images don't have bash so switch to sh
+    const shell =
+      version && version.includes('alpine') ? '/bin/sh' : formula.defaultShell;
 
     return dockerode.getContainer(containerId).exec({
       AttachStdin: true,
       AttachStdout: true,
       AttachStderr: true,
-      Cmd: [formula.shell],
+      Cmd: [shell],
       Tty: true
     });
   });
@@ -160,7 +164,13 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     :
   done
   `;
-  const Cmd = app.isCli ? [app.shell, '-c', infiniteLoopScript] : [];
+  // alpine images don't have bash so switch to sh
+  const shell =
+    values.version && values.version.includes('alpine')
+      ? '/bin/sh'
+      : app.defaultShell;
+
+  const Cmd = app.isCli ? [shell, '-c', infiniteLoopScript] : [];
 
   if (interpolatedFormula.ports) {
     const portConfig = getExposedPortsForDockerAPI(interpolatedFormula.ports);
@@ -179,7 +189,9 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     Env: envList,
     Labels: {
       dockapp: JSON.stringify(interpolatedFormula),
-      'created-by-dockapp': 'yes'
+      'created-by-dockapp': 'yes',
+      version: values.version,
+      image: app.image
     },
     Cmd,
     ExposedPorts: exposedPorts,

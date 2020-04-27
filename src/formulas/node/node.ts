@@ -3,7 +3,7 @@ import logo from './logo.svg';
 
 const NODE: Formula = {
   name: 'Node.js',
-  shell: '/bin/sh',
+  defaultShell: '/bin/bash',
   logo,
   data: {
     name: {

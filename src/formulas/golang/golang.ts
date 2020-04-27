@@ -3,7 +3,7 @@ import logo from './logo.svg';
 
 const GOLANG: Formula = {
   name: 'Go',
-  shell: '/bin/bash',
+  defaultShell: '/bin/bash',
   logo,
   data: {
     name: {

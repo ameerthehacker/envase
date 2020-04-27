@@ -4,7 +4,7 @@ import logo from './logo.png';
 const POSTGRES: Formula = {
   name: 'Postgres',
   logo,
-  shell: '/bin/bash',
+  defaultShell: '/bin/bash',
   data: {
     name: {
       type: 'string',

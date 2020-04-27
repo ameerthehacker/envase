@@ -3,7 +3,7 @@ import logo from './logo.png';
 
 const PYTHON: Formula = {
   name: 'Python',
-  shell: '/bin/bash',
+  defaultShell: '/bin/bash',
   logo,
   data: {
     name: {
