@@ -16,7 +16,6 @@
     "!.prettierignore",
     "!.eslintignore",
     "!LICENSE",
-    "!TODO.md",
     "!tsconfig.json",
     "!electron.build.json"
   ]
