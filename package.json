@@ -7,17 +7,16 @@
   "scripts": {
     "dev": "concurrently -k yarn:dev-electron yarn:dev-ui",
     "dev-electron": "cross-env NODE_ENV=development electron ./main.js",
+    "dev-ui": "cross-env BROWSER=none react-scripts start",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "lint": "eslint . --ext .ts,.tsx --fix",
+    "lint:staged": "eslint --fix",
+    "prettify": "prettier --write",
     "build": "yarn build-react && electron-builder --config electron.build.json",
     "build-mac": "yarn build --mac",
     "build-win": "yarn build --win",
     "build-linux": "yarn build --linux",
-    "build-react": "react-scripts build",
-    "dev-ui": "cross-env BROWSER=none react-scripts start",
-    "build-ui": "react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
-    "lint": "eslint . --ext .ts,.tsx --fix",
-    "lint:staged": "eslint --fix",
-    "prettify": "prettier --write"
+    "build-react": "react-scripts build"
   },
   "engines": {
     "node": ">=10"
