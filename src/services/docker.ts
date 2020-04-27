@@ -157,6 +157,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   trap exit_script SIGINT SIGTERM
   while true
   do
+    :
   done
   `;
   const Cmd = app.isCli ? [app.shell, '-c', infiniteLoopScript] : [];
