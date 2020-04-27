@@ -31,9 +31,9 @@ if (!fs.existsSync(store.path)) {
 }
 
 if (process.env.NODE_ENV === 'development') {
-  uiURL = 'http://localhost:3000';
+  uiURL = 'http://localhost:3000#';
 } else {
-  uiUrl = `file:///${path.join(__dirname, 'index.html')}`;
+  uiURL = `file:///${path.join(__dirname, 'build', 'index.html#')}`;
 }
 
 app.allowRendererProcessReuse = false;
@@ -71,6 +71,7 @@ function createWindow(url, parent = null) {
 app.whenReady().then(() => {
   if (process.env.NODE_ENV === 'development') {
     const debug = require('electron-debug');
+
     const axios = require('axios').default;
     // adds helpful debugging capabilities
     debug({
@@ -185,7 +186,7 @@ app.on('activate', () => {
   }
 });
 
-app.on('quit', () => {
+app.on('before-quit', () => {
   if (win) {
     const [width, height] = win.getSize();
 

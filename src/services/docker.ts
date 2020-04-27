@@ -11,6 +11,8 @@ import {
 } from '../utils/utils';
 import { AppStatus } from '../contexts/app-status/app-status';
 import { ContainerInfo } from 'dockerode';
+import { FORMULAS } from '../formulas';
+import { Optional } from 'utility-types';
 
 const { CHECK_IMAGE_EXISTS, ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -155,7 +157,6 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   trap exit_script SIGINT SIGTERM
   while true
   do
-  	echo "Press CTRL+C to stop the script execution"
   done
   `;
   const Cmd = app.isCli ? [app.shell, '-c', infiniteLoopScript] : [];
@@ -240,16 +241,23 @@ export function listContainerApps(): Promise<AppStatus[]> {
         }
       })
       .then((containers) => {
-        const appStatus: AppStatus[] = containers.map((container) => ({
-          id: container.Id,
-          inTransit: false,
-          name: container.Names[0].substring(1),
-          state: getAppContainerState(container),
-          formula: JSON.parse(container.Labels['dockapp']),
-          isDeleting: false
-        }));
+        const appStatus: Optional<AppStatus, 'formula'>[] = containers.map(
+          (container) => {
+            const appName = JSON.parse(container.Labels['dockapp']).name;
+            const formula = FORMULAS.find((elem) => elem.name === appName);
 
-        resolve(appStatus);
+            return {
+              id: container.Id,
+              inTransit: false,
+              name: container.Names[0].substring(1),
+              state: getAppContainerState(container),
+              formula,
+              isDeleting: false
+            };
+          }
+        );
+
+        resolve(appStatus.filter((status) => status.formula) as AppStatus[]);
       })
       .catch((err) => reject(err));
   });

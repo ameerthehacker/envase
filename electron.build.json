@@ -1,0 +1,23 @@
+{
+  "extends": null,
+  "appId": "com.ameerthehacker.dockapp",
+  "files": [
+    "**",
+    "!src",
+    "build",
+    "src/constants.js",
+    "!dist",
+    "!scripts",
+    "!tests",
+    "!public",
+    "!.prettierrc.json",
+    "!.eslintrc.json",
+    "!README.md",
+    "!.prettierignore",
+    "!.eslintignore",
+    "!LICENSE",
+    "!TODO.md",
+    "!tsconfig.json",
+    "!electron.build.json"
+  ]
+}
