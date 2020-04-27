@@ -186,7 +186,7 @@ app.on('activate', () => {
   }
 });
 
-app.on('before-quit', () => {
+app.on('will-quit', () => {
   if (win) {
     const [width, height] = win.getSize();
 
