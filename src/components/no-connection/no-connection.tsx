@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Box, Text, Button } from '@chakra-ui/core';
-import { FaSkullCrossbones } from 'react-icons/fa';
+import { FaSadTear } from 'react-icons/fa';
 
 export interface NoConnectionProps {
   isRetrying: boolean;
@@ -16,7 +16,7 @@ export default function NoConnection({
   return (
     <Stack height="100vh" alignItems="center" justifyContent="center">
       <Stack alignItems="center" spacing={5}>
-        <Box as={FaSkullCrossbones} size="xs" />
+        <Box as={FaSadTear} size="xs" />
         <Box>
           <Text fontSize="2xl" fontWeight="light">
             Sorry, unable to connect to docker!
