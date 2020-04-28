@@ -1,5 +1,5 @@
 import { reducer, AppStatus } from './app-status';
-import MY_FORMULA from './formula.fixture';
+import { FORMULA } from '../../../tests/fixtures/app.fixture';
 
 describe('AppStatus reducer', () => {
   it('should update the state with start action', () => {
@@ -9,7 +9,7 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'mysql',
         state: 'running',
-        formula: MY_FORMULA,
+        formula: FORMULA,
         isDeleting: false
       },
       {
@@ -17,7 +17,7 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'vscode',
         state: 'stopped',
-        formula: MY_FORMULA,
+        formula: FORMULA,
         isDeleting: false
       }
     ];
@@ -35,7 +35,7 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'mysql',
           state: 'running',
-          formula: MY_FORMULA,
+          formula: FORMULA,
           isDeleting: false
         },
         {
@@ -43,7 +43,7 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'vscode',
           state: 'running',
-          formula: MY_FORMULA,
+          formula: FORMULA,
           isDeleting: false
         }
       ]
@@ -57,7 +57,7 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'mysql',
         state: 'running',
-        formula: MY_FORMULA,
+        formula: FORMULA,
         isDeleting: false
       },
       {
@@ -65,7 +65,7 @@ describe('AppStatus reducer', () => {
         inTransit: false,
         name: 'vscode',
         state: 'stopped',
-        formula: MY_FORMULA,
+        formula: FORMULA,
         isDeleting: false
       }
     ];
@@ -83,7 +83,7 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'mysql',
           state: 'stopped',
-          formula: MY_FORMULA,
+          formula: FORMULA,
           isDeleting: false
         },
         {
@@ -91,7 +91,7 @@ describe('AppStatus reducer', () => {
           inTransit: false,
           name: 'vscode',
           state: 'stopped',
-          formula: MY_FORMULA,
+          formula: FORMULA,
           isDeleting: false
         }
       ]
