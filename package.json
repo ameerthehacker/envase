@@ -86,7 +86,7 @@
     "*.{js,ts,tsx,html,json,scss,md,yml,spec}": [
       "yarn prettify"
     ],
-    "*.{spec,ts,tsx}": [
+    "*.{spec,js,ts,tsx}": [
       "yarn lint:staged"
     ]
   },
