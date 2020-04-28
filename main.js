@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-
 const path = require('path');
 const axios = require('axios').default;
 const Store = require('electron-store');
@@ -91,7 +91,7 @@ app.whenReady().then(() => {
           }
           clearInterval(timer);
         })
-        .catch((err) => console.log('Waiting for UI to start...'));
+        .catch(() => console.log('Waiting for UI to start...'));
     }, 2000);
   } else {
     win = createWindow(uiURL);
@@ -153,7 +153,7 @@ app.whenReady().then(() => {
 
     axios
       .get(`https://index.docker.io/v1/repositories/${image}/tags/${tag}`)
-      .then((res) => {
+      .then(() => {
         evt.reply(CHECK_IMAGE_EXISTS, {
           error: false,
           exists: true
