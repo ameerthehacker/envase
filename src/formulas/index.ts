@@ -6,7 +6,18 @@ import REDIS from './redis/redis';
 import GOLANG from './golang/golang';
 import RUST from './rust/rust';
 import PYTHON from './python/python';
+import COUCHDB from './couchdb/couchdb';
 
-const FORMULAS = [MYSQL, VSCODE, NODE, POSTGRES, REDIS, GOLANG, RUST, PYTHON];
+const FORMULAS = [
+  MYSQL,
+  VSCODE,
+  NODE,
+  POSTGRES,
+  REDIS,
+  GOLANG,
+  RUST,
+  PYTHON,
+  COUCHDB
+];
 
 export { FORMULAS };
