@@ -84,6 +84,8 @@ export default function AllApps({ apps }: AllAppsProps) {
         isOpen={isProgressOpen}
         onClose={() => {
           onProgressClose();
+          // clear the previous progress messages
+          setPullProgress(undefined);
           currentStream.current?.destroy();
         }}
         progress={pullProgress}
@@ -144,8 +146,6 @@ export default function AllApps({ apps }: AllAppsProps) {
                   },
                   () => {
                     onProgressClose();
-                    // clear the previous progress messages
-                    setPullProgress(undefined);
 
                     if (
                       currentStream.current &&

@@ -1,5 +1,6 @@
 import { FORMULAS } from '../formulas';
 import { Formula } from '../contracts/formula';
+import { cloneDeep } from 'lodash-es';
 
 export function capitalize(text: string) {
   if (text.length > 0) {
@@ -29,19 +30,25 @@ export function interpolateFormula(
   formula: Formula,
   data: Record<string, string>
 ) {
-  for (const env in formula.env) {
-    formula.env[env] = interpolate(formula.env[env], data);
+  // don't mutate here, it leads to frustrating bugs
+  const clonedFormula = cloneDeep(formula);
+
+  for (const env in clonedFormula.env) {
+    clonedFormula.env[env] = interpolate(clonedFormula.env[env], data);
   }
 
-  for (const port in formula.ports) {
-    formula.ports[port] = interpolate(formula.ports[port], data);
+  for (const port in clonedFormula.ports) {
+    clonedFormula.ports[port] = interpolate(clonedFormula.ports[port], data);
   }
 
-  for (const volume in formula.volumes) {
-    formula.volumes[volume] = interpolate(formula.volumes[volume], data);
+  for (const volume in clonedFormula.volumes) {
+    clonedFormula.volumes[volume] = interpolate(
+      clonedFormula.volumes[volume],
+      data
+    );
   }
 
-  return formula;
+  return clonedFormula;
 }
 
 export function getDockerHubLinkToTags(name: string) {

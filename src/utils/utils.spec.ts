@@ -10,6 +10,7 @@ import {
   getVolumesForDockerAPI,
   keyToLabelText
 } from './utils';
+import { cloneDeep } from 'lodash-es';
 
 jest.mock('../formulas', () => ({
   FORMULAS: [
@@ -57,11 +58,12 @@ describe('utils', () => {
     expect(getImageRepoTag('library/mysql', '2')).toBe('library/mysql:2');
   });
 
-  it('interpolateFormula should interpolate env, ports, volumes', () => {
+  it('interpolateFormula() should interpolate env, ports, volumes', () => {
     expect(
       interpolateFormula(
         {
           data: {},
+          defaultShell: '/bin/bash',
           env: {
             PASSWORD: '%password%'
           },
@@ -79,6 +81,7 @@ describe('utils', () => {
       )
     ).toEqual({
       data: {},
+      defaultShell: '/bin/bash',
       env: {
         PASSWORD: 'my-pass'
       },
@@ -92,6 +95,34 @@ describe('utils', () => {
         '3000': '3001'
       }
     });
+  });
+
+  it('interpolateFormula() should not mutate formula', () => {
+    const formula = {
+      data: {},
+      defaultShell: '/bin/bash',
+      env: {
+        PASSWORD: '%password%'
+      },
+      volumes: {
+        '/data': '%volume%'
+      },
+      image: 'library/mysql',
+      logo: 'some-logo',
+      name: 'mysql',
+      ports: {
+        '3000': '%port%'
+      }
+    };
+    const clonedFormula = cloneDeep(formula);
+
+    interpolateFormula(formula, {
+      password: 'my-pass',
+      volume: 'my-volume',
+      port: '3001'
+    });
+
+    expect(formula).toEqual(clonedFormula);
   });
 
   it('getEnvForDockerAPI() should return envlist', () => {
