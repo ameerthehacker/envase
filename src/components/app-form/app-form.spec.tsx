@@ -12,10 +12,10 @@ jest.mock('../../services/native', () => ({
   }
 }));
 
-const renderWitFormik = (children: ReactElement) =>
+const renderWitFormik = (children: ReactElement, initialValues: any = {}) =>
   render(
     /* eslint-disable @typescript-eslint/no-empty-function */
-    <Formik initialValues={{}} onSubmit={() => {}}>
+    <Formik initialValues={initialValues} onSubmit={() => {}}>
       {children}
     </Formik>
   );
@@ -43,6 +43,31 @@ describe('AppForm', () => {
       'Name of the MySQL instance'
     );
     expect(input.getAttribute('type')).toBe('text');
+  });
+
+  it('should render a dropdown', () => {
+    const { getByLabelText } = renderWitFormik(
+      <AppForm
+        app={{
+          ...FORMULA,
+          data: {
+            auth: {
+              description: 'Allow auth',
+              type: 'option',
+              options: ['yes', 'no'],
+              required: true
+            }
+          }
+        }}
+      />
+    );
+
+    const select = getByLabelText('Auth') as HTMLSelectElement;
+    const options = select.getElementsByTagName('option');
+
+    expect(options.item(0)?.text).toBe('Allow auth');
+    expect(options.item(1)?.text).toBe('yes');
+    expect(options.item(2)?.text).toBe('no');
   });
 
   it('should render a password box', () => {

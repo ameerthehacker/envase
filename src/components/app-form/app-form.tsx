@@ -12,7 +12,8 @@ import {
   NumberDecrementStepper,
   FormControl,
   FormErrorMessage,
-  Link
+  Link,
+  Select
 } from '@chakra-ui/core';
 import { keyToLabelText } from '../../utils/utils';
 import { Field, Form } from 'formik';
@@ -56,6 +57,7 @@ export default function AppForm({ app }: AppFormProps) {
     const isInputField = type === 'string' || type === 'password';
     const isNumberField = type === 'number';
     const isPathField = type === 'path';
+    const isSelectField = type === 'option';
     let validator: ((value: string) => string | undefined) | undefined;
     // placeholder should show optional if it is not required
     const placeholder = `${data[fieldName].description}${
@@ -63,6 +65,7 @@ export default function AppForm({ app }: AppFormProps) {
     }`;
     // unique id for each field
     const fieldId = `${fieldName}-field`;
+    const options = data[fieldName].options || [];
 
     if (data[fieldName].required) {
       validator = requiredValidator(fieldName);
@@ -101,6 +104,15 @@ export default function AppForm({ app }: AppFormProps) {
                     <NumberDecrementStepper />
                   </NumberInputStepper>
                 </NumberInput>
+              )}
+              {isSelectField && (
+                <Select id={fieldId} placeholder={placeholder} {...field}>
+                  {options.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </Select>
               )}
               {isPathField && (
                 <FolderPicker

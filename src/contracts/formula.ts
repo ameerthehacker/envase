@@ -13,7 +13,8 @@ export interface Formula {
 }
 
 interface FormulaField {
-  type: 'string' | 'number' | 'password' | 'path';
+  type: 'string' | 'number' | 'password' | 'path' | 'option';
+  options?: string[];
   required?: boolean;
   description: string;
   default?: string | number;
