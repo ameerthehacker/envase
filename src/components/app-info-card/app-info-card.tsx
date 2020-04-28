@@ -17,7 +17,7 @@ export default function AppInfoCard({
       <Stack alignItems="center" spacing={3}>
         <Box height="100px">
           <img
-            width="100px"
+            width="90px"
             src={logo}
             alt="app-logo"
             style={{

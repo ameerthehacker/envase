@@ -7,6 +7,7 @@ import GOLANG from './golang/golang';
 import RUST from './rust/rust';
 import PYTHON from './python/python';
 import COUCHDB from './couchdb/couchdb';
+import GCC from './gcc/gcc';
 
 const FORMULAS = [
   MYSQL,
@@ -17,7 +18,8 @@ const FORMULAS = [
   GOLANG,
   RUST,
   PYTHON,
-  COUCHDB
+  COUCHDB,
+  GCC
 ];
 
 export { FORMULAS };
