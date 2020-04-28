@@ -70,7 +70,6 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "resize-observer": "^1.0.0",
-    "shelljs": "^0.8.4",
     "typescript": "^3.8.3",
     "utility-types": "^3.10.0",
     "xterm": "^4.5.0",
