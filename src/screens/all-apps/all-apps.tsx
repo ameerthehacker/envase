@@ -14,8 +14,8 @@ import {
   getAppsWithName
 } from '../../services/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
-import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
 import { useAppStatus } from '../../contexts/app-status/app-status';
+import { useApp } from '../../hooks/use-app/use-app';
 
 export interface AllAppsProps {
   apps: Formula[];
@@ -41,7 +41,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   const appFormResult = useRef<AppFormResult>();
   const currentStream = useRef<DockerStream>();
   const { allAppStatus } = useAppStatus();
-  const loadApps = useLoadApps();
+  const { load } = useApp();
 
   function createNewApp(values: AppFormResult, app: Formula) {
     createContainerFromApp(values, app)
@@ -59,7 +59,7 @@ export default function AllApps({ apps }: AllAppsProps) {
           status: 'error'
         });
       })
-      .finally(() => loadApps());
+      .finally(() => load());
   }
 
   return (

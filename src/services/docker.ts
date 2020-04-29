@@ -254,8 +254,9 @@ export function listContainerApps(): Promise<AppStatus[]> {
         }
       })
       .then((containers) => {
-        const appStatus: Optional<AppStatus, 'formula'>[] = containers.map(
-          (container) => {
+        const appStatus: Optional<AppStatus, 'formula'>[] = containers
+          .sort((a, b) => (a.Created > b.Created ? 1 : -1))
+          .map((container) => {
             const appName = JSON.parse(container.Labels['dockapp']).name;
             const formula = FORMULAS.find((elem) => elem.name === appName);
 
@@ -267,8 +268,7 @@ export function listContainerApps(): Promise<AppStatus[]> {
               formula,
               isDeleting: false
             };
-          }
-        );
+          });
 
         resolve(appStatus.filter((status) => status.formula) as AppStatus[]);
       })

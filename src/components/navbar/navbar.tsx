@@ -6,12 +6,12 @@ import {
   Tooltip,
   useDisclosure
 } from '@chakra-ui/core';
-import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
+import { useApp } from '../../hooks/use-app/use-app';
 import Preferences from '../../screens/preferences/preferences';
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
-  const loadApps = useLoadApps();
+  const { load } = useApp();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
@@ -31,7 +31,7 @@ export default function Navbar() {
           opacity={0.65}
           fontSize="xl"
           variant="ghost"
-          onClick={() => loadApps()}
+          onClick={() => load()}
           icon="repeat"
           aria-label="reload-apps"
         />

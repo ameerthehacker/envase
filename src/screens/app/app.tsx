@@ -17,7 +17,7 @@ import AllApps from '../all-apps/all-apps';
 import { FORMULAS } from '../../formulas';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import MyApps from '../my-apps/my-apps';
-import { useLoadApps } from '../../hooks/use-load-apps/use-load-apps';
+import { useApp } from '../../hooks/use-app/use-app';
 import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
 import NoConnection from '../../components/no-connection/no-connection';
 import './app.scss';
@@ -33,7 +33,7 @@ export default function App() {
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
-  const loadApps = useLoadApps();
+  const { load } = useApp();
   const {
     isOpen: isPreferencesOpen,
     onClose: onPreferencesClose,
@@ -42,12 +42,12 @@ export default function App() {
   const toast = useToast();
 
   useEffect(() => {
-    loadApps(true);
+    load(true);
 
     ipcRenderer.on(SAVE_SETTINGS, () => {
-      loadApps();
+      load();
     });
-  }, [loadApps]);
+  }, [load]);
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function App() {
           <NoConnection
             isRetrying={allAppStatus.isFetching}
             onRetryClick={() => {
-              loadApps(true).catch((err) => {
+              load(true).catch((err) => {
                 toast({
                   title: 'Retry failed',
                   description: `${err}`,

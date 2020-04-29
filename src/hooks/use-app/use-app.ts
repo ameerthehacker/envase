@@ -1,9 +1,55 @@
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useCallback } from 'react';
-import { startApp, stopApp, deleteApp } from '../../services/docker';
+import {
+  startApp,
+  stopApp,
+  deleteApp,
+  listContainerApps
+} from '../../services/docker';
 
 export function useApp() {
   const { dispatch } = useAppStatus();
+
+  const load = useCallback(
+    async (isInitializing = false) => {
+      if (isInitializing) {
+        dispatch({ type: 'SET_FETCHING', payload: { isFetching: true } });
+      }
+
+      return new Promise((resolve, reject) => {
+        listContainerApps()
+          .then((appStatus) => {
+            resolve(appStatus);
+
+            dispatch({
+              type: 'SET_STATUS',
+              payload: {
+                status: appStatus
+              }
+            });
+          })
+          .catch((err) => {
+            reject(err);
+
+            dispatch({
+              type: 'SET_ERROR',
+              payload: {
+                error: err
+              }
+            });
+          })
+          .finally(() =>
+            dispatch({
+              type: 'SET_FETCHING',
+              payload: {
+                isFetching: false
+              }
+            })
+          );
+      });
+    },
+    [dispatch]
+  );
 
   const start = useCallback(
     (id: string) => {
@@ -113,5 +159,5 @@ export function useApp() {
     [dispatch]
   );
 
-  return { start, stop, del };
+  return { load, start, stop, del };
 }
