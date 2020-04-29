@@ -10,6 +10,7 @@ import COUCHDB from './couchdb/couchdb';
 import GCC from './gcc/gcc';
 import JENKINS from './jenkins/jenkins';
 import MONGO from './mongo/mongo';
+import RUBY from './ruby/ruby';
 
 const FORMULAS = [
   MYSQL,
@@ -23,7 +24,8 @@ const FORMULAS = [
   COUCHDB,
   GCC,
   JENKINS,
-  MONGO
+  MONGO,
+  RUBY
 ];
 
 export { FORMULAS };
