@@ -7,6 +7,7 @@ import { getContainerAppLogs } from '../../services/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
 import { ipcRenderer } from '../../services/native';
 import { IPC_CHANNELS } from '../../constants';
+import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -30,6 +31,11 @@ export default function MyApps() {
     isOpen: isLogsOpen,
     onClose: onLogsClose,
     onOpen: onLogsOpen
+  } = useDisclosure();
+  const {
+    isOpen: isConfirmDialogOpen,
+    onClose: onConfirmDialogClose,
+    onOpen: onConfirmDialogOpen
   } = useDisclosure();
   const toast = useToast();
 
@@ -102,16 +108,10 @@ export default function MyApps() {
                   });
                 })
               }
-              onDeleteClick={() =>
-                del(status.id).catch((err) => {
-                  toast({
-                    title: `Unable to delete ${status.name}`,
-                    description: `${err}`,
-                    isClosable: true,
-                    status: 'error'
-                  });
-                })
-              }
+              onDeleteClick={() => {
+                setSelectedApp(status);
+                onConfirmDialogOpen();
+              }}
               actions={actions}
               onActionClick={(action) => handleAction(status, action)}
             />
@@ -125,6 +125,25 @@ export default function MyApps() {
         isOpen={isLogsOpen}
         logs={selectedAppLogs}
         appName={selectedApp?.name || 'no-app'}
+      />
+      <ConfirmDialogModal
+        isOpen={isConfirmDialogOpen}
+        title="Are you sure?"
+        description={`The app ${selectedApp?.name} will be deleted forever!`}
+        onSubmit={(ok) => {
+          if (ok && selectedApp) {
+            del(selectedApp.id).catch((err) => {
+              toast({
+                title: `Unable to delete ${selectedApp.name}`,
+                description: `${err}`,
+                isClosable: true,
+                status: 'error'
+              });
+            });
+          }
+
+          onConfirmDialogClose();
+        }}
       />
     </Stack>
   );
