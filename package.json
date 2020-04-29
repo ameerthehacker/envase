@@ -1,5 +1,5 @@
 {
-  "name": "dockapp",
+  "name": "envase",
   "version": "0.0.0-development",
   "description": "Homebrew for docker apps",
   "main": "main.js",

@@ -1,6 +1,6 @@
 {
   "extends": null,
-  "appId": "com.ameerthehacker.dockapp",
+  "appId": "com.ameerthehacker.Envase",
   "files": [
     "**",
     "!src",
