@@ -13,7 +13,6 @@ import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
 import { open } from '../../services/native';
 import { CustomAction } from '../../contracts/formula';
-import { interpolateFormula } from '../../utils/utils';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -87,7 +86,7 @@ export default function MyApps() {
         }
       }
     },
-    []
+    [toast]
   );
 
   const handleAction = useCallback(
