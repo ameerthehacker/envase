@@ -38,12 +38,13 @@ if (process.env.NODE_ENV === 'development') {
 
 app.allowRendererProcessReuse = false;
 
-function createWindow(url, parent = null) {
+function createWindow(url, savedWindowSize = true) {
   const winDimension = store.get(WIN_DIMENSION);
-  const width = (winDimension && winDimension.width) || 900;
-  const height = (winDimension && winDimension.height) || 600;
+  const width = (savedWindowSize && winDimension && winDimension.width) || 900;
+  const height =
+    (savedWindowSize && winDimension && winDimension.height) || 600;
 
-  const config = {
+  const win = new BrowserWindow({
     width,
     height,
     show: false,
@@ -51,14 +52,6 @@ function createWindow(url, parent = null) {
       nodeIntegration: true,
       preload: path.join(app.getAppPath(), 'preload.js')
     }
-  };
-
-  if (parent !== null) {
-    config.parent = parent;
-  }
-
-  const win = new BrowserWindow({
-    ...config
   });
 
   win.loadURL(url);
@@ -127,9 +120,9 @@ app.whenReady().then(() => {
     const url = `${uiURL}/shell/${args.containerId}`;
 
     if (args.cmd) {
-      createWindow(`${url}?cmd=${args.cmd}`, win);
+      createWindow(`${url}?cmd=${args.cmd}`);
     } else {
-      createWindow(`${url}`, win);
+      createWindow(`${url}`, false);
     }
   });
 
