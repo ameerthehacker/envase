@@ -78,7 +78,7 @@ export default function MyApps() {
         }
       }
     },
-    [selectedApp]
+    []
   );
 
   const handleAction = useCallback(
