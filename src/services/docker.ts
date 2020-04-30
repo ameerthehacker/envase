@@ -128,7 +128,7 @@ export function pullImage(
   });
 }
 
-export function shellIntoApp(containerId: string) {
+export function shellOrExecIntoApp(containerId: string, cmd?: string | null) {
   const container = dockerode.getContainer(containerId);
 
   return container.inspect().then((containerInfo) => {
@@ -137,12 +137,13 @@ export function shellIntoApp(containerId: string) {
     // alpine images don't have bash so switch to sh
     const shell =
       version && version.includes('alpine') ? '/bin/sh' : formula.defaultShell;
+    const cmdToExecute = cmd && cmd.length > 0 ? cmd : shell;
 
     return dockerode.getContainer(containerId).exec({
       AttachStdin: true,
       AttachStdout: true,
       AttachStderr: true,
-      Cmd: [shell],
+      Cmd: [cmdToExecute],
       Tty: true
     });
   });

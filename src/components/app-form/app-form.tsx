@@ -15,7 +15,7 @@ import {
   Link,
   Select
 } from '@chakra-ui/core';
-import { keyToLabelText } from '../../utils/utils';
+import { keyToLabelText, requiredValidator } from '../../utils/utils';
 import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
@@ -39,18 +39,6 @@ function getInputType(type: string) {
 export default function AppForm({ app }: AppFormProps) {
   const { data } = app;
   const fieldNames = Object.keys(data);
-
-  function requiredValidator(fieldName: string) {
-    return (value: string) => {
-      let error;
-
-      if (!value) {
-        error = `${fieldName} is required`;
-      }
-
-      return error;
-    };
-  }
 
   const formElements = fieldNames.map((fieldName, index) => {
     const type = data[fieldName].type;

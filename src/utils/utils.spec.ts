@@ -8,7 +8,8 @@ import {
   getEnvForDockerAPI,
   getExposedPortsForDockerAPI,
   getVolumesForDockerAPI,
-  keyToLabelText
+  keyToLabelText,
+  requiredValidator
 } from './utils';
 import { cloneDeep } from 'lodash-es';
 
@@ -164,5 +165,17 @@ describe('utils', () => {
 
   it('keyToLabelText() should convert key to label text', () => {
     expect(keyToLabelText('name_the_path')).toBe('Name the path');
+  });
+
+  it('requiredValidator() should return undefined when value is given', () => {
+    const validator = requiredValidator('field');
+
+    expect(validator('something')).toBeFalsy();
+  });
+
+  it('requiredValidator() should return error message when value is given', () => {
+    const validator = requiredValidator('field');
+
+    expect(validator('')).toBe('field is required');
   });
 });

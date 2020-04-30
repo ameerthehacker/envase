@@ -111,3 +111,15 @@ export function getVolumesForDockerAPI(volumes: Record<string, string>) {
 
   return volumeList;
 }
+
+export function requiredValidator(fieldName: string) {
+  return (value: string) => {
+    let error;
+
+    if (!value || value.trim().length === 0) {
+      error = `${fieldName} is required`;
+    }
+
+    return error;
+  };
+}

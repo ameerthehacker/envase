@@ -124,7 +124,13 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on(ATTACH_SHELL, (evt, args) => {
-    createWindow(`${uiURL}/shell/${args.containerId}`, win);
+    const url = `${uiURL}/shell/${args.containerId}`;
+
+    if (args.cmd) {
+      createWindow(`${url}?cmd=${args.cmd}`, win);
+    } else {
+      createWindow(`${url}`, win);
+    }
   });
 
   ipcMain.on(GET_IMAGE_TAGS, (evt, args) => {

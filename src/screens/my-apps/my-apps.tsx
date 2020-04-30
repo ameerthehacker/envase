@@ -8,6 +8,7 @@ import LogsModal from '../../components/logs-modal/logs-modal';
 import { ipcRenderer } from '../../services/native';
 import { IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
+import ExecModal from '../../components/exec-modal/exec-modal';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -25,6 +26,10 @@ export default function MyApps() {
     {
       text: 'Attach Shell',
       value: 'ATTACH_SHELL'
+    },
+    {
+      text: 'Exec Command',
+      value: 'EXEC'
     }
   ];
   const {
@@ -37,13 +42,19 @@ export default function MyApps() {
     onClose: onConfirmDialogClose,
     onOpen: onConfirmDialogOpen
   } = useDisclosure();
+  const {
+    isOpen: isExecOpen,
+    onClose: onExecClose,
+    onOpen: onExecOpen
+  } = useDisclosure();
   const toast = useToast();
 
   const handleAction = useCallback(
     (status: AppStatus, action: string) => {
+      setSelectedApp(status);
+
       switch (action) {
         case 'SHOW_LOGS': {
-          setSelectedApp(status);
           getContainerAppLogs(status.id)
             .then((stream) => {
               currentLogsStream.current = stream;
@@ -71,6 +82,9 @@ export default function MyApps() {
             containerId: status.id
           });
           break;
+        }
+        case 'EXEC': {
+          onExecOpen();
         }
       }
     },
@@ -125,6 +139,18 @@ export default function MyApps() {
         isOpen={isLogsOpen}
         logs={selectedAppLogs}
         appName={selectedApp?.name || 'no-app'}
+      />
+      <ExecModal
+        isOpen={isExecOpen}
+        onSubmit={(cmd) => {
+          onExecClose();
+          if (cmd && cmd.length > 0) {
+            ipcRenderer.send(ATTACH_SHELL, {
+              containerId: selectedApp?.id,
+              cmd: cmd.trim()
+            });
+          }
+        }}
       />
       <ConfirmDialogModal
         isOpen={isConfirmDialogOpen}
