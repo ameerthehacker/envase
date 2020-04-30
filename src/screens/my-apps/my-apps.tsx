@@ -168,6 +168,7 @@ export default function MyApps() {
               }}
               actions={actions}
               // the filtering is to ensure only the actions in the interpolated formula are listed
+              // TODO: save the form values also so that we can interpolate on the fly
               customActions={status.formula.actions?.filter((action) =>
                 status.containerAppInfo.formula?.actions?.find(
                   (interpolatedAction) =>
