@@ -11,6 +11,7 @@ import { ipcRenderer } from '../../services/native';
 import { IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import ExecModal from '../../components/exec-modal/exec-modal';
+import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -23,17 +24,20 @@ export default function MyApps() {
   const actions: Option[] = [
     {
       text: 'Show logs',
-      value: 'SHOW_LOGS'
+      value: 'SHOW_LOGS',
+      icon: FaScroll
     },
     {
       text: 'Attach Shell',
       value: 'ATTACH_SHELL',
-      shouldBeRunning: true
+      shouldBeRunning: true,
+      icon: FaTerminal
     },
     {
       text: 'Exec Command',
       value: 'EXEC',
-      shouldBeRunning: true
+      shouldBeRunning: true,
+      icon: FaRunning
     }
   ];
   const {

@@ -11,10 +11,12 @@ import {
   MenuItem
 } from '@chakra-ui/core';
 import { FaPlay, FaStop, FaWrench } from 'react-icons/fa';
+import { IconType } from 'react-icons/lib/cjs';
 
 export interface Option {
   text: string;
   value: string;
+  icon?: IconType;
   shouldBeRunning?: boolean;
 }
 
@@ -83,6 +85,7 @@ export default function AppStatusCard({
                 onClick={() => onActionClick(action.value)}
                 key={index}
               >
+                {action.icon && <Box mr={2} as={action.icon} />}
                 {action.text}
               </MenuItem>
             ))}
