@@ -1,8 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
-import AppStatusCard, {
-  Option
-} from '../../components/app-status-card/app-status-card';
+import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { getContainerAppLogs } from '../../services/docker';
@@ -12,6 +10,9 @@ import { IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import ExecModal from '../../components/exec-modal/exec-modal';
 import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
+import { Action } from '../../contracts/action';
+import { open } from '../../services/native';
+import { CustomAction } from '../../contracts/formula';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -21,7 +22,7 @@ export default function MyApps() {
   const [selectedApp, setSelectedApp] = useState<AppStatus>();
   const [selectedAppLogs, setSelectedAppLogs] = useState('');
   const currentLogsStream = useRef<NodeJS.ReadableStream>();
-  const actions: Option[] = [
+  const actions: Action[] = [
     {
       text: 'Show logs',
       value: 'SHOW_LOGS',
@@ -57,10 +58,31 @@ export default function MyApps() {
   } = useDisclosure();
   const toast = useToast();
 
+  const handleCustomAction = useCallback(
+    (status: AppStatus, action: CustomAction) => {
+      const containerAppInfo = status?.containerAppInfo;
+
+      if (containerAppInfo && containerAppInfo.formula?.actions) {
+        const interpolatedAction = containerAppInfo.formula.actions.find(
+          (elem) => elem.value === action.value
+        );
+
+        if (interpolatedAction && interpolatedAction.exec) {
+          ipcRenderer.send(ATTACH_SHELL, {
+            containerId: status.id,
+            cmd: interpolatedAction.exec
+          });
+        }
+        if (interpolatedAction && interpolatedAction.openInBrowser) {
+          open(interpolatedAction.openInBrowser);
+        }
+      }
+    },
+    [selectedApp]
+  );
+
   const handleAction = useCallback(
     (status: AppStatus, action: string) => {
-      setSelectedApp(status);
-
       switch (action) {
         case 'SHOW_LOGS': {
           getContainerAppLogs(status.id)
@@ -92,6 +114,7 @@ export default function MyApps() {
           break;
         }
         case 'EXEC': {
+          setSelectedApp(status);
           onExecOpen();
         }
       }
@@ -135,7 +158,13 @@ export default function MyApps() {
                 onConfirmDialogOpen();
               }}
               actions={actions}
-              onActionClick={(action) => handleAction(status, action)}
+              customActions={status.formula.actions}
+              onActionClick={(action) => {
+                handleAction(status, action);
+              }}
+              onCustomActionClick={(action) => {
+                handleCustomAction(status, action);
+              }}
             />
           </Box>
         ))}

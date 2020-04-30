@@ -1,5 +1,6 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
+import { FaCode } from 'react-icons/fa';
 
 const VSCODE: Formula = {
   name: 'VS Code',
@@ -37,7 +38,16 @@ const VSCODE: Formula = {
   },
   volumes: {
     '/home/coder/project': '%project%'
-  }
+  },
+  actions: [
+    {
+      text: 'Open VSCode',
+      value: 'OPEN_VSCODE',
+      icon: FaCode,
+      openInBrowser: 'http://localhost:%port%',
+      shouldBeRunning: true
+    }
+  ]
 };
 
 export default VSCODE;

@@ -13,6 +13,7 @@ import { AppStatus } from '../contexts/app-status/app-status';
 import { ContainerInfo } from 'dockerode';
 import { FORMULAS } from '../formulas';
 import { Optional } from 'utility-types';
+import { ContainerAppInfo } from '../contracts/container-app-info';
 
 const { CHECK_IMAGE_EXISTS, ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -109,6 +110,28 @@ export function checkImageExistence(
   });
 }
 
+export function getContainerAppInfoFromLabels(labels: any): ContainerAppInfo {
+  const formula = JSON.parse(labels.formula);
+  const version = labels.version;
+  const image = labels.image;
+
+  return { formula, version, image };
+}
+
+export function getContainerAppInfo(id: string): Promise<ContainerAppInfo> {
+  return new Promise((resolve, reject) => {
+    dockerode
+      .getContainer(id)
+      .inspect()
+      .then((containerInfo) => {
+        const labels = containerInfo.Config.Labels;
+
+        resolve(getContainerAppInfoFromLabels(labels));
+      })
+      .catch(reject);
+  });
+}
+
 export function pullImage(
   image: string,
   tag: string,
@@ -129,21 +152,19 @@ export function pullImage(
 }
 
 export function shellOrExecIntoApp(containerId: string, cmd?: string | null) {
-  const container = dockerode.getContainer(containerId);
-
-  return container.inspect().then((containerInfo) => {
-    const formula: Formula = JSON.parse(containerInfo.Config.Labels.dockapp);
-    const version = containerInfo.Config.Labels.version;
+  return getContainerAppInfo(containerId).then(({ formula, version }) => {
     // alpine images don't have bash so switch to sh
     const shell =
-      version && version.includes('alpine') ? '/bin/sh' : formula.defaultShell;
-    const cmdToExecute = cmd && cmd.length > 0 ? cmd : shell;
+      version && version.includes('alpine')
+        ? '/bin/sh'
+        : formula?.defaultShell || '/bin/sh';
+    const cmdToExecute = cmd && cmd.length > 0 ? [shell, '-c', cmd] : [shell];
 
     return dockerode.getContainer(containerId).exec({
       AttachStdin: true,
       AttachStdout: true,
       AttachStderr: true,
-      Cmd: [cmdToExecute],
+      Cmd: cmdToExecute,
       Tty: true
     });
   });
@@ -189,8 +210,8 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     Image: getImageRepoTag(app.image, values.version),
     Env: envList,
     Labels: {
-      dockapp: JSON.stringify(interpolatedFormula),
-      'created-by-dockapp': 'yes',
+      formula: JSON.stringify(interpolatedFormula),
+      'created-by-envase': 'yes',
       version: values.version,
       image: app.image
     },
@@ -217,10 +238,8 @@ function getAppContainerState(container: ContainerInfo) {
 export function startApp(containerId: string) {
   const container = dockerode.getContainer(containerId);
 
-  return container.inspect().then((containerInfo) => {
-    const formula: Formula = JSON.parse(containerInfo.Config.Labels.dockapp);
-
-    if (formula.isCli) {
+  return getContainerAppInfo(containerId).then(({ formula }) => {
+    if (formula?.isCli) {
       return new Promise((resolve, reject) => {
         container
           .start()
@@ -251,19 +270,23 @@ export function listContainerApps(): Promise<AppStatus[]> {
       .listContainers({
         all: true,
         filters: {
-          label: ['created-by-dockapp=yes']
+          label: ['created-by-envase=yes']
         }
       })
       .then((containers) => {
         const appStatus: Optional<AppStatus, 'formula'>[] = containers
           .sort((a, b) => (a.Created > b.Created ? 1 : -1))
           .map((container) => {
-            const appName = JSON.parse(container.Labels['dockapp']).name;
-            const formula = FORMULAS.find((elem) => elem.name === appName);
-
+            const containerAppInfo = getContainerAppInfoFromLabels(
+              container.Labels
+            );
+            const formula = FORMULAS.find(
+              (elem) => elem.name === containerAppInfo.formula?.name
+            );
             return {
               id: container.Id,
               inTransit: false,
+              containerAppInfo,
               name: container.Names[0].substring(1),
               state: getAppContainerState(container),
               formula,
@@ -277,8 +300,8 @@ export function listContainerApps(): Promise<AppStatus[]> {
   });
 }
 
-export function getContainerAppLogs(id: string) {
-  return dockerode.getContainer(id).logs({
+export function getContainerAppLogs(containerId: string) {
+  return dockerode.getContainer(containerId).logs({
     stdout: true,
     stderr: true,
     follow: true

@@ -8,17 +8,12 @@ import {
   Menu,
   MenuButton,
   MenuList,
-  MenuItem
+  MenuItem,
+  MenuGroup
 } from '@chakra-ui/core';
 import { FaPlay, FaStop, FaWrench } from 'react-icons/fa';
-import { IconType } from 'react-icons/lib/cjs';
-
-export interface Option {
-  text: string;
-  value: string;
-  icon?: IconType;
-  shouldBeRunning?: boolean;
-}
+import { Action } from '../../contracts/action';
+import { CustomAction } from '../../contracts/formula';
 
 export interface AppStatucCardProps extends AppInfoCardProps {
   state: 'running' | 'stopped';
@@ -26,8 +21,10 @@ export interface AppStatucCardProps extends AppInfoCardProps {
   isDeleting: boolean;
   onStartClick: () => void;
   onStopClick: () => void;
-  actions: Option[];
+  actions: Action[];
+  customActions?: CustomAction[];
   onActionClick: (actionValue: string) => void;
+  onCustomActionClick?: (action: CustomAction) => void;
   onDeleteClick: () => void;
 }
 
@@ -40,6 +37,8 @@ export default function AppStatusCard({
   onStopClick,
   actions,
   onActionClick,
+  customActions,
+  onCustomActionClick,
   onDeleteClick,
   isDeleting
 }: AppStatucCardProps) {
@@ -79,16 +78,34 @@ export default function AppStatusCard({
             <Box as={FaWrench} />
           </MenuButton>
           <MenuList>
-            {actions.map((action, index) => (
-              <MenuItem
-                isDisabled={action.shouldBeRunning && state === 'stopped'}
-                onClick={() => onActionClick(action.value)}
-                key={index}
-              >
-                {action.icon && <Box mr={2} as={action.icon} />}
-                {action.text}
-              </MenuItem>
-            ))}
+            <MenuGroup title="App">
+              {actions.map((action, index) => (
+                <MenuItem
+                  isDisabled={action.shouldBeRunning && state === 'stopped'}
+                  onClick={() => onActionClick(action.value)}
+                  key={index}
+                >
+                  {action.icon && <Box mr={2} as={action.icon} />}
+                  {action.text}
+                </MenuItem>
+              ))}
+            </MenuGroup>
+            {customActions && customActions.length > 0 && (
+              <MenuGroup title="Actions">
+                {customActions.map((action, index) => (
+                  <MenuItem
+                    isDisabled={action.shouldBeRunning && state === 'stopped'}
+                    onClick={() =>
+                      onCustomActionClick && onCustomActionClick(action)
+                    }
+                    key={index}
+                  >
+                    {action.icon && <Box mr={2} as={action.icon} />}
+                    {action.text}
+                  </MenuItem>
+                ))}
+              </MenuGroup>
+            )}
           </MenuList>
         </Menu>
       </Stack>

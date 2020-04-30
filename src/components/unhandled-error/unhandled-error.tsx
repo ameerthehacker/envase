@@ -40,7 +40,7 @@ export default class UnhandledError extends Component<{}, UnhandledErrorState> {
                 onClick={() => {
                   const issueBody = `${this.state.error}${this.errorInfo.componentStack}`;
                   const issueLink = encodeURI(
-                    `https://github.com/ameerthehacker/dockapp/issues/new?title=Unhandled Error&body=${issueBody}`
+                    `https://github.com/ameerthehacker/envase/issues/new?title=Unhandled Error&body=${issueBody}`
                   );
 
                   open(issueLink);

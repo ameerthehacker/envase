@@ -1,3 +1,9 @@
+import { Action } from './action';
+
+export interface CustomAction extends Action {
+  openInBrowser?: string;
+  exec?: string;
+}
 export interface Formula {
   name: string;
   data: {
@@ -10,6 +16,7 @@ export interface Formula {
   ports?: Record<string, string>;
   volumes?: Record<string, string>;
   isCli?: boolean;
+  actions?: CustomAction[];
 }
 
 interface FormulaField {

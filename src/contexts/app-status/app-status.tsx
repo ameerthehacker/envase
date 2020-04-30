@@ -1,6 +1,7 @@
 import React, { useContext, useReducer, Dispatch } from 'react';
 import { createContext, ReactNode } from 'react';
 import { Formula } from '../../contracts/formula';
+import { ContainerAppInfo } from '../../contracts/container-app-info';
 
 export interface DockerError {
   errno: 'ECONNREFUSED';
@@ -17,6 +18,7 @@ export interface AppStatus {
   id: string;
   name: string;
   formula: Formula;
+  containerAppInfo: ContainerAppInfo;
   state: 'running' | 'stopped';
   inTransit: boolean;
   isDeleting: boolean;

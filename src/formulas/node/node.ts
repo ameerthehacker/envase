@@ -1,5 +1,6 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
+import { FaNodeJs } from 'react-icons/fa';
 
 const NODE: Formula = {
   name: 'Node.js',
@@ -19,7 +20,16 @@ const NODE: Formula = {
   },
   isCli: true,
   image: 'library/node',
-  env: {}
+  env: {},
+  actions: [
+    {
+      text: 'Node REPL',
+      value: 'NODE_REPL',
+      icon: FaNodeJs,
+      exec: 'node',
+      shouldBeRunning: true
+    }
+  ]
 };
 
 export default NODE;

@@ -1,5 +1,6 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
+import { FaPlug } from 'react-icons/fa';
 
 const MYSQL: Formula = {
   name: 'MySQL',
@@ -36,7 +37,15 @@ const MYSQL: Formula = {
   },
   volumes: {
     '/var/lib/mysql': '%data%'
-  }
+  },
+  actions: [
+    {
+      text: 'Open MySQL CLI',
+      value: 'OPEN_MYSQL_CLI',
+      icon: FaPlug,
+      exec: 'mysql -p'
+    }
+  ]
 };
 
 export default MYSQL;

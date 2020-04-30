@@ -48,6 +48,19 @@ export function interpolateFormula(
     );
   }
 
+  if (clonedFormula.actions) {
+    for (const i in clonedFormula.actions) {
+      const action = clonedFormula.actions[i];
+
+      clonedFormula.actions[i] = {
+        ...action,
+        exec: action.exec && interpolate(action.exec, data),
+        openInBrowser:
+          action.openInBrowser && interpolate(action.openInBrowser, data)
+      };
+    }
+  }
+
   return clonedFormula;
 }
 
