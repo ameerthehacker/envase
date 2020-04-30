@@ -13,6 +13,7 @@ import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
 import { open } from '../../services/native';
 import { CustomAction } from '../../contracts/formula';
+import { interpolateFormula } from '../../utils/utils';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -75,6 +76,14 @@ export default function MyApps() {
         }
         if (interpolatedAction && interpolatedAction.openInBrowser) {
           open(interpolatedAction.openInBrowser);
+        }
+        if (!interpolatedAction) {
+          toast({
+            title: 'oops!',
+            description: 'Action not found, please raise an issue in GitHub',
+            status: 'error',
+            isClosable: true
+          });
         }
       }
     },
@@ -158,7 +167,13 @@ export default function MyApps() {
                 onConfirmDialogOpen();
               }}
               actions={actions}
-              customActions={status.formula.actions}
+              // the filtering is to ensure only the actions in the interpolated formula are listed
+              customActions={status.formula.actions?.filter((action) =>
+                status.containerAppInfo.formula?.actions?.find(
+                  (interpolatedAction) =>
+                    action.value === interpolatedAction.value
+                )
+              )}
               onActionClick={(action) => {
                 handleAction(status, action);
               }}

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
+import { FaJenkins } from 'react-icons/fa';
 
 const JENKINS: Formula = {
   name: 'Jenkins',
@@ -33,7 +34,9 @@ const JENKINS: Formula = {
     {
       text: 'Open Jenkins UI',
       value: 'OPEN_JENKINS_UI',
-      openInBrowser: 'http://localhost://%ui_port%'
+      icon: FaJenkins,
+      openInBrowser: 'http://localhost:%ui_port%',
+      shouldBeRunning: true
     }
   ]
 };
