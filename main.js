@@ -186,7 +186,8 @@ app.on('activate', () => {
 });
 
 app.on('will-quit', () => {
-  if (win) {
+  // if we don't check for isDestroyed we will get runtime errors
+  if (win && !win.isDestroyed) {
     const [width, height] = win.getSize();
 
     store.set(WIN_DIMENSION, {
