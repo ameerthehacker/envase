@@ -26,7 +26,7 @@ export default function ShellIntoApp() {
         );
       });
     }
-  }, [containerId]);
+  }, [containerId, cmd]);
 
   return <Box>{stream && <Terminal stream={stream} />}</Box>;
 }

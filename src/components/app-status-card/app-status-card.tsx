@@ -15,6 +15,7 @@ import { FaPlay, FaStop, FaWrench } from 'react-icons/fa';
 export interface Option {
   text: string;
   value: string;
+  shouldBeRunning?: boolean;
 }
 
 export interface AppStatucCardProps extends AppInfoCardProps {
@@ -77,7 +78,11 @@ export default function AppStatusCard({
           </MenuButton>
           <MenuList>
             {actions.map((action, index) => (
-              <MenuItem onClick={() => onActionClick(action.value)} key={index}>
+              <MenuItem
+                isDisabled={action.shouldBeRunning && state === 'stopped'}
+                onClick={() => onActionClick(action.value)}
+                key={index}
+              >
                 {action.text}
               </MenuItem>
             ))}

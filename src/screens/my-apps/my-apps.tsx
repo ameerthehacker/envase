@@ -1,6 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
-import AppStatusCard from '../../components/app-status-card/app-status-card';
+import AppStatusCard, {
+  Option
+} from '../../components/app-status-card/app-status-card';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { getContainerAppLogs } from '../../services/docker';
@@ -18,18 +20,20 @@ export default function MyApps() {
   const [selectedApp, setSelectedApp] = useState<AppStatus>();
   const [selectedAppLogs, setSelectedAppLogs] = useState('');
   const currentLogsStream = useRef<NodeJS.ReadableStream>();
-  const actions = [
+  const actions: Option[] = [
     {
       text: 'Show logs',
       value: 'SHOW_LOGS'
     },
     {
       text: 'Attach Shell',
-      value: 'ATTACH_SHELL'
+      value: 'ATTACH_SHELL',
+      shouldBeRunning: true
     },
     {
       text: 'Exec Command',
-      value: 'EXEC'
+      value: 'EXEC',
+      shouldBeRunning: true
     }
   ];
   const {
@@ -88,7 +92,7 @@ export default function MyApps() {
         }
       }
     },
-    [onLogsOpen, toast]
+    [onLogsOpen, onExecOpen, toast]
   );
 
   return (
