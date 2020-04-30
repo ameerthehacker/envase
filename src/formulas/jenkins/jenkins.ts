@@ -28,7 +28,14 @@ const JENKINS: Formula = {
   ports: {
     8080: '%ui_port%'
   },
-  env: {}
+  env: {},
+  actions: [
+    {
+      text: 'Open Jenkins UI',
+      value: 'OPEN_JENKINS_UI',
+      openInBrowser: 'http://localhost://%ui_port%'
+    }
+  ]
 };
 
 export default JENKINS;
