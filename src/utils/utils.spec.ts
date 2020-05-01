@@ -9,9 +9,11 @@ import {
   getExposedPortsForDockerAPI,
   getVolumesForDockerAPI,
   keyToLabelText,
-  requiredValidator
+  requiredValidator,
+  getAllTags
 } from './utils';
 import { cloneDeep } from 'lodash-es';
+import { FORMULA } from '../../tests/fixtures/app.fixture';
 
 jest.mock('../formulas', () => ({
   FORMULAS: [
@@ -177,5 +179,16 @@ describe('utils', () => {
     const validator = requiredValidator('field');
 
     expect(validator('')).toBe('field is required');
+  });
+
+  it('getAllTags() should return all available tags', () => {
+    const formula2 = { ...FORMULA };
+    formula2.tags = ['Platform', 'Database'];
+
+    expect(getAllTags([FORMULA, formula2])).toEqual({
+      Database: false,
+      Language: false,
+      Platform: false
+    });
   });
 });

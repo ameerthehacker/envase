@@ -136,3 +136,19 @@ export function requiredValidator(fieldName: string) {
     return error;
   };
 }
+
+export function getAllTags(formulas: Formula[]): Record<string, boolean> {
+  const tags = new Set<string>();
+
+  formulas.forEach((formula) => {
+    formula.tags?.forEach((tag) => tags.add(tag));
+  });
+
+  return Array.from(tags)
+    .sort()
+    .reduce<Record<string, boolean>>((obj, elem: string) => {
+      obj[elem] = false;
+
+      return obj;
+    }, {});
+}

@@ -29,7 +29,8 @@ const NODE: Formula = {
       exec: 'node',
       shouldBeRunning: true
     }
-  ]
+  ],
+  tags: ['Language']
 };
 
 export default NODE;

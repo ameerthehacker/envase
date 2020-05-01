@@ -13,16 +13,12 @@ import {
 export interface CategoriesProps {
   isOpen: boolean;
   onClose: () => void;
-  all: boolean;
-  onAllSelected: () => void;
   onChange: (category: Record<string, boolean>) => void;
   categories: Record<string, boolean>;
 }
 
 export default function Categories({
   isOpen,
-  all,
-  onAllSelected,
   onChange,
   onClose,
   categories
@@ -35,9 +31,6 @@ export default function Categories({
         <DrawerHeader>Categories</DrawerHeader>
         <DrawerBody>
           <Stack>
-            <Checkbox isChecked={all} onChange={onAllSelected} size="lg">
-              All
-            </Checkbox>
             {Object.keys(categories).map((category, index) => (
               <Checkbox
                 onChange={() => {

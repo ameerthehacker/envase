@@ -1,5 +1,7 @@
 import { Action } from './action';
 
+export type Tag = 'Database' | 'OS' | 'Language' | 'Platform';
+
 export interface CustomAction extends Action {
   openInBrowser?: string;
   exec?: string;
@@ -17,6 +19,7 @@ export interface Formula {
   volumes?: Record<string, string>;
   isCli?: boolean;
   actions?: CustomAction[];
+  tags?: Tag[];
 }
 
 interface FormulaField {

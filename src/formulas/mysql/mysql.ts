@@ -46,7 +46,8 @@ const MYSQL: Formula = {
       exec: 'mysql --password=%password%',
       shouldBeRunning: true
     }
-  ]
+  ],
+  tags: ['Database']
 };
 
 export default MYSQL;

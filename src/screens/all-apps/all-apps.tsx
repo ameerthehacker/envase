@@ -16,12 +16,21 @@ import {
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
+import Categories from '../../components/categories/catrgories';
+import { getAllTags } from '../../utils/utils';
+import { FORMULAS } from '../../formulas';
 
 export interface AllAppsProps {
+  isFiltersOpen: boolean;
+  onFiltersClose: () => void;
   apps: Formula[];
 }
 
-export default function AllApps({ apps }: AllAppsProps) {
+export default function AllApps({
+  apps,
+  isFiltersOpen,
+  onFiltersClose
+}: AllAppsProps) {
   const {
     isOpen: isFormOpen,
     onClose: onFormClose,
@@ -42,6 +51,7 @@ export default function AllApps({ apps }: AllAppsProps) {
   const currentStream = useRef<DockerStream>();
   const { allAppStatus } = useAppStatus();
   const { load } = useApp();
+  const [allCategories, setCategories] = useState(getAllTags(FORMULAS));
 
   function createNewApp(values: AppFormResult, app: Formula) {
     createContainerFromApp(values, app)
@@ -64,19 +74,30 @@ export default function AllApps({ apps }: AllAppsProps) {
 
   return (
     <Stack direction="row" flexWrap="wrap">
-      {apps.map((app, index) => (
-        <Box key={index} marginTop={4}>
-          <AppCard
-            isDisabled={allAppStatus.error !== undefined}
-            onCreateClick={() => {
-              setSelectedApp(apps[index]);
-              onFormOpen();
-            }}
-            name={app.name}
-            logo={app.logo}
-          />
-        </Box>
-      ))}
+      {apps
+        .filter((app) => {
+          const noCategorySelected =
+            Object.keys(allCategories)
+              .map((category) => allCategories[category])
+              .filter(Boolean).length === 0;
+
+          if (noCategorySelected) return true;
+
+          return app.tags?.find((tag) => allCategories[tag]);
+        })
+        .map((app, index) => (
+          <Box key={index} marginTop={4}>
+            <AppCard
+              isDisabled={allAppStatus.error !== undefined}
+              onCreateClick={() => {
+                setSelectedApp(apps[index]);
+                onFormOpen();
+              }}
+              name={app.name}
+              logo={app.logo}
+            />
+          </Box>
+        ))}
       {/* modal to show image pull progress */}
       <ProgressModal
         tag={appFormResult.current?.version || ''}
@@ -183,6 +204,17 @@ export default function AllApps({ apps }: AllAppsProps) {
           onFormClose();
           setIsValidating(false);
         }}
+      />
+      <Categories
+        onChange={(category) =>
+          setCategories((categories) => ({
+            ...categories,
+            ...category
+          }))
+        }
+        isOpen={isFiltersOpen}
+        onClose={onFiltersClose}
+        categories={allCategories}
       />
     </Stack>
   );

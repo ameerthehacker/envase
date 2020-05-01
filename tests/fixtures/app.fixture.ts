@@ -23,7 +23,8 @@ const FORMULA: Formula = {
       type: 'password',
       description: 'MySQL password'
     }
-  }
+  },
+  tags: ['Database', 'Language']
 };
 
 export { FORMULA };

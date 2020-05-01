@@ -11,6 +11,7 @@ import {
   useToast
 } from '@chakra-ui/core';
 import { FaListUl, FaRocket } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 import { IconText } from '../../components/icon-text/icon-text';
 import EmptyState from '../../components/empty-state/empty-state';
 import AllApps from '../all-apps/all-apps';
@@ -24,8 +25,6 @@ import './app.scss';
 import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
-import { Helmet } from 'react-helmet';
-import Categories from '../../components/categories/catrgories';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;
 
@@ -111,21 +110,14 @@ export default function App() {
                 )}
               </TabPanel>
               <TabPanel>
-                <AllApps apps={FORMULAS} />
+                <AllApps
+                  isFiltersOpen={isFiltersOpen}
+                  onFiltersClose={onFiltersClose}
+                  apps={FORMULAS}
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <Categories
-            all={true}
-            onAllSelected={() => null}
-            onChange={(s) => console.log(s)}
-            isOpen={isFiltersOpen}
-            onClose={onFiltersClose}
-            categories={{
-              OS: false,
-              Database: true
-            }}
-          />
         </>
       )}
     </>
