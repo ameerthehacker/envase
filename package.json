@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .ts,.tsx --fix",
     "lint:staged": "eslint --fix",
     "prettify": "prettier --write",
+    "coverage": "cross-env CI=true yarn test --coverage",
     "build": "yarn build-react && electron-builder --config electron.build.json",
     "build-mac": "yarn build --mac",
     "build-win": "yarn build --win",
