@@ -24,6 +24,7 @@ import './app.scss';
 import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
+import { Helmet } from 'react-helmet';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;
 
@@ -51,6 +52,9 @@ export default function App() {
 
   return (
     <>
+      <Helmet>
+        <title>Envase</title>
+      </Helmet>
       {allAppStatus.error?.errno && (
         <>
           <NoConnection

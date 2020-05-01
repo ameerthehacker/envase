@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { shellOrExecIntoApp } from '../../services/docker/docker';
+import {
+  shellOrExecIntoApp,
+  getContainerAppInfo
+} from '../../services/docker/docker';
 import Terminal from '../../components/terminal/terminal';
 import { Box, useToast } from '@chakra-ui/core';
 import { parse } from 'query-string';
+import { Helmet } from 'react-helmet';
 
 export default function ShellIntoApp() {
   const { containerId } = useParams();
@@ -15,9 +19,13 @@ export default function ShellIntoApp() {
     : queryParams.cmd;
 
   const [stream, setStream] = useState<NodeJS.ReadWriteStream>();
+  const [appName, setAppName] = useState<string>();
 
   useEffect(() => {
     if (containerId) {
+      getContainerAppInfo(containerId).then((containerAppInfo) => {
+        setAppName(containerAppInfo.formValues.name);
+      });
       shellOrExecIntoApp(containerId, cmd)
         .then((exec) => {
           exec.start(
@@ -38,5 +46,12 @@ export default function ShellIntoApp() {
     }
   }, [containerId, cmd, toast]);
 
-  return <Box bg="black">{stream && <Terminal stream={stream} />}</Box>;
+  return (
+    <>
+      <Helmet>
+        <title>{`Terminal${appName ? ` (${appName})` : ''}`}</title>
+      </Helmet>
+      <Box bg="black">{stream && <Terminal stream={stream} />}</Box>
+    </>
+  );
 }
