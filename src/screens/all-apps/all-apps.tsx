@@ -24,12 +24,14 @@ export interface AllAppsProps {
   isFiltersOpen: boolean;
   onFiltersClose: () => void;
   apps: Formula[];
+  searchText?: string;
 }
 
 export default function AllApps({
   apps,
   isFiltersOpen,
-  onFiltersClose
+  onFiltersClose,
+  searchText
 }: AllAppsProps) {
   const {
     isOpen: isFormOpen,
@@ -75,6 +77,13 @@ export default function AllApps({
   return (
     <Stack direction="row" flexWrap="wrap">
       {apps
+        .filter((app) => {
+          if (!searchText || searchText.length === 0) return true;
+
+          return app.name
+            .toLowerCase()
+            .includes(searchText.trim().toLowerCase());
+        })
         .filter((app) => {
           const noCategorySelected =
             Object.keys(allCategories)

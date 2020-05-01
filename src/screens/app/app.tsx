@@ -30,6 +30,7 @@ const { SAVE_SETTINGS } = IPC_CHANNELS;
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
+  const [searchText, setSearchText] = useState('');
   const { allAppStatus } = useAppStatus();
   const handleTabChange = (index: number) => {
     setTabIndex(index);
@@ -84,7 +85,7 @@ export default function App() {
       )}
       {!allAppStatus.error?.errno && (
         <>
-          <Navbar onFiltersClick={onFiltersOpen} />
+          <Navbar onSearch={setSearchText} onFiltersClick={onFiltersOpen} />
           <Tabs index={tabIndex} onChange={handleTabChange}>
             <TabList>
               <Tab p={4} className="no-box-shadow">
@@ -111,6 +112,7 @@ export default function App() {
               </TabPanel>
               <TabPanel>
                 <AllApps
+                  searchText={searchText}
                   isFiltersOpen={isFiltersOpen}
                   onFiltersClose={onFiltersClose}
                   apps={FORMULAS}

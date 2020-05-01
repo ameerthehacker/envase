@@ -9,7 +9,7 @@ export interface SearchProps {
 
 export default function Search({ onSearch }: SearchProps) {
   const [text, setText] = useState('');
-  const [value, , callPending] = useDebounce(text, 1000);
+  const [value, , callPending] = useDebounce(text, 500);
 
   useEffect(() => {
     onSearch(value);

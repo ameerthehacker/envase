@@ -15,9 +15,10 @@ import { FaFilter } from 'react-icons/fa';
 
 export interface NavbarProps {
   onFiltersClick: () => void;
+  onSearch: (searchText: string) => void;
 }
 
-export default function Navbar({ onFiltersClick }: NavbarProps) {
+export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
   const { toggleColorMode, colorMode } = useColorMode();
   const { load } = useApp();
   const {
@@ -73,7 +74,7 @@ export default function Navbar({ onFiltersClick }: NavbarProps) {
           />
         </Tooltip>
       </Box>
-      <Search onSearch={(s) => console.log(s)} />
+      <Search onSearch={onSearch} />
       <Preferences isOpen={isPreferencesOpen} onClose={onPreferencesClose} />
     </Flex>
   );
