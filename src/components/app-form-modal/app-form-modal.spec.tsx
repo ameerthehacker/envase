@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor } from '../../../tests/test-util';
 import AppFormModal from './app-form-modal';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 
-jest.mock('../../services/native', () => ({
+jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
     on: () => null,
     send: () => null,

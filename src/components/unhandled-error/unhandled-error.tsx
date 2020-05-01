@@ -1,7 +1,7 @@
 import React, { Component, ErrorInfo } from 'react';
 import { Stack, Box, Text, Button } from '@chakra-ui/core';
 import { FaSadCry } from 'react-icons/fa';
-import { open } from '../../services/native';
+import { open } from '../../services/native/native';
 
 interface UnhandledErrorState {
   hasError: boolean;

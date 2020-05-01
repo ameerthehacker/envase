@@ -2,9 +2,9 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '../../../tests/test-util';
 import { Formik, Field, Form } from 'formik';
 import FolderPicker, { OpenFolderDialogResult } from './folder-picker';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 
-jest.mock('../../services/native', () => ({
+jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
     removeListener: () => null
   }

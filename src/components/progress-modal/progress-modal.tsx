@@ -15,7 +15,7 @@ import {
   Code,
   Collapse
 } from '@chakra-ui/core';
-import { PullProgressEvent } from '../../services/docker';
+import { PullProgressEvent } from '../../services/docker/docker';
 import { getImageRepoTag } from '../../utils/utils';
 
 export interface ProgressModalProps {

@@ -4,7 +4,7 @@ import { IpcRendererEvent } from 'electron';
 import { Stack, Input, Box, Button } from '@chakra-ui/core';
 import { FaFolderOpen } from 'react-icons/fa';
 import { useFormikContext } from 'formik';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 
 const { OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
 

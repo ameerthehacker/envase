@@ -6,7 +6,7 @@ import React, {
   ReactNode
 } from 'react';
 import { useToast, Input, Box, theme, useColorMode } from '@chakra-ui/core';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import { IpcRendererEvent } from 'electron';
 import { FormikProps, FieldInputProps } from 'formik';

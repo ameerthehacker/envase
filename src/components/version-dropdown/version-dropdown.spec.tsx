@@ -2,10 +2,10 @@ import React from 'react';
 import { render, waitFor } from '../../../tests/test-util';
 import { Formik, Field, Form } from 'formik';
 import VersionDropdown, { GetImageTagsResponse } from './version-dropdown';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('../../services/native', () => ({
+jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
     removeListener: () => null
   }

@@ -20,7 +20,7 @@ import { Field, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
-import { open } from '../../services/native';
+import { open } from '../../services/native/native';
 
 export interface AppFormProps {
   app: Formula;

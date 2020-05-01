@@ -1,19 +1,20 @@
-import { dockerode, ipcRenderer } from './native';
-import { IPC_CHANNELS } from '../constants';
+import { dockerode, ipcRenderer } from '../native/native';
+import { IPC_CHANNELS } from '../../constants';
 import { IpcRendererEvent } from 'electron';
-import { AppFormResult } from '../components/app-form-modal/app-form-modal';
-import { Formula } from '../contracts/formula';
+import { AppFormResult } from '../../components/app-form-modal/app-form-modal';
+import { Formula } from '../../contracts/formula';
 import {
   getImageRepoTag,
   interpolateFormula,
   getEnvForDockerAPI,
   getExposedPortsForDockerAPI
-} from '../utils/utils';
-import { AppStatus } from '../contexts/app-status/app-status';
+} from '../../utils/utils';
+import { AppStatus } from '../../contexts/app-status/app-status';
 import { ContainerInfo } from 'dockerode';
-import { FORMULAS } from '../formulas';
+import { FORMULAS } from '../../formulas';
 import { Optional } from 'utility-types';
-import { ContainerAppInfo } from '../contracts/container-app-info';
+import { ContainerAppInfo } from '../../contracts/container-app-info';
+import { AppLabels } from '../../contracts/app-labels';
 
 const { CHECK_IMAGE_EXISTS, ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -110,21 +111,57 @@ export function checkImageExistence(
   });
 }
 
-export function getContainerAppInfoFromLabels(labels: any): ContainerAppInfo {
-  const formula = JSON.parse(labels.formula);
+export function getAppLabels(
+  formula: Formula,
+  formValues: Record<string, any>
+) {
+  return {
+    'created-by-envase': 'yes',
+    formValues: JSON.stringify(formValues),
+    formulaName: formula.name,
+    version: formValues.version,
+    image: formula.image
+  };
+}
+
+export function getContainerAppInfoFromLabels(
+  labels: AppLabels
+): ContainerAppInfo {
+  if (
+    !labels.formulaName ||
+    !labels.formValues ||
+    !labels.image ||
+    !labels.version
+  ) {
+    throw new Error(`Unable to find formula meta data on the container`);
+  }
+
+  const formula = FORMULAS.find(
+    (formula) => formula.name === labels.formulaName
+  );
+
+  if (!formula)
+    throw new Error(`Unable to find formula for ${labels.formulaName}`);
+
+  const formValues = JSON.parse(labels.formValues);
+  // remove all the password type fields for good
   const version = labels.version;
   const image = labels.image;
 
-  return { formula, version, image };
+  const getInterpolatedFormula = () => interpolateFormula(formula, formValues);
+
+  return { getInterpolatedFormula, version, image, formValues };
 }
 
-export function getContainerAppInfo(id: string): Promise<ContainerAppInfo> {
+export function getContainerAppInfo(
+  containerId: string
+): Promise<ContainerAppInfo> {
   return new Promise((resolve, reject) => {
     dockerode
-      .getContainer(id)
+      .getContainer(containerId)
       .inspect()
       .then((containerInfo) => {
-        const labels = containerInfo.Config.Labels;
+        const labels = containerInfo.Config.Labels as any;
 
         resolve(getContainerAppInfoFromLabels(labels));
       })
@@ -152,22 +189,24 @@ export function pullImage(
 }
 
 export function shellOrExecIntoApp(containerId: string, cmd?: string | null) {
-  return getContainerAppInfo(containerId).then(({ formula, version }) => {
-    // alpine images don't have bash so switch to sh
-    const shell =
-      version && version.includes('alpine')
-        ? '/bin/sh'
-        : formula?.defaultShell || '/bin/sh';
-    const cmdToExecute = cmd && cmd.length > 0 ? [shell, '-c', cmd] : [shell];
+  return getContainerAppInfo(containerId).then(
+    ({ getInterpolatedFormula, version }) => {
+      // alpine images don't have bash so switch to sh
+      const shell =
+        version && version.includes('alpine')
+          ? '/bin/sh'
+          : getInterpolatedFormula()?.defaultShell || '/bin/sh';
+      const cmdToExecute = cmd && cmd.length > 0 ? [shell, '-c', cmd] : [shell];
 
-    return dockerode.getContainer(containerId).exec({
-      AttachStdin: true,
-      AttachStdout: true,
-      AttachStderr: true,
-      Cmd: cmdToExecute,
-      Tty: true
-    });
-  });
+      return dockerode.getContainer(containerId).exec({
+        AttachStdin: true,
+        AttachStdout: true,
+        AttachStderr: true,
+        Cmd: cmdToExecute,
+        Tty: true
+      });
+    }
+  );
 }
 
 export function createContainerFromApp(values: AppFormResult, app: Formula) {
@@ -209,12 +248,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     name: values.name,
     Image: getImageRepoTag(app.image, values.version),
     Env: envList,
-    Labels: {
-      formula: JSON.stringify(interpolatedFormula),
-      'created-by-envase': 'yes',
-      version: values.version,
-      image: app.image
-    },
+    Labels: getAppLabels(app, values),
     Cmd,
     ExposedPorts: exposedPorts,
     HostConfig: {
@@ -238,8 +272,8 @@ function getAppContainerState(container: ContainerInfo) {
 export function startApp(containerId: string) {
   const container = dockerode.getContainer(containerId);
 
-  return getContainerAppInfo(containerId).then(({ formula }) => {
-    if (formula?.isCli) {
+  return getContainerAppInfo(containerId).then(({ getInterpolatedFormula }) => {
+    if (getInterpolatedFormula()?.isCli) {
       return new Promise((resolve, reject) => {
         container
           .start()
@@ -281,7 +315,8 @@ export function listContainerApps(): Promise<AppStatus[]> {
               container.Labels
             );
             const formula = FORMULAS.find(
-              (elem) => elem.name === containerAppInfo.formula?.name
+              (elem) =>
+                elem.name === containerAppInfo.getInterpolatedFormula()?.name
             );
             return {
               id: container.Id,

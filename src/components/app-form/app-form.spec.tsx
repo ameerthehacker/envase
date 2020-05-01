@@ -4,7 +4,7 @@ import AppForm from './app-form';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 import { Formik } from 'formik';
 
-jest.mock('../../services/native', () => ({
+jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
     on: () => null,
     send: () => null,

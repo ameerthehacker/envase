@@ -2,7 +2,7 @@ import React from 'react';
 import SettingsModal, {
   SettingsModalProps
 } from '../../components/settings-modal/settings-modal';
-import { ipcRenderer, allSettings } from '../../services/native';
+import { ipcRenderer, allSettings } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;

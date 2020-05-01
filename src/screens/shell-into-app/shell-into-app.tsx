@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import { shellOrExecIntoApp } from '../../services/docker';
+import { shellOrExecIntoApp } from '../../services/docker/docker';
 import Terminal from '../../components/terminal/terminal';
 import { Box, useToast } from '@chakra-ui/core';
 import { parse } from 'query-string';

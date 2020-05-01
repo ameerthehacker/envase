@@ -6,7 +6,7 @@ import { Unicode11Addon } from 'xterm-addon-unicode11';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { ResizeObserver } from 'resize-observer';
 import ansiColors from 'ansi-colors';
-import { allSettings } from '../../services/native';
+import { allSettings } from '../../services/native/native';
 
 export interface TerminalProps {
   stream: NodeJS.ReadWriteStream;

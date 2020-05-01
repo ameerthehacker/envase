@@ -22,7 +22,7 @@ import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleto
 import NoConnection from '../../components/no-connection/no-connection';
 import './app.scss';
 import Preferences from '../preferences/preferences';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;

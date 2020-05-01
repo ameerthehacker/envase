@@ -1,7 +1,8 @@
 import { Formula } from './formula';
 
 export interface ContainerAppInfo {
-  formula?: Formula;
+  formValues: Record<string, any>;
+  getInterpolatedFormula: () => Formula;
   version?: string;
   image?: string;
 }

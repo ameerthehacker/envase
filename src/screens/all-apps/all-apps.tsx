@@ -12,7 +12,7 @@ import {
   DockerStream,
   createContainerFromApp,
   getAppsWithName
-} from '../../services/docker';
+} from '../../services/docker/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';

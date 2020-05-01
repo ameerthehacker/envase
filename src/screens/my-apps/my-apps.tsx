@@ -3,15 +3,15 @@ import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
-import { getContainerAppLogs } from '../../services/docker';
+import { getContainerAppLogs } from '../../services/docker/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
-import { ipcRenderer } from '../../services/native';
+import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import ExecModal from '../../components/exec-modal/exec-modal';
 import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
-import { open } from '../../services/native';
+import { open } from '../../services/native/native';
 import { CustomAction } from '../../contracts/formula';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
@@ -60,14 +60,15 @@ export default function MyApps() {
 
   const handleCustomAction = useCallback(
     (status: AppStatus, action: CustomAction) => {
-      const containerAppInfo = status?.containerAppInfo;
+      const interpolatedFormula = status?.containerAppInfo?.getInterpolatedFormula();
 
-      if (containerAppInfo && containerAppInfo.formula?.actions) {
-        const interpolatedAction = containerAppInfo.formula.actions.find(
+      if (interpolatedFormula?.actions) {
+        const interpolatedAction = interpolatedFormula?.actions?.find(
           (elem) => elem.value === action.value
         );
 
         if (interpolatedAction && interpolatedAction.exec) {
+          console.log(interpolatedAction);
           ipcRenderer.send(ATTACH_SHELL, {
             containerId: status.id,
             cmd: interpolatedAction.exec
@@ -166,14 +167,7 @@ export default function MyApps() {
                 onConfirmDialogOpen();
               }}
               actions={actions}
-              // the filtering is to ensure only the actions in the interpolated formula are listed
-              // TODO: save the form values also so that we can interpolate on the fly
-              customActions={status.formula.actions?.filter((action) =>
-                status.containerAppInfo.formula?.actions?.find(
-                  (interpolatedAction) =>
-                    action.value === interpolatedAction.value
-                )
-              )}
+              customActions={status.formula.actions}
               onActionClick={(action) => {
                 handleAction(status, action);
               }}

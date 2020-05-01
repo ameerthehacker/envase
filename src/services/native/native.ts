@@ -1,7 +1,7 @@
 import { IpcRenderer } from 'electron';
 import Dockerode from 'dockerode';
-import { IPC_CHANNELS } from '../constants';
-import { AllSettings } from '../contracts/all-settings';
+import { IPC_CHANNELS } from '../../constants';
+import { AllSettings } from '../../contracts/all-settings';
 
 // window.ipcRenderer, window.open, window.dockerode is set in the preload.js script
 // all these preloaded native modules will be used in src/services/native.ts

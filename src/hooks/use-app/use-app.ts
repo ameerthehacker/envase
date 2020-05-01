@@ -5,7 +5,7 @@ import {
   stopApp,
   deleteApp,
   listContainerApps
-} from '../../services/docker';
+} from '../../services/docker/docker';
 
 export function useApp() {
   const { dispatch } = useAppStatus();
