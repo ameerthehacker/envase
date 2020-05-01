@@ -19,7 +19,8 @@ const RUBY: Formula = {
   },
   isCli: true,
   image: 'library/ruby',
-  env: {}
+  env: {},
+  tags: ['Language']
 };
 
 export default RUBY;

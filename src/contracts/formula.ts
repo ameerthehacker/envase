@@ -1,6 +1,6 @@
 import { Action } from './action';
 
-export type Tag = 'Database' | 'OS' | 'Language' | 'Platform';
+export type Tag = 'Database' | 'OS' | 'Language' | 'Platform' | 'Application';
 
 export interface CustomAction extends Action {
   openInBrowser?: string;

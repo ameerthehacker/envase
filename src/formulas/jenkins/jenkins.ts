@@ -38,7 +38,8 @@ const JENKINS: Formula = {
       openInBrowser: 'http://localhost:%ui_port%',
       shouldBeRunning: true
     }
-  ]
+  ],
+  tags: ['Platform']
 };
 
 export default JENKINS;

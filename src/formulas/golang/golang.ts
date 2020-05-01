@@ -19,7 +19,8 @@ const GOLANG: Formula = {
   },
   isCli: true,
   image: 'library/golang',
-  env: {}
+  env: {},
+  tags: ['Language']
 };
 
 export default GOLANG;

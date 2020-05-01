@@ -47,7 +47,8 @@ const VSCODE: Formula = {
       openInBrowser: 'http://localhost:%port%',
       shouldBeRunning: true
     }
-  ]
+  ],
+  tags: ['Application']
 };
 
 export default VSCODE;

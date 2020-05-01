@@ -41,7 +41,8 @@ const POSTGRES: Formula = {
   },
   volumes: {
     '/var/lib/postgresql/data': '%data%'
-  }
+  },
+  tags: ['Language']
 };
 
 export default POSTGRES;

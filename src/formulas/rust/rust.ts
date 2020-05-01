@@ -19,7 +19,8 @@ const RUST: Formula = {
   },
   isCli: true,
   image: 'library/rust',
-  env: {}
+  env: {},
+  tags: ['Language']
 };
 
 export default RUST;

@@ -30,7 +30,8 @@ const REDIS: Formula = {
   },
   volumes: {
     '/data': '%data%'
-  }
+  },
+  tags: ['Database']
 };
 
 export default REDIS;

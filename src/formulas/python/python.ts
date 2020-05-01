@@ -19,7 +19,8 @@ const PYTHON: Formula = {
   },
   isCli: true,
   image: 'library/python',
-  env: {}
+  env: {},
+  tags: ['Language']
 };
 
 export default PYTHON;

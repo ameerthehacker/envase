@@ -43,7 +43,8 @@ const MONGO: Formula = {
   },
   volumes: {
     '/data/db': '%data%'
-  }
+  },
+  tags: ['Database']
 };
 
 export default MONGO;

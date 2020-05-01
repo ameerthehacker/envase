@@ -44,7 +44,8 @@ const COUCHDB: Formula = {
   },
   volumes: {
     '/opt/couchdb/data': '%data%'
-  }
+  },
+  tags: ['Database']
 };
 
 export default COUCHDB;

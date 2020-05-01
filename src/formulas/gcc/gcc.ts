@@ -19,7 +19,8 @@ const GCC: Formula = {
   },
   isCli: true,
   image: 'library/gcc',
-  env: {}
+  env: {},
+  tags: ['Language']
 };
 
 export default GCC;
