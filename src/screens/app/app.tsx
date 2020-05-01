@@ -29,7 +29,7 @@ import { Helmet } from 'react-helmet';
 const { SAVE_SETTINGS } = IPC_CHANNELS;
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const { allAppStatus } = useAppStatus();
   const handleTabChange = (index: number) => {
     setTabIndex(index);

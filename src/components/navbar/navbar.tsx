@@ -5,27 +5,38 @@ import {
   useColorMode,
   Tooltip,
   useDisclosure,
-  Flex
+  Flex,
+  Button
 } from '@chakra-ui/core';
 import { useApp } from '../../hooks/use-app/use-app';
 import Preferences from '../../screens/preferences/preferences';
 import Search from '../search/search';
+import { FaFilter } from 'react-icons/fa';
 
 export default function Navbar() {
   const { toggleColorMode, colorMode } = useColorMode();
   const { load } = useApp();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isPreferencesOpen,
+    onClose: onPreferencesClose,
+    onOpen: onPreferencesOpen
+  } = useDisclosure();
 
   return (
     <Flex p={2} width="auto" pos="fixed" right={0} top={0}>
       <Box mr={3}>
+        <Tooltip label="Preferences" aria-label="Open preferences">
+          <Button opacity={0.65} variant="ghost" aria-label="Open filters">
+            <Box as={FaFilter} />
+          </Button>
+        </Tooltip>
         <Tooltip label="Preferences" aria-label="Open preferences">
           <IconButton
             opacity={0.65}
             fontSize="xl"
             variant="ghost"
             icon="settings"
-            onClick={onOpen}
+            onClick={onPreferencesOpen}
             aria-label="Open preferences"
           />
         </Tooltip>
@@ -52,7 +63,7 @@ export default function Navbar() {
             aria-label="toggle-dark-mode"
           />
         </Tooltip>
-        <Preferences isOpen={isOpen} onClose={onClose} />
+        <Preferences isOpen={isPreferencesOpen} onClose={onPreferencesClose} />
       </Box>
       <Search onSearch={(s) => console.log(s)} />
     </Flex>
