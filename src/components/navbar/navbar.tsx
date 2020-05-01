@@ -13,7 +13,11 @@ import Preferences from '../../screens/preferences/preferences';
 import Search from '../search/search';
 import { FaFilter } from 'react-icons/fa';
 
-export default function Navbar() {
+export interface NavbarProps {
+  onFiltersClick: () => void;
+}
+
+export default function Navbar({ onFiltersClick }: NavbarProps) {
   const { toggleColorMode, colorMode } = useColorMode();
   const { load } = useApp();
   const {
@@ -25,8 +29,13 @@ export default function Navbar() {
   return (
     <Flex p={2} width="auto" pos="fixed" right={0} top={0}>
       <Box mr={3}>
-        <Tooltip label="Preferences" aria-label="Open preferences">
-          <Button opacity={0.65} variant="ghost" aria-label="Open filters">
+        <Tooltip label="Filters" aria-label="Open preferences">
+          <Button
+            onClick={onFiltersClick}
+            opacity={0.65}
+            variant="ghost"
+            aria-label="Open filters"
+          >
             <Box as={FaFilter} />
           </Button>
         </Tooltip>
@@ -63,9 +72,9 @@ export default function Navbar() {
             aria-label="toggle-dark-mode"
           />
         </Tooltip>
-        <Preferences isOpen={isPreferencesOpen} onClose={onPreferencesClose} />
       </Box>
       <Search onSearch={(s) => console.log(s)} />
+      <Preferences isOpen={isPreferencesOpen} onClose={onPreferencesClose} />
     </Flex>
   );
 }

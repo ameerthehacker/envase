@@ -25,6 +25,7 @@ import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import { Helmet } from 'react-helmet';
+import Categories from '../../components/categories/catrgories';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;
 
@@ -41,6 +42,11 @@ export default function App() {
     onOpen: onPreferencesOpen
   } = useDisclosure();
   const toast = useToast();
+  const {
+    isOpen: isFiltersOpen,
+    onClose: onFiltersClose,
+    onOpen: onFiltersOpen
+  } = useDisclosure();
 
   useEffect(() => {
     load(true);
@@ -79,7 +85,7 @@ export default function App() {
       )}
       {!allAppStatus.error?.errno && (
         <>
-          <Navbar />
+          <Navbar onFiltersClick={onFiltersOpen} />
           <Tabs index={tabIndex} onChange={handleTabChange}>
             <TabList>
               <Tab p={4} className="no-box-shadow">
@@ -109,6 +115,17 @@ export default function App() {
               </TabPanel>
             </TabPanels>
           </Tabs>
+          <Categories
+            all={true}
+            onAllSelected={() => null}
+            onChange={(s) => console.log(s)}
+            isOpen={isFiltersOpen}
+            onClose={onFiltersClose}
+            categories={{
+              OS: false,
+              Database: true
+            }}
+          />
         </>
       )}
     </>

@@ -13,7 +13,7 @@ export default function Search({ onSearch }: SearchProps) {
 
   useEffect(() => {
     onSearch(value);
-  }, [value]);
+  }, [value, onSearch]);
 
   return (
     <InputGroup>
