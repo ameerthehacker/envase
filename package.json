@@ -65,21 +65,22 @@
     "lodash-es": "^4.17.15",
     "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.0",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
     "react-icons": "^3.9.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "resize-observer": "^1.0.0",
     "typescript": "^3.8.3",
+    "use-debounce": "^3.4.2",
     "utility-types": "^3.10.0",
     "xterm": "^4.5.0",
     "xterm-addon-fit": "^0.3.0",
     "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.3.0",
-    "query-string": "^6.12.1",
-    "react-helmet": "^6.0.0"
+    "xterm-addon-web-links": "^0.3.0"
   },
   "husky": {
     "hooks": {
