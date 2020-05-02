@@ -1,5 +1,6 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
+import { FaPython } from 'react-icons/fa';
 
 const PYTHON: Formula = {
   name: 'Python',
@@ -20,7 +21,15 @@ const PYTHON: Formula = {
   isCli: true,
   image: 'library/python',
   env: {},
-  tags: ['Language']
+  tags: ['Language'],
+  actions: [
+    {
+      text: 'Python REPL',
+      value: 'PYTHON_REPL',
+      exec: 'python',
+      icon: FaPython
+    }
+  ]
 };
 
 export default PYTHON;

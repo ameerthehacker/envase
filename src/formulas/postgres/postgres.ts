@@ -1,5 +1,6 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
+import { FaPlug } from 'react-icons/fa';
 
 const POSTGRES: Formula = {
   name: 'Postgres',
@@ -42,7 +43,15 @@ const POSTGRES: Formula = {
   volumes: {
     '/var/lib/postgresql/data': '%data%'
   },
-  tags: ['Language']
+  tags: ['Language'],
+  actions: [
+    {
+      text: 'PSQL CLI',
+      value: 'PSQL_CLI',
+      exec: 'psql',
+      icon: FaPlug
+    }
+  ]
 };
 
 export default POSTGRES;
