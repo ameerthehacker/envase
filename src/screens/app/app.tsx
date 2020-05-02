@@ -88,7 +88,21 @@ export default function App() {
       )}
       {!allAppStatus.error?.errno && (
         <>
-          <Navbar onSearch={setSearchText} onFiltersClick={onFiltersOpen} />
+          <Navbar
+            onSearch={setSearchText}
+            onFiltersClick={() => {
+              if (tabIndex === 0 && allAppStatus.status.length === 0) {
+                toast({
+                  title: 'Sorry',
+                  status: 'info',
+                  description: 'No apps are available to apply filters',
+                  isClosable: true
+                });
+              } else {
+                onFiltersOpen();
+              }
+            }}
+          />
           <Tabs index={tabIndex} onChange={handleTabChange}>
             <TabList>
               <Tab p={4} className="no-box-shadow">

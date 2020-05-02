@@ -14,6 +14,7 @@ import { Action } from '../../contracts/action';
 import { open } from '../../services/native/native';
 import { CustomAction } from '../../contracts/formula';
 import { Category } from '../../contracts/category';
+import NoResults from '../../components/no-results/no-results';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -141,64 +142,66 @@ export default function MyApps({
     [onLogsOpen, onExecOpen, toast]
   );
 
+  const filteredApps = allAppStatus.status
+    .filter((app) => {
+      if (!searchText) return true;
+      else return app.name.toLowerCase().includes(searchText.toLowerCase());
+    })
+    .filter((app) =>
+      app.formula.tags?.find((tag) => {
+        if (!selectedCategories) return true;
+        else return selectedCategories[tag];
+      })
+    );
+
   return (
     <Stack flexWrap="wrap" direction="row">
+      {filteredApps.length === 0 && <NoResults height="calc(100vh - 90px)" />}
       {!allAppStatus.isFetching &&
-        allAppStatus.status
-          .filter((app) => {
-            if (!searchText) return true;
-            else
-              return app.name.toLowerCase().includes(searchText.toLowerCase());
-          })
-          .filter((app) =>
-            app.formula.tags?.find((tag) => {
-              if (!selectedCategories) return true;
-              else return selectedCategories[tag];
-            })
-          )
-          .map((status, index) => (
-            <Box marginTop={4} key={index}>
-              <AppStatusCard
-                name={status.name}
-                logo={status.formula.logo}
-                state={status.state}
-                inStateTransit={status.inTransit}
-                isDeleting={status.isDeleting}
-                onStartClick={() =>
-                  start(status.id).catch((err) => {
-                    toast({
-                      title: `Unable to start ${status.name}`,
-                      description: `${err}`,
-                      isClosable: true,
-                      status: 'error'
-                    });
-                  })
-                }
-                onStopClick={() =>
-                  stop(status.id).catch((err) => {
-                    toast({
-                      title: `Unable to stop ${status.name}`,
-                      description: `${err}`,
-                      isClosable: true,
-                      status: 'error'
-                    });
-                  })
-                }
-                onDeleteClick={() => {
-                  setSelectedApp(status);
-                  onConfirmDialogOpen();
-                }}
-                actions={actions}
-                customActions={status.formula.actions}
-                onActionClick={(action) => {
-                  handleAction(status, action);
-                }}
-                onCustomActionClick={(action) => {
-                  handleCustomAction(status, action);
-                }}
-              />
-            </Box>
-          ))}
+        filteredApps.length > 0 &&
+        filteredApps.map((status, index) => (
+          <Box marginTop={4} key={index}>
+            <AppStatusCard
+              name={status.name}
+              logo={status.formula.logo}
+              state={status.state}
+              inStateTransit={status.inTransit}
+              isDeleting={status.isDeleting}
+              onStartClick={() =>
+                start(status.id).catch((err) => {
+                  toast({
+                    title: `Unable to start ${status.name}`,
+                    description: `${err}`,
+                    isClosable: true,
+                    status: 'error'
+                  });
+                })
+              }
+              onStopClick={() =>
+                stop(status.id).catch((err) => {
+                  toast({
+                    title: `Unable to stop ${status.name}`,
+                    description: `${err}`,
+                    isClosable: true,
+                    status: 'error'
+                  });
+                })
+              }
+              onDeleteClick={() => {
+                setSelectedApp(status);
+                onConfirmDialogOpen();
+              }}
+              actions={actions}
+              customActions={status.formula.actions}
+              onActionClick={(action) => {
+                handleAction(status, action);
+              }}
+              onCustomActionClick={(action) => {
+                handleCustomAction(status, action);
+              }}
+            />
+          </Box>
+        ))}
       <LogsModal
         onClose={() => {
           currentLogsStream.current?.removeAllListeners();

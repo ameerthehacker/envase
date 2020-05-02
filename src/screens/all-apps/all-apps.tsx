@@ -17,6 +17,7 @@ import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { Category } from '../../contracts/category';
+import NoResults from '../../components/no-results/no-results';
 
 export interface AllAppsProps {
   apps: Formula[];
@@ -69,139 +70,145 @@ export default function AllApps({
       .finally(() => load());
   }
 
+  const filteredApps = apps
+    .filter((app) => {
+      if (!searchText) return true;
+      else return app.name.toLowerCase().includes(searchText.toLowerCase());
+    })
+    .filter((app) =>
+      app.tags?.find((tag) => {
+        if (!selectedCategories) return true;
+        else return selectedCategories[tag];
+      })
+    );
+
   return (
-    <Stack direction="row" flexWrap="wrap">
-      {apps
-        .filter((app) => {
-          if (!searchText) return true;
-          else return app.name.toLowerCase().includes(searchText.toLowerCase());
-        })
-        .filter((app) =>
-          app.tags?.find((tag) => {
-            if (!selectedCategories) return true;
-            else return selectedCategories[tag];
-          })
-        )
-        .map((app, index) => (
-          <Box key={index} marginTop={4}>
-            <AppCard
-              isDisabled={allAppStatus.error !== undefined}
-              onCreateClick={() => {
-                setSelectedApp(apps[index]);
-                onFormOpen();
-              }}
-              name={app.name}
-              logo={app.logo}
-            />
-          </Box>
-        ))}
-      {/* modal to show image pull progress */}
-      <ProgressModal
-        tag={appFormResult.current?.version || ''}
-        image={selectedApp?.image || ''}
-        isOpen={isProgressOpen}
-        onClose={() => {
-          onProgressClose();
-          // clear the previous progress messages
-          setPullProgress(undefined);
-          currentStream.current?.destroy();
-        }}
-        progress={pullProgress}
-      />
-      {/* modal to get app details like name, port etc. */}
-      <AppFormModal
-        isValidating={isValidating}
-        app={selectedApp}
-        isOpen={isFormOpen}
-        onSubmit={async (values) => {
-          setIsValidating(true);
+    <>
+      {filteredApps.length === 0 && <NoResults height="calc(100vh - 90px)" />}
+      {filteredApps.length > 0 && (
+        <Stack direction="row" flexWrap="wrap">
+          {filteredApps.map((app, index) => (
+            <Box key={index} marginTop={4}>
+              <AppCard
+                isDisabled={allAppStatus.error !== undefined}
+                onCreateClick={() => {
+                  setSelectedApp(apps[index]);
+                  onFormOpen();
+                }}
+                name={app.name}
+                logo={app.logo}
+              />
+            </Box>
+          ))}
+          {/* modal to show image pull progress */}
+          <ProgressModal
+            tag={appFormResult.current?.version || ''}
+            image={selectedApp?.image || ''}
+            isOpen={isProgressOpen}
+            onClose={() => {
+              onProgressClose();
+              // clear the previous progress messages
+              setPullProgress(undefined);
+              currentStream.current?.destroy();
+            }}
+            progress={pullProgress}
+          />
+          {/* modal to get app details like name, port etc. */}
+          <AppFormModal
+            isValidating={isValidating}
+            app={selectedApp}
+            isOpen={isFormOpen}
+            onSubmit={async (values) => {
+              setIsValidating(true);
 
-          if (selectedApp) {
-            appFormResult.current = values;
+              if (selectedApp) {
+                appFormResult.current = values;
 
-            const { name } = values;
-            const appsWithSameName = await getAppsWithName(name);
+                const { name } = values;
+                const appsWithSameName = await getAppsWithName(name);
 
-            // there is already an app with same name
-            if (appsWithSameName.length > 0) {
-              toast({
-                title: 'Sorry!',
-                description: 'There is already an app with same name',
-                status: 'error',
-                isClosable: true
-              });
-              setIsValidating(false);
+                // there is already an app with same name
+                if (appsWithSameName.length > 0) {
+                  toast({
+                    title: 'Sorry!',
+                    description: 'There is already an app with same name',
+                    status: 'error',
+                    isClosable: true
+                  });
+                  setIsValidating(false);
 
-              return;
-            }
+                  return;
+                }
 
-            const { image } = selectedApp;
-            const { version } = values;
-            const {
-              errorWhileChecking,
-              exists,
-              availableLocally
-            } = await checkImageExistence(image, version);
+                const { image } = selectedApp;
+                const { version } = values;
+                const {
+                  errorWhileChecking,
+                  exists,
+                  availableLocally
+                } = await checkImageExistence(image, version);
 
-            if (!errorWhileChecking && exists) {
-              onFormClose();
-              // the image is available locally
-              if (availableLocally) {
-                createNewApp(values, selectedApp);
-              } else {
-                onProgressOpen();
+                if (!errorWhileChecking && exists) {
+                  onFormClose();
+                  // the image is available locally
+                  if (availableLocally) {
+                    createNewApp(values, selectedApp);
+                  } else {
+                    onProgressOpen();
 
-                const stream = await pullImage(
-                  image,
-                  version,
-                  (evt) => {
-                    setPullProgress((pullProgress) => ({
-                      ...pullProgress,
-                      [evt.id]: {
-                        ...evt
+                    const stream = await pullImage(
+                      image,
+                      version,
+                      (evt) => {
+                        setPullProgress((pullProgress) => ({
+                          ...pullProgress,
+                          [evt.id]: {
+                            ...evt
+                          }
+                        }));
+                      },
+                      () => {
+                        onProgressClose();
+
+                        if (
+                          currentStream.current &&
+                          !currentStream.current.aborted
+                        ) {
+                          createNewApp(values, selectedApp);
+                        } else {
+                          console.log('aborted');
+                        }
                       }
-                    }));
-                  },
-                  () => {
-                    onProgressClose();
+                    );
 
-                    if (
-                      currentStream.current &&
-                      !currentStream.current.aborted
-                    ) {
-                      createNewApp(values, selectedApp);
-                    } else {
-                      console.log('aborted');
-                    }
+                    currentStream.current = stream;
                   }
-                );
+                } else if (!errorWhileChecking && !exists) {
+                  toast({
+                    title: 'Error',
+                    description: `Image ${image} with tag ${version} does not exists`,
+                    isClosable: true,
+                    status: 'error'
+                  });
+                } else if (errorWhileChecking) {
+                  toast({
+                    title: 'Error',
+                    description: `Image ${image} with tag ${version} does not exist locally and you are offline`,
+                    isClosable: true,
+                    status: 'error'
+                  });
+                }
 
-                currentStream.current = stream;
+                setIsValidating(false);
               }
-            } else if (!errorWhileChecking && !exists) {
-              toast({
-                title: 'Error',
-                description: `Image ${image} with tag ${version} does not exists`,
-                isClosable: true,
-                status: 'error'
-              });
-            } else if (errorWhileChecking) {
-              toast({
-                title: 'Error',
-                description: `Image ${image} with tag ${version} does not exist locally and you are offline`,
-                isClosable: true,
-                status: 'error'
-              });
-            }
-
-            setIsValidating(false);
-          }
-        }}
-        onClose={() => {
-          onFormClose();
-          setIsValidating(false);
-        }}
-      />
-    </Stack>
+            }}
+            onClose={() => {
+              onFormClose();
+              setIsValidating(false);
+            }}
+          />
+        </Stack>
+      )}
+    </>
   );
 }
