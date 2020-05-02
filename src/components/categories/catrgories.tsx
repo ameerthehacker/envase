@@ -7,8 +7,11 @@ import {
   DrawerHeader,
   DrawerBody,
   Stack,
-  Checkbox
+  Checkbox,
+  Button
 } from '@chakra-ui/core';
+import { FaWindowClose } from 'react-icons/fa';
+import { Category } from '../../contracts/category';
 
 export interface CategoriesProps {
   isOpen: boolean;
@@ -31,6 +34,21 @@ export default function Categories({
         <DrawerHeader>Categories</DrawerHeader>
         <DrawerBody>
           <Stack>
+            <Button
+              onClick={() => {
+                const updatedCategory: Category = {};
+
+                Object.keys(categories).forEach((category) => {
+                  updatedCategory[category] = false;
+                });
+
+                onChange(updatedCategory);
+              }}
+              size="sm"
+              rightIcon={FaWindowClose}
+            >
+              Clear All
+            </Button>
             {Object.keys(categories).map((category, index) => (
               <Checkbox
                 onChange={() => {

@@ -92,7 +92,7 @@ export default function AllApps({
               <AppCard
                 isDisabled={allAppStatus.error !== undefined}
                 onCreateClick={() => {
-                  setSelectedApp(apps[index]);
+                  setSelectedApp(filteredApps[index]);
                   onFormOpen();
                 }}
                 name={app.name}
