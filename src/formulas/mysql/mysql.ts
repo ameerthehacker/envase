@@ -43,7 +43,7 @@ const MYSQL: Formula = {
       text: 'Open MySQL CLI',
       value: 'OPEN_MYSQL_CLI',
       icon: FaPlug,
-      exec: 'mysql --password=%password%',
+      exec: 'mysql -p',
       shouldBeRunning: true
     }
   ],
