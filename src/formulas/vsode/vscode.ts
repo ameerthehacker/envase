@@ -12,11 +12,6 @@ const VSCODE: Formula = {
       description: 'Name of the VS Code instance',
       required: true
     },
-    password: {
-      type: 'password',
-      description: 'Password to login to your vscode',
-      required: true
-    },
     port: {
       type: 'number',
       description: 'Port on which VS Code server should run',
@@ -30,6 +25,7 @@ const VSCODE: Formula = {
     }
   },
   image: 'codercom/code-server',
+  cmd: ['--auth', 'none'],
   env: {
     PASSWORD: '%password%'
   },

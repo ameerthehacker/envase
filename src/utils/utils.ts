@@ -61,6 +61,12 @@ export function interpolateFormula(
     }
   }
 
+  if (clonedFormula.cmd) {
+    for (const i in clonedFormula.cmd) {
+      clonedFormula.cmd[i] = interpolate(clonedFormula.cmd[i], data);
+    }
+  }
+
   return clonedFormula;
 }
 

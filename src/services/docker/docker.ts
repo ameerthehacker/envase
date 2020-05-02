@@ -231,7 +231,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
       ? '/bin/sh'
       : app.defaultShell;
 
-  const Cmd = app.isCli ? [shell, '-c', infiniteLoopScript] : [];
+  const Cmd = app.isCli ? [shell, '-c', infiniteLoopScript] : app.cmd || [];
 
   if (interpolatedFormula.ports) {
     const portConfig = getExposedPortsForDockerAPI(interpolatedFormula.ports);

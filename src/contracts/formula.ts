@@ -20,6 +20,7 @@ export interface Formula {
   isCli?: boolean;
   actions?: CustomAction[];
   tags?: Tag[];
+  cmd?: string[];
 }
 
 interface FormulaField {
