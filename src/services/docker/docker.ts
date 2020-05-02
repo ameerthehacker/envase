@@ -222,8 +222,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   trap exit_script SIGINT SIGTERM
   while true
   do
-    sleep 1
-    echo testing
+    :
   done
   `;
   // alpine images don't have bash so switch to sh
