@@ -31,7 +31,9 @@ export default function MyApps({
 }: MyAppsProps) {
   const { start, stop, del } = useApp();
   const [selectedApp, setSelectedApp] = useState<AppStatus>();
-  const [selectedAppLogs, setSelectedAppLogs] = useState('');
+  const [selectedAppLogs, setSelectedAppLogs] = useState<
+    NodeJS.ReadWriteStream
+  >();
   const currentLogsStream = useRef<NodeJS.ReadableStream>();
   const actions: Action[] = [
     {
@@ -107,12 +109,7 @@ export default function MyApps({
         case 'SHOW_LOGS': {
           getContainerAppLogs(status.id)
             .then((stream) => {
-              currentLogsStream.current = stream;
-              setSelectedAppLogs('');
-
-              stream.on('data', (data) => {
-                setSelectedAppLogs((logs) => `${logs}${data.toString('utf8')}`);
-              });
+              setSelectedAppLogs(stream);
 
               onLogsOpen();
             })
@@ -208,7 +205,7 @@ export default function MyApps({
           onLogsClose();
         }}
         isOpen={isLogsOpen}
-        logs={selectedAppLogs}
+        stream={selectedAppLogs}
         appName={selectedApp?.name || 'no-app'}
       />
       <ExecModal

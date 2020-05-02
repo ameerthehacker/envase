@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box } from '@chakra-ui/core';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
@@ -9,74 +9,101 @@ import ansiColors from 'ansi-colors';
 import { allSettings } from '../../services/native/native';
 
 export interface TerminalProps {
+  stdin?: boolean;
   stream: NodeJS.ReadWriteStream;
+  followTail?: boolean;
 }
 
-export default function Terminal({ stream }: TerminalProps) {
+export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
   const terminalContainerRef = useRef<HTMLDivElement>();
   const isStreamOpen = useRef<boolean>(true);
+  const terminalRef = useRef<XTerm>();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const terminal = new XTerm({
       fontSize: allSettings.terminalFontSize
     });
     const fitAddon = new FitAddon();
     const unicodeAddon = new Unicode11Addon();
     const webLinksAddon = new WebLinksAddon();
+    const dataListener = (data: any) => {
+      terminal.write(data);
+    };
     // this will autoresize terminal based on container width and height
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(unicodeAddon);
     terminal.loadAddon(webLinksAddon);
+    terminalRef.current = terminal;
 
     if (terminalContainerRef.current) {
       terminal.open(terminalContainerRef.current);
 
       const resizeObserver = new ResizeObserver(() => {
-        fitAddon.fit();
+        if (terminalContainerRef.current) {
+          fitAddon.fit();
+        }
       });
 
       resizeObserver.observe(terminalContainerRef.current);
 
-      stream.on('data', (data) => {
-        terminal.write(data);
-      });
+      stream.on('data', dataListener);
 
-      stream.on('end', () => {
-        isStreamOpen.current = false;
-        terminal.write(ansiColors.red(ansiColors.bold('\nSession ended...')));
-      });
+      if (stdin) {
+        stream.on('end', () => {
+          isStreamOpen.current = false;
+          terminal.write(ansiColors.red(ansiColors.bold('\nSession ended...')));
+        });
 
-      terminal.onKey((e: { key: string; domEvent: KeyboardEvent }) => {
-        if (isStreamOpen.current) {
-          const ev = e.domEvent;
+        terminal.onKey((e: { key: string; domEvent: KeyboardEvent }) => {
+          if (isStreamOpen.current) {
+            const ev = e.domEvent;
 
-          if (ev.ctrlKey) {
-            if (ev.key === 'c') stream.write('\x03');
-            if (ev.key === 'a') stream.write('\x01');
-            if (ev.key === 'e') stream.write('\x05');
-            if (ev.key === 'z') stream.write('\x1A');
+            if (ev.ctrlKey) {
+              if (ev.key === 'c') stream.write('\x03');
+              if (ev.key === 'a') stream.write('\x01');
+              if (ev.key === 'e') stream.write('\x05');
+              if (ev.key === 'z') stream.write('\x1A');
+            }
+            // ESC
+            else if (ev.keyCode === 27) stream.write('\x1B');
+            // Tab
+            else if (ev.keyCode === 9) stream.write('\x09');
+            // LArrow
+            else if (ev.keyCode === 37) stream.write('\u001b[D');
+            // UArrow
+            else if (ev.keyCode === 38) stream.write('\u001b[A');
+            // RArrow
+            else if (ev.keyCode === 39) stream.write('\u001b[C');
+            // DArrow
+            else if (ev.keyCode === 40) stream.write('\u001b[B');
+            // enter key
+            else if (ev.keyCode === 13) stream.write('\r');
+            // backspace key
+            else if (ev.keyCode === 8) stream.write('\b');
+            else stream.write(ev.key);
           }
-          // ESC
-          else if (ev.keyCode === 27) stream.write('\x1B');
-          // Tab
-          else if (ev.keyCode === 9) stream.write('\x09');
-          // LArrow
-          else if (ev.keyCode === 37) stream.write('\u001b[D');
-          // UArrow
-          else if (ev.keyCode === 38) stream.write('\u001b[A');
-          // RArrow
-          else if (ev.keyCode === 39) stream.write('\u001b[C');
-          // DArrow
-          else if (ev.keyCode === 40) stream.write('\u001b[B');
-          // enter key
-          else if (ev.keyCode === 13) stream.write('\r');
-          // backspace key
-          else if (ev.keyCode === 8) stream.write('\b');
-          else stream.write(ev.key);
-        }
-      });
+        });
+      }
     }
-  }, [stream]);
 
-  return <Box ref={terminalContainerRef} width="100%" height="100vh" />;
+    return () => {
+      stream.removeListener('data', dataListener);
+    };
+  }, [stream, stdin]);
+
+  useEffect(() => {
+    const listener = () => {
+      if (followTail) {
+        terminalRef.current?.scrollToBottom();
+      }
+    };
+
+    stream.on('data', listener);
+
+    return () => {
+      stream.removeListener('data', listener);
+    };
+  }, [stream, followTail]);
+
+  return <Box ref={terminalContainerRef} width="100%" height="100%" />;
 }

@@ -51,7 +51,9 @@ export default function ShellIntoApp() {
       <Helmet>
         <title>{`Terminal${appName ? ` (${appName})` : ''}`}</title>
       </Helmet>
-      <Box bg="black">{stream && <Terminal stream={stream} />}</Box>
+      <Box height="100vh" bg="black">
+        {stream && <Terminal stream={stream} />}
+      </Box>
     </>
   );
 }

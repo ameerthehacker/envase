@@ -222,7 +222,8 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   trap exit_script SIGINT SIGTERM
   while true
   do
-    :
+    sleep 1
+    echo testing
   done
   `;
   // alpine images don't have bash so switch to sh
@@ -250,6 +251,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     Env: envList,
     Labels: getAppLabels(app, values),
     Cmd,
+    Tty: true,
     ExposedPorts: exposedPorts,
     HostConfig: {
       PortBindings: portBindings,
@@ -336,9 +338,11 @@ export function listContainerApps(): Promise<AppStatus[]> {
 }
 
 export function getContainerAppLogs(containerId: string) {
-  return dockerode.getContainer(containerId).logs({
+  return dockerode.getContainer(containerId).attach({
+    stdin: false,
     stdout: true,
     stderr: true,
-    follow: true
+    logs: true,
+    stream: true
   });
 }
