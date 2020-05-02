@@ -105,6 +105,8 @@ export default function MyApps({
 
   const handleAction = useCallback(
     (status: AppStatus, action: string) => {
+      setSelectedApp(status);
+
       switch (action) {
         case 'SHOW_LOGS': {
           getContainerAppLogs(status.id)
@@ -131,7 +133,6 @@ export default function MyApps({
           break;
         }
         case 'EXEC': {
-          setSelectedApp(status);
           onExecOpen();
         }
       }

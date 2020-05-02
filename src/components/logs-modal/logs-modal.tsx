@@ -29,7 +29,7 @@ export default function LogsModal({
   const [followTail, setFollowTail] = useState(true);
 
   return (
-    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="full" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{`${appName} logs`}</ModalHeader>
@@ -44,8 +44,8 @@ export default function LogsModal({
               />
               <FormLabel htmlFor="switch-follow-tail">Follow tail</FormLabel>
             </Stack>
-            <Box maxHeight={500} width="100%" p={2} pb={3} pr={0} pl={0}>
-              <Box p={2} bg="black">
+            <Box width="100%" p={2} pb={3} pr={0} pl={0}>
+              <Box height="100%" p={2} bg="black">
                 {stream && <Terminal stream={stream} followTail={followTail} />}
               </Box>
             </Box>

@@ -49,7 +49,8 @@ const POSTGRES: Formula = {
       text: 'PSQL CLI',
       value: 'PSQL_CLI',
       exec: 'psql',
-      icon: FaPlug
+      icon: FaPlug,
+      shouldBeRunning: true
     }
   ]
 };

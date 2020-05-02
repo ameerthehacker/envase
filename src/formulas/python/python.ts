@@ -27,7 +27,8 @@ const PYTHON: Formula = {
       text: 'Python REPL',
       value: 'PYTHON_REPL',
       exec: 'python',
-      icon: FaPython
+      icon: FaPython,
+      shouldBeRunning: true
     }
   ]
 };
