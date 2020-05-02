@@ -22,6 +22,9 @@ const PYTHON: Formula = {
   image: 'library/python',
   env: {},
   tags: ['Language'],
+  volumes: {
+    '/projects': '%project%'
+  },
   actions: [
     {
       text: 'Python REPL',

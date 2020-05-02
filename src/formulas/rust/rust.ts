@@ -17,6 +17,9 @@ const RUST: Formula = {
       required: true
     }
   },
+  volumes: {
+    '/projects': '%project%'
+  },
   isCli: true,
   image: 'library/rust',
   env: {},

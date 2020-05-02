@@ -20,6 +20,9 @@ const NODE: Formula = {
   },
   isCli: true,
   image: 'library/node',
+  volumes: {
+    '/projects': '%project%'
+  },
   env: {},
   actions: [
     {

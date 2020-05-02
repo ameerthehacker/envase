@@ -17,6 +17,9 @@ const GOLANG: Formula = {
       required: true
     }
   },
+  volumes: {
+    '/projects': '%project%'
+  },
   isCli: true,
   image: 'library/golang',
   env: {},

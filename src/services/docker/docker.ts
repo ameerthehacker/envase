@@ -7,7 +7,8 @@ import {
   getImageRepoTag,
   interpolateFormula,
   getEnvForDockerAPI,
-  getExposedPortsForDockerAPI
+  getExposedPortsForDockerAPI,
+  getVolumesForDockerAPI
 } from '../../utils/utils';
 import { AppStatus } from '../../contexts/app-status/app-status';
 import { ContainerInfo } from 'dockerode';
@@ -241,7 +242,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
   }
 
   if (interpolatedFormula.volumes) {
-    volList = getEnvForDockerAPI(interpolatedFormula.volumes);
+    volList = getVolumesForDockerAPI(interpolatedFormula.volumes);
   }
 
   return dockerode.createContainer({
