@@ -169,6 +169,7 @@ export default function AllApps({
                       },
                       () => {
                         onProgressClose();
+                        setPullProgress(undefined);
 
                         if (
                           currentStream.current &&
