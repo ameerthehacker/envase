@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
-import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
+import { AppStatus, AllAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { getContainerAppLogs } from '../../services/docker/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
@@ -13,11 +13,21 @@ import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
 import { open } from '../../services/native/native';
 import { CustomAction } from '../../contracts/formula';
+import { Category } from '../../contracts/category';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
-export default function MyApps() {
-  const { allAppStatus } = useAppStatus();
+export interface MyAppsProps {
+  allAppStatus: AllAppStatus;
+  searchText?: string;
+  selectedCategories?: Category;
+}
+
+export default function MyApps({
+  allAppStatus,
+  searchText,
+  selectedCategories
+}: MyAppsProps) {
   const { start, stop, del } = useApp();
   const [selectedApp, setSelectedApp] = useState<AppStatus>();
   const [selectedAppLogs, setSelectedAppLogs] = useState('');
@@ -134,49 +144,61 @@ export default function MyApps() {
   return (
     <Stack flexWrap="wrap" direction="row">
       {!allAppStatus.isFetching &&
-        allAppStatus.status.map((status, index) => (
-          <Box marginTop={4} key={index}>
-            <AppStatusCard
-              name={status.name}
-              logo={status.formula.logo}
-              state={status.state}
-              inStateTransit={status.inTransit}
-              isDeleting={status.isDeleting}
-              onStartClick={() =>
-                start(status.id).catch((err) => {
-                  toast({
-                    title: `Unable to start ${status.name}`,
-                    description: `${err}`,
-                    isClosable: true,
-                    status: 'error'
-                  });
-                })
-              }
-              onStopClick={() =>
-                stop(status.id).catch((err) => {
-                  toast({
-                    title: `Unable to stop ${status.name}`,
-                    description: `${err}`,
-                    isClosable: true,
-                    status: 'error'
-                  });
-                })
-              }
-              onDeleteClick={() => {
-                setSelectedApp(status);
-                onConfirmDialogOpen();
-              }}
-              actions={actions}
-              customActions={status.formula.actions}
-              onActionClick={(action) => {
-                handleAction(status, action);
-              }}
-              onCustomActionClick={(action) => {
-                handleCustomAction(status, action);
-              }}
-            />
-          </Box>
-        ))}
+        allAppStatus.status
+          .filter((app) => {
+            if (!searchText) return true;
+            else
+              return app.name.toLowerCase().includes(searchText.toLowerCase());
+          })
+          .filter((app) =>
+            app.formula.tags?.find((tag) => {
+              if (!selectedCategories) return true;
+              else return selectedCategories[tag];
+            })
+          )
+          .map((status, index) => (
+            <Box marginTop={4} key={index}>
+              <AppStatusCard
+                name={status.name}
+                logo={status.formula.logo}
+                state={status.state}
+                inStateTransit={status.inTransit}
+                isDeleting={status.isDeleting}
+                onStartClick={() =>
+                  start(status.id).catch((err) => {
+                    toast({
+                      title: `Unable to start ${status.name}`,
+                      description: `${err}`,
+                      isClosable: true,
+                      status: 'error'
+                    });
+                  })
+                }
+                onStopClick={() =>
+                  stop(status.id).catch((err) => {
+                    toast({
+                      title: `Unable to stop ${status.name}`,
+                      description: `${err}`,
+                      isClosable: true,
+                      status: 'error'
+                    });
+                  })
+                }
+                onDeleteClick={() => {
+                  setSelectedApp(status);
+                  onConfirmDialogOpen();
+                }}
+                actions={actions}
+                customActions={status.formula.actions}
+                onActionClick={(action) => {
+                  handleAction(status, action);
+                }}
+                onCustomActionClick={(action) => {
+                  handleCustomAction(status, action);
+                }}
+              />
+            </Box>
+          ))}
       <LogsModal
         onClose={() => {
           currentLogsStream.current?.removeAllListeners();

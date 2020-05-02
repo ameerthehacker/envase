@@ -14,10 +14,10 @@ import { FaListUl, FaRocket } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import { IconText } from '../../components/icon-text/icon-text';
 import EmptyState from '../../components/empty-state/empty-state';
-import AllApps from '../all-apps/all-apps';
+import AllApps, { AllAppsProps } from '../all-apps/all-apps';
 import { FORMULAS } from '../../formulas';
 import { useAppStatus } from '../../contexts/app-status/app-status';
-import MyApps from '../my-apps/my-apps';
+import MyApps, { MyAppsProps } from '../my-apps/my-apps';
 import { useApp } from '../../hooks/use-app/use-app';
 import AppCardSkeleton from '../../components/app-card-skeleton/app-card-skeleton';
 import NoConnection from '../../components/no-connection/no-connection';
@@ -25,8 +25,11 @@ import './app.scss';
 import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
+import withFilters from '../../hoc/with-filters';
 
 const { SAVE_SETTINGS } = IPC_CHANNELS;
+const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
+const MyAppsWithFilters = withFilters<MyAppsProps>(MyApps);
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -107,15 +110,20 @@ export default function App() {
                     />
                   )}
                 {!allAppStatus.isFetching && allAppStatus.status.length > 0 && (
-                  <MyApps />
+                  <MyAppsWithFilters
+                    allAppStatus={allAppStatus}
+                    searchText={searchText}
+                    isFiltersOpen={tabIndex === 0 && isFiltersOpen}
+                    onFiltersClose={onFiltersClose}
+                  />
                 )}
               </TabPanel>
               <TabPanel>
-                <AllApps
-                  searchText={searchText}
-                  isFiltersOpen={isFiltersOpen}
-                  onFiltersClose={onFiltersClose}
+                <AllAppsWithFilters
                   apps={FORMULAS}
+                  searchText={searchText}
+                  isFiltersOpen={tabIndex === 1 && isFiltersOpen}
+                  onFiltersClose={onFiltersClose}
                 />
               </TabPanel>
             </TabPanels>

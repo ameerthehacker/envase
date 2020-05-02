@@ -16,21 +16,17 @@ import {
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
-import Categories from '../../components/categories/catrgories';
-import { getAllTags } from '../../utils/utils';
-import { FORMULAS } from '../../formulas';
+import { Category } from '../../contracts/category';
 
 export interface AllAppsProps {
-  isFiltersOpen: boolean;
-  onFiltersClose: () => void;
   apps: Formula[];
   searchText?: string;
+  selectedCategories?: Category;
 }
 
 export default function AllApps({
   apps,
-  isFiltersOpen,
-  onFiltersClose,
+  selectedCategories,
   searchText
 }: AllAppsProps) {
   const {
@@ -53,7 +49,6 @@ export default function AllApps({
   const currentStream = useRef<DockerStream>();
   const { allAppStatus } = useAppStatus();
   const { load } = useApp();
-  const [allCategories, setCategories] = useState(getAllTags(FORMULAS));
 
   function createNewApp(values: AppFormResult, app: Formula) {
     createContainerFromApp(values, app)
@@ -78,22 +73,15 @@ export default function AllApps({
     <Stack direction="row" flexWrap="wrap">
       {apps
         .filter((app) => {
-          if (!searchText || searchText.length === 0) return true;
-
-          return app.name
-            .toLowerCase()
-            .includes(searchText.trim().toLowerCase());
+          if (!searchText) return true;
+          else return app.name.toLowerCase().includes(searchText.toLowerCase());
         })
-        .filter((app) => {
-          const noCategorySelected =
-            Object.keys(allCategories)
-              .map((category) => allCategories[category])
-              .filter(Boolean).length === 0;
-
-          if (noCategorySelected) return true;
-
-          return app.tags?.find((tag) => allCategories[tag]);
-        })
+        .filter((app) =>
+          app.tags?.find((tag) => {
+            if (!selectedCategories) return true;
+            else return selectedCategories[tag];
+          })
+        )
         .map((app, index) => (
           <Box key={index} marginTop={4}>
             <AppCard
@@ -213,17 +201,6 @@ export default function AllApps({
           onFormClose();
           setIsValidating(false);
         }}
-      />
-      <Categories
-        onChange={(category) =>
-          setCategories((categories) => ({
-            ...categories,
-            ...category
-          }))
-        }
-        isOpen={isFiltersOpen}
-        onClose={onFiltersClose}
-        categories={allCategories}
       />
     </Stack>
   );
