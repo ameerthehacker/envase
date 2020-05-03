@@ -9,6 +9,7 @@ import { ipcRenderer } from '../../services/native/native';
 const { OPEN_FOLDER_DIALOG } = IPC_CHANNELS;
 
 export interface OpenFolderDialogResult {
+  id: string;
   error: boolean | string;
   selectedPath: null | string;
 }
@@ -28,7 +29,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
 
     const onOpenFolderDialog = useCallback(
       (evt: IpcRendererEvent, res: OpenFolderDialogResult) => {
-        if (!res.error && res.selectedPath) {
+        if (!res.error && res.id === id && res.selectedPath) {
           // to ensure formik works
           const { name } = getFieldProps(rest as { name: string });
           setFieldValue(name, res.selectedPath);
@@ -53,7 +54,11 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
         <Button
           aria-label="browse-folder"
           variantColor="blue"
-          onClick={() => ipcRenderer.send(OPEN_FOLDER_DIALOG)}
+          onClick={() =>
+            ipcRenderer.send(OPEN_FOLDER_DIALOG, {
+              id
+            })
+          }
         >
           <Box as={FaFolderOpen} />
         </Button>

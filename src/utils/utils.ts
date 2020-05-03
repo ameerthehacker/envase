@@ -134,7 +134,9 @@ export function getVolumesForDockerAPI(volumes: Record<string, string>) {
   const volumeList = [];
 
   for (const volume in volumes) {
-    volumeList.push(`${volumes[volume]}:${volume}`);
+    if (volumes[volume] && volumes[volume].length > 0) {
+      volumeList.push(`${volumes[volume]}:${volume}`);
+    }
   }
 
   return volumeList;

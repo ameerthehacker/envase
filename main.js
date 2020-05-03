@@ -91,7 +91,7 @@ app.whenReady().then(() => {
   }
 
   // listen for ipc
-  ipcMain.on(OPEN_FOLDER_DIALOG, (evt) => {
+  ipcMain.on(OPEN_FOLDER_DIALOG, (evt, args) => {
     dialog
       .showOpenDialog(win, {
         title: 'Select path',
@@ -100,6 +100,7 @@ app.whenReady().then(() => {
       .then((result) =>
         evt.reply(OPEN_FOLDER_DIALOG, {
           error: false,
+          id: args.id,
           selectedPath: result.filePaths.length > 0 ? result.filePaths[0] : null
         })
       )

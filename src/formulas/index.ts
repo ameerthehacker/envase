@@ -12,6 +12,7 @@ import JENKINS from './jenkins/jenkins';
 import MONGO from './mongo/mongo';
 import RUBY from './ruby/ruby';
 import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
+import NGINX from './nginx/nginx';
 
 const FORMULAS = [
   MYSQL,
@@ -27,7 +28,8 @@ const FORMULAS = [
   JENKINS,
   MONGO,
   RUBY,
-  SCIPY_NOTBOOK
+  SCIPY_NOTBOOK,
+  NGINX
 ];
 
 export { FORMULAS };
