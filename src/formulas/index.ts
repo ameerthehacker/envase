@@ -11,6 +11,7 @@ import GCC from './gcc/gcc';
 import JENKINS from './jenkins/jenkins';
 import MONGO from './mongo/mongo';
 import RUBY from './ruby/ruby';
+import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
 
 const FORMULAS = [
   MYSQL,
@@ -25,7 +26,8 @@ const FORMULAS = [
   GCC,
   JENKINS,
   MONGO,
-  RUBY
+  RUBY,
+  SCIPY_NOTBOOK
 ];
 
 export { FORMULAS };

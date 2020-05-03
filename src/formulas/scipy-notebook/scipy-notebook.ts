@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
-import logo from './logo.svg';
+import logo from './logo.png';
 import { FaCode } from 'react-icons/fa';
 
-const VSCODE: Formula = {
-  name: 'VS Code',
+const SCIPY_NOTBOOK: Formula = {
+  name: 'SciPy Notebook',
   defaultShell: '/bin/bash',
   logo,
   data: {
     name: {
       type: 'string',
-      description: 'Name of the VS Code instance',
+      description: 'Name of the SciPy notbook instance',
       required: true
     },
     port: {
       type: 'number',
-      description: 'Port on which VS Code server should run',
-      default: 8080,
+      description: 'Port on which the notebook should run',
+      default: 8888,
       required: true
     },
     projects_folder: {
@@ -25,33 +25,33 @@ const VSCODE: Formula = {
       required: true
     }
   },
-  image: 'codercom/code-server',
-  cmd: ['--auth', 'none'],
+  image: 'jupyter/scipy-notebook',
   ports: {
-    8080: '%port%'
+    8888: '%port%'
+  },
+  volumes: {
+    '/home/jovyan/work': '%projects_folder%'
   },
   env: {},
-  volumes: {
-    '/home/coder/project': '%projects_folder%'
-  },
   actions: [
     {
-      text: 'Open VSCode',
-      value: 'OPEN_VSCODE',
+      text: 'Open Notebook',
+      value: 'OPEN_SCIPY_NOTEBOOK',
       icon: FaCode,
       openInBrowser: 'http://localhost:%port%',
       shouldBeRunning: true
     }
   ],
   healthCheck: {
-    test: ['CMD', 'curl', 'http://localhost:%port%'],
+    test: ['CMD', 'wget', '--tries=1', 'http://localhost:%port%'],
     retries: 5,
     startPeriod: 0,
     timeout: 5000,
     interval: 1000
   },
-  onHealthyActions: ['OPEN_VSCODE'],
+  cmd: ['start-notebook.sh', '--NotebookApp.token='],
+  onHealthyActions: ['OPEN_SCIPY_NOTEBOOK'],
   tags: ['Application']
 };
 
-export default VSCODE;
+export default SCIPY_NOTBOOK;

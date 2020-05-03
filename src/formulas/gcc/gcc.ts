@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
 
@@ -11,14 +12,14 @@ const GCC: Formula = {
       description: 'Name of the GCC instance',
       required: true
     },
-    project: {
+    projects_folder: {
       type: 'path',
-      description: 'Projects folder',
+      description: 'Folder location where you have all your projects',
       required: true
     }
   },
   volumes: {
-    '/projects': '%project%'
+    '/projects': '%projects_folder%'
   },
   isCli: true,
   image: 'library/gcc',

@@ -46,7 +46,7 @@ export default function AppFormModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal size="lg" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <Formik validateOnMount initialValues={initialValues} onSubmit={onSubmit}>
         {({ isValid, submitForm }) => (
