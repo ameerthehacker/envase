@@ -6,6 +6,15 @@ export interface CustomAction extends Action {
   openInBrowser?: string;
   exec?: string;
 }
+
+export interface HealthCheck {
+  test: string[];
+  interval: number;
+  timeout: number;
+  retries: number;
+  startPeriod: number;
+}
+
 export interface Formula {
   name: string;
   data: {
@@ -21,6 +30,8 @@ export interface Formula {
   actions?: CustomAction[];
   tags?: Tag[];
   cmd?: string[];
+  onHealthyActions?: string[];
+  healthCheck?: HealthCheck;
 }
 
 interface FormulaField {

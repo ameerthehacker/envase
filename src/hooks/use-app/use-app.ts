@@ -4,7 +4,10 @@ import {
   startApp,
   stopApp,
   deleteApp,
-  listContainerApps
+  listContainerApps,
+  onContainerHealthy,
+  getContainerAppInfo,
+  performOnHealthyAction
 } from '../../services/docker/docker';
 
 export function useApp() {
@@ -70,6 +73,17 @@ export function useApp() {
                 id
               }
             });
+
+            onContainerHealthy(id)
+              .then(() => {
+                return getContainerAppInfo(id);
+              })
+              .then((containerAppInfo) => {
+                performOnHealthyAction(
+                  id,
+                  containerAppInfo.getInterpolatedFormula()
+                );
+              });
 
             resolve();
           })

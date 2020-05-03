@@ -44,6 +44,14 @@ const VSCODE: Formula = {
       shouldBeRunning: true
     }
   ],
+  healthCheck: {
+    test: ['CMD', 'curl', 'http://localhost:%port%'],
+    retries: 5,
+    startPeriod: 0,
+    timeout: 5000,
+    interval: 1000
+  },
+  onHealthyActions: ['OPEN_VSCODE'],
   tags: ['Application']
 };
 

@@ -67,6 +67,15 @@ export function interpolateFormula(
     }
   }
 
+  if (clonedFormula.healthCheck) {
+    for (const i in clonedFormula.healthCheck.test) {
+      clonedFormula.healthCheck.test[i] = interpolate(
+        clonedFormula.healthCheck.test[i],
+        data
+      );
+    }
+  }
+
   return clonedFormula;
 }
 

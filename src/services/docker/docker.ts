@@ -2,7 +2,7 @@ import { dockerode, ipcRenderer } from '../native/native';
 import { IPC_CHANNELS } from '../../constants';
 import { IpcRendererEvent } from 'electron';
 import { AppFormResult } from '../../components/app-form-modal/app-form-modal';
-import { Formula } from '../../contracts/formula';
+import { Formula, CustomAction } from '../../contracts/formula';
 import {
   getImageRepoTag,
   interpolateFormula,
@@ -11,11 +11,12 @@ import {
   getVolumesForDockerAPI
 } from '../../utils/utils';
 import { AppStatus } from '../../contexts/app-status/app-status';
-import { ContainerInfo } from 'dockerode';
+import Dockerode, { ContainerInfo } from 'dockerode';
 import { FORMULAS } from '../../formulas';
 import { Optional } from 'utility-types';
 import { ContainerAppInfo } from '../../contracts/container-app-info';
 import { AppLabels } from '../../contracts/app-labels';
+import { open } from '../native/native';
 
 const { CHECK_IMAGE_EXISTS, ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -170,6 +171,10 @@ export function getContainerAppInfo(
   });
 }
 
+export function getContainerInfo(containerId: string) {
+  return dockerode.getContainer(containerId).inspect();
+}
+
 export function pullImage(
   image: string,
   tag: string,
@@ -245,7 +250,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     volList = getVolumesForDockerAPI(interpolatedFormula.volumes);
   }
 
-  return dockerode.createContainer({
+  let params: Dockerode.ContainerCreateOptions = {
     name: values.name,
     Image: getImageRepoTag(app.image, values.version),
     Env: envList,
@@ -257,6 +262,103 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
       PortBindings: portBindings,
       Binds: volList
     }
+  };
+
+  if (interpolatedFormula.healthCheck) {
+    params = {
+      ...params,
+      Healthcheck: {
+        Interval: interpolatedFormula.healthCheck.interval * 10 ** 6,
+        Retries: interpolatedFormula.healthCheck.retries,
+        Timeout: interpolatedFormula.healthCheck.timeout * 10 ** 6,
+        Test: interpolatedFormula.healthCheck.test,
+        StartPeriod: interpolatedFormula.healthCheck.startPeriod * 10 ** 6
+      }
+    } as any;
+  }
+
+  return dockerode.createContainer(params);
+}
+
+export function performCustomAction(
+  containerId: string,
+  interpolatedActions: CustomAction[],
+  actionValue: string
+) {
+  const interpolatedAction = interpolatedActions?.find(
+    (elem) => elem.value === actionValue
+  );
+
+  if (interpolatedAction && interpolatedAction.exec) {
+    ipcRenderer.send(ATTACH_SHELL, {
+      containerId,
+      cmd: interpolatedAction.exec
+    });
+  }
+  if (interpolatedAction && interpolatedAction.openInBrowser) {
+    open(interpolatedAction.openInBrowser);
+  }
+
+  if (!interpolatedAction) {
+    return false;
+  }
+
+  return true;
+}
+
+export function performOnHealthyAction(
+  containerId: string,
+  interpolatedFormula: Formula
+) {
+  const interpolatedActions = interpolatedFormula.actions || [];
+
+  if (
+    interpolatedFormula.healthCheck &&
+    interpolatedFormula.onHealthyActions &&
+    interpolatedActions.length > 0
+  ) {
+    if (interpolatedFormula.actions && interpolatedFormula.actions.length > 0) {
+      interpolatedFormula.onHealthyActions.forEach((healthyAction) =>
+        performCustomAction(containerId, interpolatedActions, healthyAction)
+      );
+    }
+  }
+}
+
+export function onContainerHealthy(containerId: string) {
+  return new Promise((resolve, reject) => {
+    getContainerInfo(containerId)
+      .then((containerInfo) => {
+        const { getInterpolatedFormula } = getContainerAppInfoFromLabels(
+          containerInfo.Config.Labels
+        );
+        const { name, healthCheck } = getInterpolatedFormula();
+
+        if (healthCheck) {
+          const { interval, startPeriod, retries: maxRetries } = healthCheck;
+          let retries = 0;
+
+          const healthCheckFn = async () => {
+            try {
+              const { State } = await getContainerInfo(containerId);
+
+              if (State.Health?.Status === 'healthy') {
+                resolve();
+              } else if (retries > maxRetries) reject();
+              else setTimeout(healthCheckFn, interval);
+            } catch {
+              console.log(`error checking health of ${name} ${containerId}`);
+            }
+
+            retries++;
+          };
+
+          setTimeout(healthCheckFn, startPeriod);
+        } else {
+          resolve();
+        }
+      })
+      .catch(reject);
   });
 }
 

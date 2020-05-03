@@ -3,7 +3,10 @@ import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { AppStatus, AllAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
-import { getContainerAppLogs } from '../../services/docker/docker';
+import {
+  getContainerAppLogs,
+  performCustomAction
+} from '../../services/docker/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
@@ -11,7 +14,6 @@ import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-di
 import ExecModal from '../../components/exec-modal/exec-modal';
 import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
-import { open } from '../../services/native/native';
 import { CustomAction } from '../../contracts/formula';
 import { Category } from '../../contracts/category';
 import NoResults from '../../components/no-results/no-results';
@@ -73,31 +75,15 @@ export default function MyApps({
 
   const handleCustomAction = useCallback(
     (status: AppStatus, action: CustomAction) => {
-      const interpolatedFormula = status?.containerAppInfo?.getInterpolatedFormula();
+      const { actions } = status?.containerAppInfo?.getInterpolatedFormula();
 
-      if (interpolatedFormula?.actions) {
-        const interpolatedAction = interpolatedFormula?.actions?.find(
-          (elem) => elem.value === action.value
-        );
-
-        if (interpolatedAction && interpolatedAction.exec) {
-          console.log(interpolatedAction);
-          ipcRenderer.send(ATTACH_SHELL, {
-            containerId: status.id,
-            cmd: interpolatedAction.exec
-          });
-        }
-        if (interpolatedAction && interpolatedAction.openInBrowser) {
-          open(interpolatedAction.openInBrowser);
-        }
-        if (!interpolatedAction) {
-          toast({
-            title: 'oops!',
-            description: 'Action not found, please raise an issue in GitHub',
-            status: 'error',
-            isClosable: true
-          });
-        }
+      if (actions && !performCustomAction(status.id, actions, action.value)) {
+        toast({
+          title: 'oops!',
+          description: 'Action not found, please raise an issue in GitHub',
+          status: 'error',
+          isClosable: true
+        });
       }
     },
     [toast]
