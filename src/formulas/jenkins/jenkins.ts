@@ -13,7 +13,7 @@ const JENKINS: Formula = {
       description: 'Name of the Jenkins instance',
       required: true
     },
-    ui_port: {
+    UI_port: {
       type: 'number',
       description: 'Port on which jenkins UI will be available',
       default: 8080,
@@ -39,6 +39,14 @@ const JENKINS: Formula = {
       shouldBeRunning: true
     }
   ],
+  healthCheck: {
+    test: ['CMD', 'curl', 'http://localhost:%ui_port%'],
+    retries: 10,
+    startPeriod: 1000,
+    timeout: 5000,
+    interval: 1000
+  },
+  onHealthyActions: ['OPEN_JENKINS_UI'],
   tags: ['Platform']
 };
 
