@@ -44,7 +44,7 @@ const VSCODE: Formula = {
     }
   ],
   healthCheck: {
-    test: ['CMD', 'curl', 'http://localhost:%port%'],
+    test: ['CMD', 'curl', 'http://localhost:8080'],
     retries: 5,
     startPeriod: 0,
     timeout: 5000,

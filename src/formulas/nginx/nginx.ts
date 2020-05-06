@@ -43,7 +43,7 @@ const NGINX: Formula = {
       text: 'Open Website',
       value: 'OPEN_WEBSITE',
       icon: FaGlobe,
-      openInBrowser: 'http://localhost:%port%',
+      openInBrowser: 'http://localhost',
       shouldBeRunning: true
     }
   ],

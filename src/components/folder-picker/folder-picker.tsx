@@ -37,7 +37,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
           setFieldTouched(name, true);
         }
       },
-      [setFieldValue, setFieldTouched, getFieldProps, rest]
+      [id, setFieldValue, setFieldTouched, getFieldProps, rest]
     );
 
     useEffect(() => {

@@ -40,7 +40,7 @@ const JENKINS: Formula = {
     }
   ],
   healthCheck: {
-    test: ['CMD', 'curl', 'http://localhost:%ui_port%'],
+    test: ['CMD', 'curl', 'http://localhost:8080'],
     retries: 10,
     startPeriod: 1000,
     timeout: 5000,

@@ -38,7 +38,7 @@ const SCIPY_NOTBOOK: Formula = {
       text: 'Open Notebook',
       value: 'OPEN_SCIPY_NOTEBOOK',
       icon: FaCode,
-      openInBrowser: 'http://localhost:%port%',
+      openInBrowser: 'http://localhost:8888',
       shouldBeRunning: true
     }
   ],
