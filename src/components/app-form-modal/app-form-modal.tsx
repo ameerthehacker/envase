@@ -19,7 +19,9 @@ export interface AppFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   isValidating?: boolean;
-  onSubmit: (result: AppFormResult) => void;
+  values?: AppFormResult;
+  onSubmit?: (result: AppFormResult) => void;
+  isReadOnly?: boolean;
 }
 
 export interface AppFormResult {
@@ -33,46 +35,60 @@ export default function AppFormModal({
   isOpen,
   onClose,
   isValidating,
-  onSubmit
+  onSubmit,
+  values,
+  isReadOnly
 }: AppFormModalProps) {
   const data = app?.data || {};
   const fieldNames = Object.keys(data || {});
-  const initialValues: AppFormResult = {
+  const initialValues: AppFormResult = values || {
     version: '',
     additionalPorts: []
   };
 
-  // populate the initial values
-  for (const fieldName of fieldNames) {
-    initialValues[fieldName] = String(data[fieldName].default || '');
+  if (!values) {
+    // populate the initial values
+    for (const fieldName of fieldNames) {
+      initialValues[fieldName] = String(data[fieldName].default || '');
+    }
   }
 
   return (
     <Modal size="lg" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <Formik validateOnMount initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik
+        validateOnMount
+        initialValues={initialValues}
+        onSubmit={onSubmit || (() => null)}
+      >
         {({ isValid, submitForm }) => (
           <ModalContent>
-            <ModalHeader>{`Create ${app?.name} App`}</ModalHeader>
+            <ModalHeader>
+              {isReadOnly ? app?.name : `Create ${app?.name} App`}
+            </ModalHeader>
             <ModalCloseButton />
-            <ModalBody>{app && <AppForm app={app} />}</ModalBody>
-            <ModalFooter>
-              <Stack direction="row">
-                <Button
-                  isLoading={isValidating}
-                  isDisabled={!isValid}
-                  onClick={submitForm}
-                  variantColor="green"
-                  variant="outline"
-                  loadingText="Validating..."
-                >
-                  Create
-                </Button>
-                <Button variantColor="red" mr={3} onClick={onClose}>
-                  Cancel
-                </Button>
-              </Stack>
-            </ModalFooter>
+            <ModalBody>
+              {app && <AppForm isReadOnly={isReadOnly} app={app} />}
+            </ModalBody>
+            {!isReadOnly && (
+              <ModalFooter>
+                <Stack direction="row">
+                  <Button
+                    isLoading={isValidating}
+                    isDisabled={!isValid}
+                    onClick={submitForm}
+                    variantColor="green"
+                    variant="outline"
+                    loadingText="Validating..."
+                  >
+                    Create
+                  </Button>
+                  <Button variantColor="red" mr={3} onClick={onClose}>
+                    Cancel
+                  </Button>
+                </Stack>
+              </ModalFooter>
+            )}
           </ModalContent>
         )}
       </Formik>

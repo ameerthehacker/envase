@@ -17,10 +17,11 @@ export interface OpenFolderDialogResult {
 export interface FolderPickerProps {
   id?: string;
   placeholder?: string;
+  isDisabled?: boolean;
 }
 
 const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
-  ({ id, placeholder, ...rest }: FolderPickerProps, ref) => {
+  ({ id, placeholder, isDisabled, ...rest }: FolderPickerProps, ref) => {
     const {
       setFieldValue,
       getFieldProps,
@@ -50,7 +51,13 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
 
     return (
       <Stack direction="row">
-        <Input ref={ref} id={id} placeholder={placeholder} {...rest} />
+        <Input
+          ref={ref}
+          id={id}
+          placeholder={placeholder}
+          isDisabled={isDisabled}
+          {...rest}
+        />
         <Button
           aria-label="browse-folder"
           variantColor="blue"
@@ -59,6 +66,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
               id
             })
           }
+          isDisabled={isDisabled}
         >
           <Box as={FaFolderOpen} />
         </Button>

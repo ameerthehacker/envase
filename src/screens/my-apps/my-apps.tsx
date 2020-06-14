@@ -12,11 +12,12 @@ import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import ExecModal from '../../components/exec-modal/exec-modal';
-import { FaTerminal, FaScroll, FaRunning } from 'react-icons/fa';
+import { FaTerminal, FaScroll, FaRunning, FaInfo } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
 import { CustomAction } from '../../contracts/formula';
 import { Category } from '../../contracts/category';
 import NoResults from '../../components/no-results/no-results';
+import AppFormModal from '../../components/app-form-modal/app-form-modal';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -38,6 +39,7 @@ export default function MyApps({
   >();
   const currentLogsStream = useRef<NodeJS.ReadableStream>();
   const actions: Action[] = [
+    { text: 'Show Info', value: 'SHOW_INFO', icon: FaInfo },
     {
       text: 'Show logs',
       value: 'SHOW_LOGS',
@@ -50,7 +52,7 @@ export default function MyApps({
       icon: FaTerminal
     },
     {
-      text: 'Exec Command',
+      text: 'Run Command',
       value: 'EXEC',
       shouldBeRunning: true,
       icon: FaRunning
@@ -65,6 +67,11 @@ export default function MyApps({
     isOpen: isConfirmDialogOpen,
     onClose: onConfirmDialogClose,
     onOpen: onConfirmDialogOpen
+  } = useDisclosure();
+  const {
+    isOpen: isAppFormDialogOpen,
+    onClose: onAppFormDialogClose,
+    onOpen: onAppFormDialogOpen
   } = useDisclosure();
   const {
     isOpen: isExecOpen,
@@ -120,10 +127,14 @@ export default function MyApps({
         }
         case 'EXEC': {
           onExecOpen();
+          break;
+        }
+        case 'SHOW_INFO': {
+          onAppFormDialogOpen();
         }
       }
     },
-    [onLogsOpen, onExecOpen, toast]
+    [onLogsOpen, onExecOpen, toast, onAppFormDialogOpen]
   );
 
   const filteredApps = allAppStatus.status
@@ -225,6 +236,13 @@ export default function MyApps({
 
           onConfirmDialogClose();
         }}
+      />
+      <AppFormModal
+        isReadOnly={true}
+        app={selectedApp?.formula}
+        values={selectedApp?.containerAppInfo.formValues}
+        isOpen={isAppFormDialogOpen}
+        onClose={onAppFormDialogClose}
       />
     </Stack>
   );

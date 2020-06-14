@@ -124,7 +124,7 @@ export function getExposedPortsForDockerAPI(
   for (const port in ports) {
     portBindings[`${port}/tcp`] = [
       {
-        HostPort: ports[port]
+        HostPort: String(ports[port])
       }
     ];
     exposedPorts[`${port}/tcp`] = {};
@@ -133,7 +133,7 @@ export function getExposedPortsForDockerAPI(
   for (const additionalPort of additionalPorts) {
     portBindings[`${additionalPort}/tcp`] = [
       {
-        HostPort: additionalPort
+        HostPort: String(additionalPort)
       }
     ];
     exposedPorts[`${additionalPort}/tcp`] = {};

@@ -37,6 +37,7 @@ export interface VersionDropdownProps {
   field: FieldInputProps<string>;
   form: FormikProps<any>;
   alwaysShowSuggestions?: boolean;
+  isDisabled?: boolean;
 }
 
 export default function VersionDropdown({
@@ -45,13 +46,14 @@ export default function VersionDropdown({
   placeholder,
   field,
   form,
-  alwaysShowSuggestions
+  alwaysShowSuggestions,
+  isDisabled
 }: VersionDropdownProps) {
   const [options, setOptions] = useState<Option[] | undefined>([]);
   const [suggestions, setSuggestions] = useState<Option[]>([]);
   const currentPage = useRef(1);
   const toast = useToast();
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>(field.value || '');
   const { colorMode } = useColorMode();
   const highlightColor = {
     light: theme.colors.teal[500],
@@ -172,16 +174,18 @@ export default function VersionDropdown({
   );
 
   useEffect(() => {
-    setIsTagLoading(true);
+    if (!isDisabled) {
+      setIsTagLoading(true);
 
-    ipcRenderer.on(GET_IMAGE_TAGS, onGetImageTagsResult);
+      ipcRenderer.on(GET_IMAGE_TAGS, onGetImageTagsResult);
 
-    ipcRenderer.send(GET_IMAGE_TAGS, { image });
+      ipcRenderer.send(GET_IMAGE_TAGS, { image });
 
-    return () => {
-      ipcRenderer.removeListener(GET_IMAGE_TAGS, onGetImageTagsResult);
-    };
-  }, [onGetImageTagsResult, image]);
+      return () => {
+        ipcRenderer.removeListener(GET_IMAGE_TAGS, onGetImageTagsResult);
+      };
+    }
+  }, [onGetImageTagsResult, image, isDisabled]);
 
   return (
     <Autosuggest
@@ -195,7 +199,7 @@ export default function VersionDropdown({
         id,
         ...form,
         ...field,
-        disabled: isTagsLoading,
+        disabled: isDisabled || isTagsLoading,
         value: inputValue,
         onChange: (evt, { newValue }) => {
           setInputValue(newValue);

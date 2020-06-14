@@ -28,6 +28,7 @@ import { IconButton } from '@chakra-ui/core/dist';
 
 export interface AppFormProps {
   app: Formula;
+  isReadOnly?: boolean;
 }
 
 function getInputType(type: string) {
@@ -40,7 +41,7 @@ function getInputType(type: string) {
 }
 
 // TODO: use formprops and formikprops types
-export default function AppForm({ app }: AppFormProps) {
+export default function AppForm({ app, isReadOnly }: AppFormProps) {
   const { data } = app;
   const fieldNames = Object.keys(data);
 
@@ -78,6 +79,7 @@ export default function AppForm({ app }: AppFormProps) {
               </FormLabel>
               {isInputField && (
                 <Input
+                  isDisabled={isReadOnly}
                   type={getInputType(type)}
                   id={fieldId}
                   placeholder={placeholder}
@@ -88,13 +90,19 @@ export default function AppForm({ app }: AppFormProps) {
                 <NumberInput>
                   <NumberInputField
                     id={fieldId}
+                    isDisabled={isReadOnly}
                     placeholder={placeholder}
                     {...field}
                   />
                 </NumberInput>
               )}
               {isSelectField && (
-                <Select id={fieldId} placeholder={placeholder} {...field}>
+                <Select
+                  id={fieldId}
+                  placeholder={placeholder}
+                  isDisabled={isReadOnly}
+                  {...field}
+                >
                   {options.map((option, index) => (
                     <option key={index} value={option}>
                       {option}
@@ -106,6 +114,7 @@ export default function AppForm({ app }: AppFormProps) {
                 <FolderPicker
                   id={fieldId}
                   placeholder={placeholder}
+                  isDisabled={isReadOnly}
                   {...field}
                   {...form}
                 />
@@ -120,16 +129,16 @@ export default function AppForm({ app }: AppFormProps) {
 
   return (
     <Form>
-      <Stack spacing={2}>
-        <Accordion defaultIndex={[0]} allowMultiple>
-          <AccordionItem defaultIsOpen>
-            <AccordionHeader pl={1} pr={1}>
-              <Box flex={1} textAlign="left">
-                Basic
-              </Box>
-              <AccordionIcon />
-            </AccordionHeader>
-            <AccordionPanel p={1}>
+      <Accordion defaultIndex={isReadOnly ? [0, 1] : [0]} allowMultiple>
+        <AccordionItem>
+          <AccordionHeader pl={1} pr={1}>
+            <Box flex={1} textAlign="left">
+              Basic
+            </Box>
+            <AccordionIcon />
+          </AccordionHeader>
+          <AccordionPanel p={1}>
+            <Stack spacing={2}>
               <Box>
                 <FormControl>
                   <FormLabel htmlFor="image">Image</FormLabel>
@@ -150,6 +159,7 @@ export default function AppForm({ app }: AppFormProps) {
                         field={field}
                         form={form}
                         placeholder="App version/tag"
+                        isDisabled={isReadOnly}
                       />
                       <Link
                         fontSize="small"
@@ -165,85 +175,88 @@ export default function AppForm({ app }: AppFormProps) {
                   )}
                 </Field>
               </Box>
-            </AccordionPanel>
-          </AccordionItem>
-          <AccordionItem mt={2} pb={2}>
-            <AccordionHeader pl={1} pr={1}>
-              <Box flex={1} textAlign="left">
-                Advanced
-              </Box>
-              <AccordionIcon />
-            </AccordionHeader>
-            <AccordionPanel p={1}>
-              <FieldArray name={'additionalPorts'}>
-                {(helpers) => (
-                  <>
-                    <FormLabel>Additional Ports to expose</FormLabel>
-                    <Stack spacing={2}>
-                      {helpers.form.values.additionalPorts.map(
-                        (additionalPort: string, index: number) => (
-                          <FormControl key={index}>
-                            <Field
-                              name={`additionalPorts.${index}`}
-                              validate={requiredValidator(
-                                'additionalPorts',
-                                'port number'
-                              )}
-                            >
-                              {({ field, form }: { field: any; form: any }) => (
-                                <FormControl
-                                  isInvalid={
-                                    form.errors.additionalPorts &&
-                                    form.touched.additionalPorts &&
-                                    form.errors.additionalPorts[index] &&
-                                    form.touched.additionalPorts[index]
-                                  }
-                                >
-                                  <Stack direction={'row'}>
-                                    <Box w={'100%'}>
-                                      <NumberInput>
-                                        <NumberInputField
-                                          placeholder={
-                                            'Container port (you will be able to access this from host)'
-                                          }
-                                          {...field}
-                                        />
-                                      </NumberInput>
-                                      <FormErrorMessage>
-                                        {form.errors.additionalPorts &&
-                                          form.errors.additionalPorts[index]}
-                                      </FormErrorMessage>
-                                    </Box>
+            </Stack>
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem mt={2} pb={2}>
+          <AccordionHeader pl={1} pr={1}>
+            <Box flex={1} textAlign="left">
+              Advanced
+            </Box>
+            <AccordionIcon />
+          </AccordionHeader>
+          <AccordionPanel p={1}>
+            <FieldArray name={'additionalPorts'}>
+              {(helpers) => (
+                <>
+                  <FormLabel>Additional Ports to expose</FormLabel>
+                  <Stack spacing={2}>
+                    {helpers.form.values.additionalPorts.map(
+                      (additionalPort: string, index: number) => (
+                        <FormControl key={index}>
+                          <Field
+                            name={`additionalPorts.${index}`}
+                            validate={requiredValidator(
+                              'additionalPorts',
+                              'port number'
+                            )}
+                          >
+                            {({ field, form }: { field: any; form: any }) => (
+                              <FormControl
+                                isInvalid={
+                                  form.errors.additionalPorts &&
+                                  form.touched.additionalPorts &&
+                                  form.errors.additionalPorts[index] &&
+                                  form.touched.additionalPorts[index]
+                                }
+                              >
+                                <Stack direction={'row'}>
+                                  <Box w={'100%'}>
+                                    <NumberInput>
+                                      <NumberInputField
+                                        placeholder="Container port to expose"
+                                        isDisabled={isReadOnly}
+                                        {...field}
+                                      />
+                                    </NumberInput>
+                                    <FormErrorMessage>
+                                      {form.errors.additionalPorts &&
+                                        form.errors.additionalPorts[index]}
+                                    </FormErrorMessage>
+                                  </Box>
+                                  {!isReadOnly && (
                                     <IconButton
                                       onClick={() => helpers.remove(index)}
                                       aria-label={'delete'}
                                       icon={'delete'}
                                       variantColor={'red'}
                                     />
-                                  </Stack>
-                                </FormControl>
-                              )}
-                            </Field>
-                          </FormControl>
-                        )
-                      )}
-                    </Stack>
+                                  )}
+                                </Stack>
+                              </FormControl>
+                            )}
+                          </Field>
+                        </FormControl>
+                      )
+                    )}
+                  </Stack>
+                  {!isReadOnly && (
                     <Button
                       onClick={() => helpers.push('')}
-                      variantColor={'teal'}
+                      variantColor="blue"
                       mt={2}
                       leftIcon="add"
                       size="sm"
                     >
                       Add Port
                     </Button>
-                  </>
-                )}
-              </FieldArray>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      </Stack>
+                  )}
+                </>
+              )}
+            </FieldArray>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
     </Form>
   );
 }
