@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Formula } from '../../contracts/formula';
 import {
   Box,
@@ -93,6 +93,10 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                     isDisabled={isReadOnly}
                     placeholder={placeholder}
                     {...field}
+                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                      if (evt.target.value.match(/^[0-9]*$/))
+                        form.setFieldValue(field.name, evt.target.value);
+                    }}
                   />
                 </NumberInput>
               )}
@@ -217,6 +221,17 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                                         placeholder="Container port to expose"
                                         isDisabled={isReadOnly}
                                         {...field}
+                                        onChange={(
+                                          evt: ChangeEvent<HTMLInputElement>
+                                        ) => {
+                                          if (
+                                            evt.target.value.match(/^[0-9]*$/)
+                                          )
+                                            form.setFieldValue(
+                                              field.name,
+                                              evt.target.value
+                                            );
+                                        }}
                                       />
                                     </NumberInput>
                                     <FormErrorMessage>
