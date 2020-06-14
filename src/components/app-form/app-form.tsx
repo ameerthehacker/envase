@@ -21,6 +21,13 @@ import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
 import { open } from '../../services/native/native';
+import {
+  Accordion,
+  AccordionHeader,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel
+} from '@chakra-ui/core/dist';
 
 export interface AppFormProps {
   app: Formula;
@@ -121,39 +128,62 @@ export default function AppForm({ app }: AppFormProps) {
   return (
     <Form>
       <Stack spacing={2}>
-        <Box>
-          <FormControl>
-            <FormLabel htmlFor="image">Image</FormLabel>
-            <Input id="image" value={app.image} isDisabled={true} />
-          </FormControl>
-        </Box>
-        {formElements}
-        <Box>
-          <Field name="version" validate={requiredValidator('version')}>
-            {({ field, form }: { field: any; form: any }) => (
-              <FormControl
-                isInvalid={form.errors.version && form.touched.version}
-              >
-                <FormLabel htmlFor="field-version">Version/Tag</FormLabel>
-                <VersionDropdown
-                  id="field-version"
-                  image={app.image}
-                  field={field}
-                  form={form}
-                  placeholder="App version/tag"
-                />
-                <Link
-                  fontSize="small"
-                  onClick={() => open(`${getDockerHubLinkToTags(app.image)}`)}
-                  isExternal
-                >
-                  View all available versions/tags
-                </Link>
-                <FormErrorMessage>{form.errors.version}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field>
-        </Box>
+        <Accordion defaultIndex={[0]} allowMultiple>
+          <AccordionItem defaultIsOpen>
+            <AccordionHeader pl={1} pr={1}>
+              <Box flex={1} textAlign="left">
+                Basic
+              </Box>
+              <AccordionIcon />
+            </AccordionHeader>
+            <AccordionPanel p={1}>
+              <Box>
+                <FormControl>
+                  <FormLabel htmlFor="image">Image</FormLabel>
+                  <Input id="image" value={app.image} isDisabled={true} />
+                </FormControl>
+              </Box>
+              {formElements}
+              <Box>
+                <Field name="version" validate={requiredValidator('version')}>
+                  {({ field, form }: { field: any; form: any }) => (
+                    <FormControl
+                      isInvalid={form.errors.version && form.touched.version}
+                    >
+                      <FormLabel htmlFor="field-version">Version/Tag</FormLabel>
+                      <VersionDropdown
+                        id="field-version"
+                        image={app.image}
+                        field={field}
+                        form={form}
+                        placeholder="App version/tag"
+                      />
+                      <Link
+                        fontSize="small"
+                        onClick={() =>
+                          open(`${getDockerHubLinkToTags(app.image)}`)
+                        }
+                        isExternal
+                      >
+                        View all available versions/tags
+                      </Link>
+                      <FormErrorMessage>{form.errors.version}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem mt={2}>
+            <AccordionHeader pl={1} pr={1}>
+              <Box flex={1} textAlign="left">
+                Advanced
+              </Box>
+              <AccordionIcon />
+            </AccordionHeader>
+            <AccordionPanel p={1}>Advances config</AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </Stack>
     </Form>
   );
