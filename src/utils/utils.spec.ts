@@ -139,19 +139,28 @@ describe('utils', () => {
 
   it('getExposedPortsForDockerAPI() should return port list', () => {
     expect(
-      getExposedPortsForDockerAPI({
-        '3000': '3001'
-      })
+      getExposedPortsForDockerAPI(
+        {
+          '3000': '3001'
+        },
+        ['8080']
+      )
     ).toEqual({
       portBindings: {
         '3000/tcp': [
           {
             HostPort: '3001'
           }
+        ],
+        '8080/tcp': [
+          {
+            HostPort: '8080'
+          }
         ]
       },
       exposedPorts: {
-        '3000/tcp': {}
+        '3000/tcp': {},
+        '8080/tcp': {}
       }
     });
   });
