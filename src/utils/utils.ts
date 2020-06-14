@@ -166,6 +166,13 @@ export function requiredValidator(fieldName: string, aliasName?: string) {
   };
 }
 
+export function isValidContainerName(name: string) {
+  // https://regexr.com/3bsog
+  const validNameRegEx = /^[a-z0-9]+(?:[._-]{1,2}[a-z0-9]+)*$/;
+
+  return validNameRegEx.test(name);
+}
+
 export function getAllTags(formulas: Formula[]): Record<string, boolean> {
   const tags = new Set<string>();
 

@@ -18,6 +18,7 @@ export interface HealthCheck {
 export interface Formula {
   name: string;
   data: {
+    name: FormulaField;
     [key: string]: FormulaField;
   };
   env: Record<string, string>;

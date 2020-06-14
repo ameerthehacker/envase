@@ -11,6 +11,11 @@ const FORMULA: Formula = {
     USERNAME: '%username%'
   },
   data: {
+    name: {
+      type: 'string',
+      required: true,
+      description: 'Name of the container'
+    },
     port: {
       type: 'number',
       description: 'Port number of MySQL'

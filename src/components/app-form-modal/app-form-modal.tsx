@@ -39,7 +39,7 @@ export default function AppFormModal({
   values,
   isReadOnly
 }: AppFormModalProps) {
-  const data = app?.data || {};
+  const data: any = app?.data || {};
   const fieldNames = Object.keys(data || {});
   const initialValues: AppFormResult = values || {
     version: '',

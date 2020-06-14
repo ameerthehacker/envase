@@ -18,7 +18,11 @@ import {
   AccordionPanel,
   Button
 } from '@chakra-ui/core';
-import { keyToLabelText, requiredValidator } from '../../utils/utils';
+import {
+  isValidContainerName,
+  keyToLabelText,
+  requiredValidator
+} from '../../utils/utils';
 import { Field, FieldArray, Form } from 'formik';
 import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
@@ -38,6 +42,18 @@ function getInputType(type: string) {
     case 'password':
       return 'password';
   }
+}
+
+function validateAppName(name: string) {
+  const isNotEmpty = requiredValidator('name')(name);
+
+  if (isNotEmpty) {
+    return isNotEmpty;
+  } else if (!isValidContainerName(name)) {
+    return 'invalid container name';
+  }
+
+  return undefined;
 }
 
 // TODO: use formprops and formikprops types
@@ -61,7 +77,11 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
     const options = data[fieldName].options || [];
 
     if (data[fieldName].required) {
-      validator = requiredValidator(fieldName);
+      if (fieldName === 'name') {
+        validator = validateAppName;
+      } else {
+        validator = requiredValidator(fieldName);
+      }
     } else {
       validator = undefined;
     }
