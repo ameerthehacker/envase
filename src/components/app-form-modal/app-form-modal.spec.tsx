@@ -14,7 +14,12 @@ jest.mock('../../services/native/native', () => ({
 describe('AppFormModal', () => {
   it('should render the heading', async () => {
     const { getByText } = render(
-      <AppFormModal isOpen={true} onClose={() => null} app={FORMULA} />
+      <AppFormModal
+        onSubmit={() => null}
+        isOpen={true}
+        onClose={() => null}
+        app={FORMULA}
+      />
     );
 
     await waitFor(() =>
@@ -25,7 +30,12 @@ describe('AppFormModal', () => {
   it('should call onClose when cancel is clicked', async () => {
     const onClose = jest.fn();
     const { getByText } = render(
-      <AppFormModal isOpen={true} onClose={onClose} app={FORMULA} />
+      <AppFormModal
+        onSubmit={() => null}
+        isOpen={true}
+        onClose={onClose}
+        app={FORMULA}
+      />
     );
     const btnCancel = getByText('Cancel');
 

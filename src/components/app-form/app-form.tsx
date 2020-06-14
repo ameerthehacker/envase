@@ -7,27 +7,24 @@ import {
   Stack,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   FormControl,
   FormErrorMessage,
   Link,
-  Select
-} from '@chakra-ui/core';
-import { keyToLabelText, requiredValidator } from '../../utils/utils';
-import { Field, Form } from 'formik';
-import FolderPicker from '../folder-picker/folder-picker';
-import VersionDropdown from '../version-dropdown/version-dropdown';
-import { getDockerHubLinkToTags } from '../../utils/utils';
-import { open } from '../../services/native/native';
-import {
+  Select,
   Accordion,
   AccordionHeader,
   AccordionIcon,
   AccordionItem,
-  AccordionPanel
-} from '@chakra-ui/core/dist';
+  AccordionPanel,
+  Button
+} from '@chakra-ui/core';
+import { keyToLabelText, requiredValidator } from '../../utils/utils';
+import { Field, FieldArray, Form } from 'formik';
+import FolderPicker from '../folder-picker/folder-picker';
+import VersionDropdown from '../version-dropdown/version-dropdown';
+import { getDockerHubLinkToTags } from '../../utils/utils';
+import { open } from '../../services/native/native';
+import { IconButton } from '@chakra-ui/core/dist';
 
 export interface AppFormProps {
   app: Formula;
@@ -94,10 +91,6 @@ export default function AppForm({ app }: AppFormProps) {
                     placeholder={placeholder}
                     {...field}
                   />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
                 </NumberInput>
               )}
               {isSelectField && (
@@ -174,14 +167,80 @@ export default function AppForm({ app }: AppFormProps) {
               </Box>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem mt={2}>
+          <AccordionItem mt={2} pb={2}>
             <AccordionHeader pl={1} pr={1}>
               <Box flex={1} textAlign="left">
                 Advanced
               </Box>
               <AccordionIcon />
             </AccordionHeader>
-            <AccordionPanel p={1}>Advances config</AccordionPanel>
+            <AccordionPanel p={1}>
+              <FieldArray name={'additionalPorts'}>
+                {(helpers) => (
+                  <>
+                    <FormLabel>Additional Ports to expose</FormLabel>
+                    <Stack spacing={2}>
+                      {helpers.form.values.additionalPorts.map(
+                        (additionalPort: string, index: number) => (
+                          <FormControl key={index}>
+                            <Field
+                              name={`additionalPorts.${index}`}
+                              validate={requiredValidator(
+                                'additionalPorts',
+                                'port number'
+                              )}
+                            >
+                              {({ field, form }: { field: any; form: any }) => (
+                                <FormControl
+                                  isInvalid={
+                                    form.errors.additionalPorts &&
+                                    form.touched.additionalPorts &&
+                                    form.errors.additionalPorts[index] &&
+                                    form.touched.additionalPorts[index]
+                                  }
+                                >
+                                  <Stack direction={'row'}>
+                                    <Box w={'100%'}>
+                                      <NumberInput>
+                                        <NumberInputField
+                                          placeholder={
+                                            'Container port (you will be able to access this from host)'
+                                          }
+                                          {...field}
+                                        />
+                                      </NumberInput>
+                                      <FormErrorMessage>
+                                        {form.errors.additionalPorts &&
+                                          form.errors.additionalPorts[index]}
+                                      </FormErrorMessage>
+                                    </Box>
+                                    <IconButton
+                                      onClick={() => helpers.remove(index)}
+                                      aria-label={'delete'}
+                                      icon={'delete'}
+                                      variantColor={'red'}
+                                    />
+                                  </Stack>
+                                </FormControl>
+                              )}
+                            </Field>
+                          </FormControl>
+                        )
+                      )}
+                    </Stack>
+                    <Button
+                      onClick={() => helpers.push('')}
+                      variantColor={'teal'}
+                      mt={2}
+                      leftIcon="add"
+                      size="sm"
+                    >
+                      Add Port
+                    </Button>
+                  </>
+                )}
+              </FieldArray>
+            </AccordionPanel>
           </AccordionItem>
         </Accordion>
       </Stack>

@@ -25,6 +25,7 @@ export interface AppFormModalProps {
 export interface AppFormResult {
   [key: string]: any;
   version: string;
+  additionalPorts: string[];
 }
 
 export default function AppFormModal({
@@ -37,7 +38,8 @@ export default function AppFormModal({
   const data = app?.data || {};
   const fieldNames = Object.keys(data || {});
   const initialValues: AppFormResult = {
-    version: ''
+    version: '',
+    additionalPorts: []
   };
 
   // populate the initial values

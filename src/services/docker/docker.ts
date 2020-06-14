@@ -217,6 +217,7 @@ export function shellOrExecIntoApp(containerId: string, cmd?: string | null) {
 
 export function createContainerFromApp(values: AppFormResult, app: Formula) {
   const interpolatedFormula = interpolateFormula(app, values);
+  const additionalPorts = values.additionalPorts;
   const envList = getEnvForDockerAPI(interpolatedFormula.env);
   let exposedPorts, portBindings;
   let volList: string[] = [];
@@ -239,8 +240,11 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
 
   const Cmd = app.isCli ? [shell, '-c', infiniteLoopScript] : app.cmd || [];
 
-  if (interpolatedFormula.ports) {
-    const portConfig = getExposedPortsForDockerAPI(interpolatedFormula.ports);
+  if (interpolatedFormula.ports || additionalPorts.length > 0) {
+    const portConfig = getExposedPortsForDockerAPI(
+      interpolatedFormula.ports,
+      additionalPorts
+    );
 
     exposedPorts = portConfig.exposedPorts;
     portBindings = portConfig.portBindings;

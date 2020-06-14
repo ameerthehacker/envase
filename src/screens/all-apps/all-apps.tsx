@@ -1,17 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Formula } from '../../contracts/formula';
-import { Stack, useDisclosure, Box, useToast } from '@chakra-ui/core';
+import { Box, Stack, useDisclosure, useToast } from '@chakra-ui/core';
 import AppFormModal, {
   AppFormResult
 } from '../../components/app-form-modal/app-form-modal';
 import AppCard from '../../components/app-card/app-card';
 import {
   checkImageExistence,
-  pullImage,
-  PullProgressEvent,
-  DockerStream,
   createContainerFromApp,
-  getAppsWithName
+  DockerStream,
+  getAppsWithName,
+  pullImage,
+  PullProgressEvent
 } from '../../services/docker/docker';
 import ProgressModal from '../../components/progress-modal/progress-modal';
 import { useAppStatus } from '../../contexts/app-status/app-status';
@@ -156,7 +156,7 @@ export default function AllApps({
                   } else {
                     onProgressOpen();
 
-                    const stream = await pullImage(
+                    currentStream.current = await pullImage(
                       image,
                       version,
                       (evt) => {
@@ -181,8 +181,6 @@ export default function AllApps({
                         }
                       }
                     );
-
-                    currentStream.current = stream;
                   }
                 } else if (!errorWhileChecking && !exists) {
                   toast({

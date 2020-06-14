@@ -12,7 +12,12 @@ jest.mock('../../services/native/native', () => ({
   }
 }));
 
-const renderWitFormik = (children: ReactElement, initialValues: any = {}) =>
+const renderWitFormik = (
+  children: ReactElement,
+  initialValues: any = {
+    additionalPorts: []
+  }
+) =>
   render(
     /* eslint-disable @typescript-eslint/no-empty-function */
     <Formik initialValues={initialValues} onSubmit={() => {}}>

@@ -110,7 +110,10 @@ export function getEnvForDockerAPI(env: Record<string, string>) {
   return envList;
 }
 
-export function getExposedPortsForDockerAPI(ports: Record<string, string>) {
+export function getExposedPortsForDockerAPI(
+  ports: Record<string, string> | undefined,
+  additionalPorts: string[]
+) {
   type HostConfig = {
     HostPort: string;
   };
@@ -125,6 +128,15 @@ export function getExposedPortsForDockerAPI(ports: Record<string, string>) {
       }
     ];
     exposedPorts[`${port}/tcp`] = {};
+  }
+
+  for (const additionalPort of additionalPorts) {
+    portBindings[`${additionalPort}/tcp`] = [
+      {
+        HostPort: additionalPort
+      }
+    ];
+    exposedPorts[`${additionalPort}/tcp`] = {};
   }
 
   return { portBindings, exposedPorts };
@@ -142,12 +154,12 @@ export function getVolumesForDockerAPI(volumes: Record<string, string>) {
   return volumeList;
 }
 
-export function requiredValidator(fieldName: string) {
+export function requiredValidator(fieldName: string, aliasName?: string) {
   return (value: string) => {
     let error;
 
-    if (!value || value.trim().length === 0) {
-      error = `${fieldName} is required`;
+    if (!value || String(value).trim().length === 0) {
+      error = `${aliasName || fieldName} is required`;
     }
 
     return error;
