@@ -1,6 +1,12 @@
 {
   "extends": null,
   "appId": "com.ameerthehacker.Envase",
+  "mac": {
+    "icon": "./images/icons/mac/icon.icns"
+  },
+  "win": {
+    "icon": "./images/icons/win/icon.ico"
+  },
   "files": [
     "**",
     "!src",
