@@ -11,10 +11,6 @@ jobs:
         node_version: [10]
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    on:
-      push:
-        branches:
-          - '*'
 
     steps:
       - uses: actions/checkout@v1
