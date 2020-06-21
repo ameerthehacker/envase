@@ -1,0 +1,36 @@
+name: styled-wind-ci
+
+on: push
+
+jobs:
+  build:
+    name: Build
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        node_version: [10]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          version: ${{ matrix.node_version }}
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Build for mac
+        run: yarn build-mac
+
+      - name: Build for windows
+        run: yarn build-win
+
+      - name: Build for linux
+        run: yarn build-linux
