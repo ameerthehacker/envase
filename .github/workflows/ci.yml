@@ -37,5 +37,10 @@ jobs:
       - name: Build for linux
         run: yarn build-linux
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: envase-build-artifact-$GITHUB_SHA
+          path: dist
+
       - name: Release
         run: yarn release

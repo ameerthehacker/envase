@@ -18,7 +18,7 @@
     "build-win": "yarn build --win",
     "build-linux": "yarn build --linux",
     "build-react": "react-scripts build",
-    "release": "electron-builder --config electron.build.json --publish"
+    "release": "electron-builder --config electron.build.json --publish onTagOrDraft"
   },
   "engines": {
     "node": ">=10"
