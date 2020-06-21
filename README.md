@@ -17,4 +17,4 @@ yarn dev
 
 ## Icon generation
 
-We use this website to generate icons for windows, mac and linux https://makeappicon.com/
+We use this website to generate icons for windows, mac and linux https://anyconv.com/png-to-icns-converter/
