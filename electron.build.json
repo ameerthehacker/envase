@@ -2,10 +2,15 @@
   "extends": null,
   "appId": "com.ameerthehacker.Envase",
   "mac": {
-    "icon": "./images/icons/mac/icon.icns"
+    "icon": "./images/icons/mac/icon.icns",
+    "publish": ["github"]
   },
   "win": {
-    "icon": "./images/icons/win/icon.ico"
+    "icon": "./images/icons/win/icon.ico",
+    "publish": ["github"]
+  },
+  "linux": {
+    "publish": ["github"]
   },
   "files": [
     "**",
