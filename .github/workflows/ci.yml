@@ -28,14 +28,14 @@ jobs:
       - name: Run tests
         run: yarn test
 
-      - name: Build for mac
-        run: yarn build-mac
+      - name: Build & Release for mac
+        run: yarn build-mac --publish onTagOrDraft
 
-      - name: Build for windows
-        run: yarn build-win
+      - name: Build & Release for windows
+        run: yarn build-win --publish onTagOrDraft
 
-      - name: Build for linux
-        run: yarn build-linux
+      - name: Build & Release for linux
+        run: yarn build-linux --publish onTagOrDraft
 
       - name: Archive build artifact # due to: https://github.com/actions/upload-artifact/issues/76
         run: zip -r envase-build-artifact.zip dist
