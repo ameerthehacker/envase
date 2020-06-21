@@ -42,8 +42,5 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: envase-build-artifact-$GITHUB_SHA
+          name: envase-build-artifact
           path: envase-build-artifact.zip
-
-      - name: Release
-        run: yarn release
