@@ -37,10 +37,13 @@ jobs:
       - name: Build for linux
         run: yarn build-linux
 
+      - name: Archive build artifact # due to: https://github.com/actions/upload-artifact/issues/76
+        run: zip -r envase-build-artifact.zip dist
+
       - uses: actions/upload-artifact@v2
         with:
           name: envase-build-artifact-$GITHUB_SHA
-          path: dist
+          path: envase-build-artifact.zip
 
       - name: Release
         run: yarn release
