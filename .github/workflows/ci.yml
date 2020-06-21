@@ -1,4 +1,4 @@
-name: styled-wind-ci
+name: envase-ci
 
 on: push
 
@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         node_version: [10]
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v1
