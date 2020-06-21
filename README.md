@@ -14,3 +14,7 @@ To start the project in development
 ```sh
 yarn dev
 ```
+
+## Icon generation
+
+We use this website to generate icons for windows, mac and linux https://makeappicon.com/
