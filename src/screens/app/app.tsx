@@ -78,7 +78,7 @@ export default function App() {
   return (
     <>
       <Helmet>
-        <title>Enva</title>
+        <title>Envase</title>
       </Helmet>
       {allAppStatus.error?.errno && (
         <>
