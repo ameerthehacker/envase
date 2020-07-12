@@ -9,8 +9,6 @@ jobs:
     strategy:
       matrix:
         node_version: [10]
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v1
@@ -30,9 +28,15 @@ jobs:
 
       - name: Build & Release for mac
         run: yarn build-mac --publish onTagOrDraft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for windows
         run: yarn build-win --publish onTagOrDraft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for linux
         run: yarn build-linux --publish onTagOrDraft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
