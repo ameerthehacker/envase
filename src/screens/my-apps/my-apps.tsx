@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Stack, Box, useToast, useDisclosure } from '@chakra-ui/core';
+import { Stack, Box, useToast, useDisclosure, Text } from '@chakra-ui/core';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { AppStatus, AllAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
@@ -221,7 +221,9 @@ export default function MyApps({
       <ConfirmDialogModal
         isOpen={isConfirmDialogOpen}
         title="Are you sure?"
-        description={`The app ${selectedApp?.name} will be deleted forever!`}
+        description={
+          <Text>{`The app ${selectedApp?.name} will be deleted forever!`}</Text>
+        }
         onSubmit={(ok) => {
           if (ok && selectedApp) {
             del(selectedApp.id).catch((err) => {

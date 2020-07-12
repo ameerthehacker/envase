@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import Navbar from '../../components/navbar/navbar';
 import {
   Tabs,
@@ -8,7 +8,12 @@ import {
   TabPanel,
   Box,
   useDisclosure,
-  useToast
+  useToast,
+  Text,
+  List,
+  ListItem,
+  ListIcon,
+  Stack
 } from '@chakra-ui/core';
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
@@ -27,6 +32,7 @@ import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import withFilters from '../../hoc/with-filters';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
+import { getReleaseNotes } from '../../utils/utils';
 
 const { SAVE_SETTINGS, CHECK_FOR_UPDATE, INSTALL_UPDATE } = IPC_CHANNELS;
 const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
@@ -36,6 +42,7 @@ export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
   const { allAppStatus } = useAppStatus();
+  const [updateDescription, setUpdateDescription] = useState<ReactNode>();
   const handleTabChange = (index: number) => {
     setTabIndex(index);
   };
@@ -62,10 +69,27 @@ export default function App() {
 
     ipcRenderer.send(CHECK_FOR_UPDATE);
 
-    ipcRenderer.on(CHECK_FOR_UPDATE, (evt, updateInfo) => {
-      if (updateInfo) {
-        console.log(updateInfo);
+    ipcRenderer.on(CHECK_FOR_UPDATE, (evt, info) => {
+      if (info) {
+        console.log(info);
+        const { version, releaseNotes } = info.updateInfo;
+        const changes = getReleaseNotes(releaseNotes);
 
+        const updateDetails = (
+          <Stack spacing={2}>
+            <Text fontSize="1xl">Release Notes ({version})</Text>
+            <List spacing={3}>
+              {changes.map((change, key) => (
+                <ListItem key={key}>
+                  <ListIcon icon="check-circle" color="green.500" />
+                  {change}
+                </ListItem>
+              ))}
+            </List>
+          </Stack>
+        );
+
+        setUpdateDescription(updateDetails);
         onUpdateDialogOpen();
       }
     });
@@ -162,7 +186,7 @@ export default function App() {
       )}
       <ConfirmDialogModal
         title="Update Available"
-        description="A new update has been downloaded and ready to install, shall I proceed?"
+        description={updateDescription}
         isOpen={isUpdateDialogOpen}
         onSubmit={(ok) => {
           if (ok) {

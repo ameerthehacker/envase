@@ -10,7 +10,8 @@ import {
   getVolumesForDockerAPI,
   keyToLabelText,
   requiredValidator,
-  getAllTags
+  getAllTags,
+  getReleaseNotes
 } from './utils';
 import { cloneDeep } from 'lodash-es';
 import { FORMULA } from '../../tests/fixtures/app.fixture';
@@ -199,5 +200,16 @@ describe('utils', () => {
       Language: false,
       Platform: false
     });
+  });
+
+  it('getReleaseNotes() should return the array of changes', () => {
+    expect(
+      getReleaseNotes(`
+      <ul>
+        <li>fixed 1</li>
+        <li>fixed 2</li>
+      </ul>
+    `)
+    ).toEqual(['fixed 1', 'fixed 2']);
   });
 });

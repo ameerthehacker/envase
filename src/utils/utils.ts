@@ -188,3 +188,13 @@ export function getAllTags(formulas: Formula[]): Record<string, boolean> {
       return obj;
     }, {});
 }
+
+export function getReleaseNotes(releaseNotes: string): string[] {
+  const releaseNotesHolder = document.createElement('div');
+
+  releaseNotesHolder.innerHTML = releaseNotes;
+
+  return Array.from(releaseNotesHolder.getElementsByTagName('li')).map(
+    (item) => item.innerHTML
+  );
+}

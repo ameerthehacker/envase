@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Text,
   ModalFooter,
   Button
 } from '@chakra-ui/core';
@@ -14,7 +13,7 @@ import {
 export interface ConfirmDialogModalProps {
   isOpen: boolean;
   title: string;
-  description: string;
+  description: ReactNode;
   onSubmit: (ok: boolean) => void;
 }
 
@@ -30,9 +29,7 @@ export default function ConfirmDialogModal({
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <Text>{description}</Text>
-        </ModalBody>
+        <ModalBody>{description}</ModalBody>
 
         <ModalFooter>
           <Button
