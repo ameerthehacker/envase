@@ -1,6 +1,6 @@
 {
   "name": "envase",
-  "version": "0.0.0-beta.5",
+  "version": "0.0.0-beta.6",
   "description": "Homebrew for docker apps",
   "main": "main.js",
   "homepage": "./",
