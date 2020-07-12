@@ -25,6 +25,10 @@ let uiURL;
 let win = null;
 const store = new Store();
 
+// check for update
+autoUpdater.autoDownload = true;
+autoUpdater.checkForUpdatesAndNotify();
+
 if (!fs.existsSync(store.path)) {
   const dockerConfig = new Docker().modem;
   const terminalConfig = {
@@ -127,7 +131,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on(CHECK_FOR_UPDATE, (evt) => {
-    autoUpdater.checkForUpdatesAndNotify().then((updateInfo) => {
+    autoUpdater.on('update-available', (updateInfo) => {
       if (updateInfo) {
         evt.reply(CHECK_FOR_UPDATE, updateInfo);
       }
