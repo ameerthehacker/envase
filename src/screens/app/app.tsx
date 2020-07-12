@@ -26,8 +26,9 @@ import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import withFilters from '../../hoc/with-filters';
+import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 
-const { SAVE_SETTINGS } = IPC_CHANNELS;
+const { SAVE_SETTINGS, CHECK_FOR_UPDATE, INSTALL_UPDATE } = IPC_CHANNELS;
 const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
 const MyAppsWithFilters = withFilters<MyAppsProps>(MyApps);
 
@@ -50,14 +51,27 @@ export default function App() {
     onClose: onFiltersClose,
     onOpen: onFiltersOpen
   } = useDisclosure();
+  const {
+    isOpen: isUpdateDialogOpen,
+    onClose: onUpdateDialogClose,
+    onOpen: onUpdateDialogOpen
+  } = useDisclosure();
 
   useEffect(() => {
     load(true);
 
+    ipcRenderer.send(CHECK_FOR_UPDATE);
+
+    ipcRenderer.on(CHECK_FOR_UPDATE, (evt, args) => {
+      console.log(args);
+
+      onUpdateDialogOpen();
+    });
+
     ipcRenderer.on(SAVE_SETTINGS, () => {
       load();
     });
-  }, [load]);
+  }, [load, onUpdateDialogOpen]);
 
   return (
     <>
@@ -144,6 +158,18 @@ export default function App() {
           </Tabs>
         </>
       )}
+      <ConfirmDialogModal
+        title="Update Available"
+        description="A new update has been downloaded and ready to install, shall I proceed?"
+        isOpen={isUpdateDialogOpen}
+        onSubmit={(ok) => {
+          if (ok) {
+            ipcRenderer.send(INSTALL_UPDATE);
+          }
+
+          onUpdateDialogClose();
+        }}
+      />
     </>
   );
 }

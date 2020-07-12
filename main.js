@@ -5,6 +5,8 @@ const axios = require('axios').default;
 const Store = require('electron-store');
 const fs = require('fs');
 const Docker = require('dockerode');
+const { autoUpdater } = require('electron-updater');
+
 const {
   IPC_CHANNELS,
   ALL_SETTINGS,
@@ -15,7 +17,9 @@ const {
   OPEN_FOLDER_DIALOG,
   CHECK_IMAGE_EXISTS,
   ATTACH_SHELL,
-  SAVE_SETTINGS
+  SAVE_SETTINGS,
+  CHECK_FOR_UPDATE,
+  INSTALL_UPDATE
 } = IPC_CHANNELS;
 let uiURL;
 let win = null;
@@ -62,14 +66,19 @@ function createWindow(url, savedWindowSize = true) {
 }
 
 app.whenReady().then(() => {
-  if (process.env.NODE_ENV === 'development') {
+  // show dev tools when debugging and during development
+  if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
     const debug = require('electron-debug');
 
-    const axios = require('axios').default;
     // adds helpful debugging capabilities
     debug({
       showDevTools: false
     });
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    const axios = require('axios').default;
+
     // keep checking whether the dev server for react is ready or not
     const timer = setInterval(() => {
       axios
@@ -115,6 +124,18 @@ app.whenReady().then(() => {
   ipcMain.on(SAVE_SETTINGS, (evt, args) => {
     store.set(ALL_SETTINGS, args);
     evt.reply(SAVE_SETTINGS, args);
+  });
+
+  ipcMain.on(CHECK_FOR_UPDATE, (evt) => {
+    autoUpdater.checkForUpdatesAndNotify().then((updateInfo) => {
+      if (updateInfo) {
+        evt.reply(CHECK_FOR_UPDATE, updateInfo);
+      }
+    });
+  });
+
+  ipcMain.on(INSTALL_UPDATE, () => {
+    autoUpdater.quitAndInstall();
   });
 
   ipcMain.on(ATTACH_SHELL, (evt, args) => {
