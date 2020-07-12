@@ -102,7 +102,7 @@ export default function ProgressModal({
                   onClick={() => setShowLogs((showLogs) => !showLogs)}
                 >{`${showLogs ? 'Hide' : 'Show'} Logs`}</Button>
                 <Collapse isOpen={showLogs}>
-                  <Code width="100%" p={3}>
+                  <Code width="100%" p={3} bg="black" color="white">
                     {Object.keys(progress || {}).map((id, index) => {
                       return (
                         progress &&
