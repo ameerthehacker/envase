@@ -62,10 +62,12 @@ export default function App() {
 
     ipcRenderer.send(CHECK_FOR_UPDATE);
 
-    ipcRenderer.on(CHECK_FOR_UPDATE, (evt, args) => {
-      console.log(args);
+    ipcRenderer.on(CHECK_FOR_UPDATE, (evt, updateInfo) => {
+      if (updateInfo) {
+        console.log(updateInfo);
 
-      onUpdateDialogOpen();
+        onUpdateDialogOpen();
+      }
     });
 
     ipcRenderer.on(SAVE_SETTINGS, () => {
@@ -76,7 +78,7 @@ export default function App() {
   return (
     <>
       <Helmet>
-        <title>Envase</title>
+        <title>Enva</title>
       </Helmet>
       {allAppStatus.error?.errno && (
         <>
