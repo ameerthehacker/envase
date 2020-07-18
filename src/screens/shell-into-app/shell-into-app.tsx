@@ -49,7 +49,7 @@ export default function ShellIntoApp() {
   return (
     <>
       <Helmet>
-        <title>{`Terminal${appName ? ` (${appName})` : ''}`}</title>
+        <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
       </Helmet>
       <Box height="100vh" bg="black">
         {stream && <Terminal stdin={true} stream={stream} />}
