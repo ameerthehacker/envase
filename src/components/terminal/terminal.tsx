@@ -7,6 +7,7 @@ import { WebLinksAddon } from 'xterm-addon-web-links';
 import { ResizeObserver } from 'resize-observer';
 import ansiColors from 'ansi-colors';
 import { allSettings } from '../../services/native/native';
+import './terminal.css';
 
 export interface TerminalProps {
   stdin?: boolean;
