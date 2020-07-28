@@ -15,6 +15,8 @@ To start the project in development
 yarn dev
 ```
 
-## Icon generation
+Show your support by 🌟 the repo
 
-We use this website to generate icons for windows, mac and linux https://anyconv.com/png-to-icns-converter/
+## License
+
+MIT © [Ameer Jhan](mailto:ameerjhanprof@gmail.com)
