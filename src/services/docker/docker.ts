@@ -264,7 +264,8 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     ExposedPorts: exposedPorts,
     HostConfig: {
       PortBindings: portBindings,
-      Binds: volList
+      Binds: volList,
+      NetworkMode: 'my_network'
     }
   };
 

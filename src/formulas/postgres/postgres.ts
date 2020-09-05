@@ -28,8 +28,7 @@ const POSTGRES: Formula = {
     },
     data: {
       type: 'path',
-      description: 'Database storage path for Postgres',
-      required: true
+      description: 'Database storage path for Postgres'
     }
   },
   image: 'library/postgres',
@@ -48,7 +47,7 @@ const POSTGRES: Formula = {
     {
       text: 'PSQL CLI',
       value: 'PSQL_CLI',
-      exec: 'psql',
+      exec: 'psql -U %user%',
       icon: FaPlug,
       shouldBeRunning: true
     }

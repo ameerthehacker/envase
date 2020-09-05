@@ -13,6 +13,7 @@ import MONGO from './mongo/mongo';
 import RUBY from './ruby/ruby';
 import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
 import NGINX from './nginx/nginx';
+import HASURA from './hasura/hasura';
 
 const FORMULAS = [
   MYSQL,
@@ -29,7 +30,8 @@ const FORMULAS = [
   MONGO,
   RUBY,
   SCIPY_NOTBOOK,
-  NGINX
+  NGINX,
+  HASURA
 ];
 
 export { FORMULAS };
