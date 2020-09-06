@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
-import { FaWrench } from 'react-icons/fa';
+import { FaGlobe } from 'react-icons/fa';
 import POSTGRES from '../postgres/postgres';
 
 const HASURA: Formula = {
@@ -14,9 +14,9 @@ const HASURA: Formula = {
       description: 'Name of the Hasura instance',
       required: true
     },
-    UI_port: {
+    console_port: {
       type: 'number',
-      description: 'Port on which jenkins UI will be available',
+      description: 'Port on hasura console will be available',
       default: 8080,
       required: true
     },
@@ -27,31 +27,30 @@ const HASURA: Formula = {
     },
     postgres_password: {
       type: 'password',
-      description: 'Password of the postgres database',
-      required: true
+      description: 'Password of the postgres database'
     },
-    postgres_database: {
+    postgres_database_name: {
       type: 'string',
-      description: 'Postgres database name',
+      description: 'Name of the postgres database',
       required: true
     }
   },
   dependencies: [POSTGRES],
   image: 'hasura/graphql-engine',
   ports: {
-    8080: '%ui_port%'
+    8080: '%console_port%'
   },
   env: {
     HASURA_GRAPHQL_DATABASE_URL:
-      'postgres://%postgres_username%:%postgres_password%@%Postgres%:5432/%postgres_database%',
+      'postgres://%postgres_username%:%postgres_password%@%Postgres%:5432/%postgres_database_name%',
     HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
   },
   actions: [
     {
       text: 'Open Hasura Console',
       value: 'OPEN_HASURA_CONSOLE',
-      icon: FaWrench,
-      openInBrowser: 'http://localhost:%ui_port%',
+      icon: FaGlobe,
+      openInBrowser: 'http://localhost:%console_port%',
       shouldBeRunning: true
     }
   ],

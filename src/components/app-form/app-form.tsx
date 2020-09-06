@@ -105,7 +105,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                   </option>
                 ))}
               </Select>
-              <FormErrorMessage>{`${dependency.name} instance is required`}</FormErrorMessage>
+              <FormErrorMessage>{form.errors[fieldName]}</FormErrorMessage>
             </FormControl>
           )}
         </Field>

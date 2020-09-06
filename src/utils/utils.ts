@@ -159,7 +159,7 @@ export function requiredValidator(fieldName: string, aliasName?: string) {
     let error;
 
     if (!value || String(value).trim().length === 0) {
-      error = `${aliasName || fieldName} is required`;
+      error = `${aliasName || keyToLabelText(fieldName)} is required`;
     }
 
     return error;

@@ -14,6 +14,7 @@ import RUBY from './ruby/ruby';
 import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
 import NGINX from './nginx/nginx';
 import HASURA from './hasura/hasura';
+import WORDPRESS from './wordpress/wordpress';
 
 const FORMULAS = [
   MYSQL,
@@ -31,7 +32,8 @@ const FORMULAS = [
   RUBY,
   SCIPY_NOTBOOK,
   NGINX,
-  HASURA
+  HASURA,
+  WORDPRESS
 ];
 
 export { FORMULAS };

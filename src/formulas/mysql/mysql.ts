@@ -24,8 +24,7 @@ const MYSQL: Formula = {
     },
     data: {
       type: 'path',
-      description: 'Database storage path for MySQL',
-      required: true
+      description: 'Database storage path for MySQL'
     }
   },
   image: 'library/mysql',
