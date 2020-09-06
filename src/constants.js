@@ -9,7 +9,8 @@ const IPC_CHANNELS = {
   INSTALL_UPDATE: 'INSTALL_UPDATE'
 };
 
+const ENVASE_NET = 'envase_net';
 const ALL_SETTINGS = 'all-settings';
 const WIN_DIMENSION = 'WIN_DIMENSION';
 
-module.exports = { IPC_CHANNELS, ALL_SETTINGS, WIN_DIMENSION };
+module.exports = { IPC_CHANNELS, ALL_SETTINGS, WIN_DIMENSION, ENVASE_NET };

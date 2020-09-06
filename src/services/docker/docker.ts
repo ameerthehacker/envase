@@ -1,5 +1,5 @@
 import { dockerode, ipcRenderer } from '../native/native';
-import { IPC_CHANNELS } from '../../constants';
+import { IPC_CHANNELS, ENVASE_NET } from '../../constants';
 import { IpcRendererEvent } from 'electron';
 import { AppFormResult } from '../../components/app-form-modal/app-form-modal';
 import { Formula, CustomAction } from '../../contracts/formula';
@@ -11,7 +11,7 @@ import {
   getVolumesForDockerAPI
 } from '../../utils/utils';
 import { AppStatus } from '../../contexts/app-status/app-status';
-import Dockerode, { ContainerInfo } from 'dockerode';
+import Dockerode, { ContainerInfo, ContainerInspectInfo } from 'dockerode';
 import { FORMULAS } from '../../formulas';
 import { Optional } from 'utility-types';
 import { ContainerAppInfo } from '../../contracts/container-app-info';
@@ -265,7 +265,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     HostConfig: {
       PortBindings: portBindings,
       Binds: volList,
-      NetworkMode: 'envase_net'
+      NetworkMode: ENVASE_NET
     }
   };
 
@@ -330,7 +330,9 @@ export function performOnHealthyAction(
   }
 }
 
-export function onContainerHealthy(containerId: string) {
+export function onContainerHealthy(
+  containerId: string
+): Promise<ContainerInspectInfo> {
   return new Promise((resolve, reject) => {
     getContainerInfo(containerId)
       .then((containerInfo) => {
@@ -345,11 +347,11 @@ export function onContainerHealthy(containerId: string) {
 
           const healthCheckFn = async () => {
             try {
-              const { State } = await getContainerInfo(containerId);
+              const containerInfo = await getContainerInfo(containerId);
 
-              if (State.Health?.Status === 'healthy') {
-                resolve();
-              } else if (retries > maxRetries) reject();
+              if (containerInfo.State.Health?.Status === 'healthy') {
+                resolve(containerInfo);
+              } else if (retries > maxRetries) reject(containerInfo);
               else setTimeout(healthCheckFn, interval);
             } catch {
               console.log(`error checking health of ${name} ${containerId}`);
@@ -360,7 +362,7 @@ export function onContainerHealthy(containerId: string) {
 
           setTimeout(healthCheckFn, startPeriod);
         } else {
-          resolve();
+          resolve(containerInfo);
         }
       })
       .catch(reject);
@@ -451,5 +453,24 @@ export function getContainerAppLogs(containerId: string) {
     stderr: true,
     logs: true,
     stream: true
+  });
+}
+
+export function createEnvaseNetwork() {
+  return new Promise((resolve, reject) => {
+    dockerode
+      .getNetwork(ENVASE_NET)
+      .inspect()
+      .then(resolve)
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          dockerode
+            .createNetwork({ name: ENVASE_NET, driver: 'bridge' })
+            .then(resolve)
+            .catch(reject);
+        } else {
+          reject();
+        }
+      });
   });
 }

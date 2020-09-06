@@ -10,6 +10,7 @@ import {
   performOnHealthyAction
 } from '../../services/docker/docker';
 import { useToast } from '@chakra-ui/core';
+import { ContainerInspectInfo } from 'dockerode';
 
 export function useApp() {
   const { dispatch } = useAppStatus();
@@ -86,14 +87,16 @@ export function useApp() {
                   containerAppInfo.getInterpolatedFormula()
                 );
               })
-              .catch((isRunning) => {
+              .catch((containerInfo: ContainerInspectInfo) => {
                 toast({
                   title: 'Warning',
-                  description: `Healthcheck failed for app`,
+                  description: `Healthcheck failed for ${containerInfo.Name.substring(
+                    1
+                  )}, check the logs to know more`,
                   status: 'warning'
                 });
 
-                if (!isRunning) {
+                if (!containerInfo.State.Running) {
                   dispatch({
                     type: 'STOP',
                     payload: {
@@ -116,7 +119,7 @@ export function useApp() {
         })
       );
     },
-    [dispatch]
+    [dispatch, toast]
   );
 
   const stop = useCallback(

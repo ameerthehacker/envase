@@ -29,10 +29,11 @@ import NoConnection from '../../components/no-connection/no-connection';
 import './app.scss';
 import Preferences from '../preferences/preferences';
 import { ipcRenderer } from '../../services/native/native';
-import { IPC_CHANNELS } from '../../constants';
+import { IPC_CHANNELS, ENVASE_NET } from '../../constants';
 import withFilters from '../../hoc/with-filters';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import { getReleaseNotes } from '../../utils/utils';
+import { createEnvaseNetwork } from '../../services/docker/docker';
 
 const { SAVE_SETTINGS, CHECK_FOR_UPDATE, INSTALL_UPDATE } = IPC_CHANNELS;
 const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
@@ -65,7 +66,17 @@ export default function App() {
   } = useDisclosure();
 
   useEffect(() => {
-    load(true);
+    load(true).then(() => {
+      createEnvaseNetwork().catch(() => {
+        toast({
+          title: 'Fatal Error',
+          description: `Unable to create ${ENVASE_NET} network, try to restart envase or create the network manually!`,
+          status: 'error',
+          isClosable: true,
+          duration: 5000
+        });
+      });
+    });
 
     ipcRenderer.send(CHECK_FOR_UPDATE);
 

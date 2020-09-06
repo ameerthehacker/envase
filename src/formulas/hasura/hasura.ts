@@ -3,7 +3,6 @@ import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
 import { FaWrench } from 'react-icons/fa';
 import POSTGRES from '../postgres/postgres';
-import NODE from '../node/node';
 
 const HASURA: Formula = {
   name: 'Hasura',
