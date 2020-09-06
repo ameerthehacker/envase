@@ -16,6 +16,8 @@ import NGINX from './nginx/nginx';
 import HASURA from './hasura/hasura';
 import WORDPRESS from './wordpress/wordpress';
 import PHPMYADMIN from './phpmyadmin/phpmyadmin';
+import ELASTICSEARCH from './elasticsearch/elasticsearch';
+import KIBANA from './kibana/kibana';
 
 const FORMULAS = [
   MYSQL,
@@ -35,7 +37,9 @@ const FORMULAS = [
   MONGO,
   RUBY,
   SCIPY_NOTBOOK,
-  NGINX
+  NGINX,
+  ELASTICSEARCH,
+  KIBANA
 ];
 
 export { FORMULAS };
