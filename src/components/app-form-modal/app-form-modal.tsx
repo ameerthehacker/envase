@@ -51,6 +51,11 @@ export default function AppFormModal({
     for (const fieldName of fieldNames) {
       initialValues[fieldName] = String(data[fieldName].default || '');
     }
+
+    // populate the initial values for dependencies
+    app?.dependencies?.forEach((dependency) => {
+      initialValues[dependency.name] = '';
+    });
   }
 
   return (
@@ -61,7 +66,7 @@ export default function AppFormModal({
         initialValues={initialValues}
         onSubmit={onSubmit || (() => null)}
       >
-        {({ isValid, submitForm }) => (
+        {({ submitForm }) => (
           <ModalContent>
             <ModalHeader>
               {isReadOnly ? app?.name : `Create ${app?.name} App`}
@@ -75,7 +80,6 @@ export default function AppFormModal({
                 <Stack direction="row">
                   <Button
                     isLoading={isValidating}
-                    isDisabled={!isValid}
                     onClick={submitForm}
                     variantColor="green"
                     variant="outline"

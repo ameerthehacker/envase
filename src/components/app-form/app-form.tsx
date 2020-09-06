@@ -76,6 +76,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
       dependency
     );
     const fieldName = dependency.name;
+    const fieldId = `${fieldName}-field`;
 
     return (
       <Box key={index}>
@@ -84,7 +85,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
             <FormControl
               isInvalid={form.errors[fieldName] && form.touched[fieldName]}
             >
-              <FormLabel htmlFor={fieldName}>
+              <FormLabel htmlFor={fieldId}>
                 <Image
                   src={dependency.logo}
                   height="5"
@@ -96,7 +97,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
               <Select
                 isDisabled={isReadOnly}
                 placeholder={`Choose a ${dependency.name} instance`}
-                id={fieldName}
+                id={fieldId}
                 {...field}
               >
                 {dependencyInstances.map((dependencyInstance, index) => (

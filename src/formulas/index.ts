@@ -15,6 +15,7 @@ import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
 import NGINX from './nginx/nginx';
 import HASURA from './hasura/hasura';
 import WORDPRESS from './wordpress/wordpress';
+import PHPMYADMIN from './phpmyadmin/phpmyadmin';
 
 const FORMULAS = [
   MYSQL,
@@ -33,7 +34,8 @@ const FORMULAS = [
   SCIPY_NOTBOOK,
   NGINX,
   HASURA,
-  WORDPRESS
+  WORDPRESS,
+  PHPMYADMIN
 ];
 
 export { FORMULAS };

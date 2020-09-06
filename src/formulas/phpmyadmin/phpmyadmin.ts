@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
-import { FaWordpress } from 'react-icons/fa';
+import { FaPlug } from 'react-icons/fa';
 import MYSQL from '../mysql/mysql';
 
-const WORDPRESS: Formula = {
-  name: 'Wordpress',
+const PHPMYADMIN: Formula = {
+  name: 'phpMyAdmin',
   defaultShell: '/bin/bash',
   logo,
   data: {
     name: {
       type: 'string',
-      description: 'Name of the Wordpress instance',
+      description: 'Name of the phpMyAdmin instance',
       required: true
     },
     site_port: {
       type: 'number',
-      description: 'Port on which wordpress site will be available',
+      description: 'Port on which phpMyAdmin will be available',
       default: 80,
       required: true
     },
@@ -28,29 +28,23 @@ const WORDPRESS: Formula = {
     MySQL_password: {
       type: 'password',
       description: 'Password of the MySQL database'
-    },
-    MySQL_database_name: {
-      type: 'string',
-      description: 'Name of the MySQL database',
-      required: true
     }
   },
   dependencies: [MYSQL],
-  image: 'library/wordpress',
+  image: 'phpmyadmin/phpmyadmin',
   ports: {
     80: '%site_port%'
   },
   env: {
-    WORDPRESS_DB_HOST: '%MySQL%',
-    WORDPRESS_DB_USER: '%MySQL_username%',
-    WORDPRESS_DB_PASSWORD: '%MySQL_password%',
-    WORDPRESS_DB_NAME: '%MySQL_database_name%'
+    PMA_HOST: '%MySQL%',
+    PMA_USER: '%MySQL_username%',
+    PMA_PASSWORD: '%MySQL_password%'
   },
   actions: [
     {
-      text: 'Open Wordpress Site',
-      value: 'OPEN_WORDPRESS_SITE',
-      icon: FaWordpress,
+      text: 'Open phpMyAdmin',
+      value: 'OPEN_PHPMYADMIN',
+      icon: FaPlug,
       openInBrowser: 'http://localhost:%site_port%',
       shouldBeRunning: true
     }
@@ -62,8 +56,8 @@ const WORDPRESS: Formula = {
     timeout: 5000,
     interval: 1000
   },
-  onHealthyActions: ['OPEN_WORDPRESS_SITE'],
+  onHealthyActions: ['OPEN_PHPMYADMIN'],
   tags: ['Application']
 };
 
-export default WORDPRESS;
+export default PHPMYADMIN;
