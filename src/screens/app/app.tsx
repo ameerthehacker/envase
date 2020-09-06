@@ -108,7 +108,7 @@ export default function App() {
     ipcRenderer.on(SAVE_SETTINGS, () => {
       load();
     });
-  }, [load, onUpdateDialogOpen]);
+  }, [load, onUpdateDialogOpen, toast]);
 
   return (
     <>
