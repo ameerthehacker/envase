@@ -16,7 +16,8 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Button
+  Button,
+  Image
 } from '@chakra-ui/core';
 import {
   isValidContainerName,
@@ -29,6 +30,7 @@ import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
 import { open } from '../../services/native/native';
 import { IconButton } from '@chakra-ui/core/dist';
+import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
 
 export interface AppFormProps {
   app: Formula;
@@ -56,10 +58,60 @@ function validateAppName(name: string) {
   return undefined;
 }
 
+const getAppInstances = (appStatuses: AppStatus[], formula: Formula) => {
+  return appStatuses.filter(
+    (appStatus) => appStatus.formula.name === formula.name
+  );
+};
+
 // TODO: use formprops and formikprops types
 export default function AppForm({ app, isReadOnly }: AppFormProps) {
   const { data } = app;
   const fieldNames = Object.keys(data);
+  const apps = useAppStatus();
+
+  const dependencyFormElements = app.dependencies?.map((dependency, index) => {
+    const dependencyInstances = getAppInstances(
+      apps.allAppStatus.status,
+      dependency
+    );
+    const fieldName = dependency.name;
+
+    return (
+      <Box key={index}>
+        <Field name={fieldName} validate={requiredValidator(fieldName)}>
+          {({ field, form }: { field: any; form: any }) => (
+            <FormControl
+              isInvalid={form.errors[fieldName] && form.touched[fieldName]}
+            >
+              <FormLabel htmlFor={fieldName}>
+                <Image
+                  src={dependency.logo}
+                  height="5"
+                  display="inline"
+                  mr={1}
+                />
+                {`${dependency.name} Instance`}
+              </FormLabel>
+              <Select
+                isDisabled={isReadOnly}
+                placeholder={`Choose a ${dependency.name} instance`}
+                id={fieldName}
+                {...field}
+              >
+                {dependencyInstances.map((dependencyInstance, index) => (
+                  <option key={index} value={dependencyInstance.name}>
+                    {dependencyInstance.name}
+                  </option>
+                ))}
+              </Select>
+              <FormErrorMessage>{`${dependency.name} instance is required`}</FormErrorMessage>
+            </FormControl>
+          )}
+        </Field>
+      </Box>
+    );
+  });
 
   const formElements = fieldNames.map((fieldName, index) => {
     const type = data[fieldName].type;
@@ -169,6 +221,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                   <Input id="image" value={app.image} isDisabled={true} />
                 </FormControl>
               </Box>
+              {dependencyFormElements}
               {formElements}
               <Box>
                 <Field name="version" validate={requiredValidator('version')}>

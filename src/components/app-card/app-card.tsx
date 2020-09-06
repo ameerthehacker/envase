@@ -5,12 +5,14 @@ import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
 export interface AppCardProps extends AppInfoCardProps {
   onCreateClick: () => void;
   isDisabled?: boolean;
+  isLoading?: boolean;
 }
 
 export default function AppCard({
   name,
   logo,
   isDisabled,
+  isLoading,
   onCreateClick
 }: AppCardProps) {
   return (
@@ -19,6 +21,7 @@ export default function AppCard({
         isDisabled={isDisabled}
         variantColor="green"
         onClick={onCreateClick}
+        isLoading={isLoading}
       >
         Create
       </Button>

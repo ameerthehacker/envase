@@ -2,6 +2,8 @@
 import { Formula } from '../../contracts/formula';
 import logo from './logo.svg';
 import { FaWrench } from 'react-icons/fa';
+import POSTGRES from '../postgres/postgres';
+import NODE from '../node/node';
 
 const HASURA: Formula = {
   name: 'Hasura',
@@ -35,13 +37,14 @@ const HASURA: Formula = {
       required: true
     }
   },
+  dependencies: [POSTGRES],
   image: 'hasura/graphql-engine',
   ports: {
     8080: '%ui_port%'
   },
   env: {
     HASURA_GRAPHQL_DATABASE_URL:
-      'postgres://%postgres_username%:%postgres_password%@mypostgres:5432/%postgres_database%',
+      'postgres://%postgres_username%:%postgres_password%@%Postgres%:5432/%postgres_database%',
     HASURA_GRAPHQL_ENABLE_CONSOLE: 'true'
   },
   actions: [

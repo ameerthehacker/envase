@@ -163,7 +163,7 @@ export function getContainerAppInfo(
       .getContainer(containerId)
       .inspect()
       .then((containerInfo) => {
-        const labels = containerInfo.Config.Labels as any;
+        const labels = containerInfo.Config.Labels;
 
         resolve(getContainerAppInfoFromLabels(labels));
       })
@@ -265,7 +265,7 @@ export function createContainerFromApp(values: AppFormResult, app: Formula) {
     HostConfig: {
       PortBindings: portBindings,
       Binds: volList,
-      NetworkMode: 'my_network'
+      NetworkMode: 'envase_net'
     }
   };
 

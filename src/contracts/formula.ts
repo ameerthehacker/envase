@@ -32,6 +32,7 @@ export interface Formula {
   tags?: Tag[];
   cmd?: string[];
   onHealthyActions?: string[];
+  dependencies?: Formula[];
   healthCheck?: HealthCheck;
 }
 

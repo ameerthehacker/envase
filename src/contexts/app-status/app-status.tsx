@@ -155,7 +155,7 @@ const useAppStatus = () => {
 
 type Action =
   | {
-      type: 'START' | 'STOP' | 'DELETE';
+      type: 'START' | 'STOP' | 'DELETE' | 'UPDATE';
       payload: { id: string };
     }
   | {

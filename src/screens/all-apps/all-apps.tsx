@@ -95,6 +95,7 @@ export default function AllApps({
                   setSelectedApp(filteredApps[index]);
                   onFormOpen();
                 }}
+                isLoading={allAppStatus.isFetching}
                 name={app.name}
                 logo={app.logo}
               />
