@@ -19,9 +19,12 @@ import PHPMYADMIN from './phpmyadmin/phpmyadmin';
 
 const FORMULAS = [
   MYSQL,
+  PHPMYADMIN,
+  WORDPRESS,
   VSCODE,
   NODE,
   POSTGRES,
+  HASURA,
   REDIS,
   GOLANG,
   RUST,
@@ -32,10 +35,7 @@ const FORMULAS = [
   MONGO,
   RUBY,
   SCIPY_NOTBOOK,
-  NGINX,
-  HASURA,
-  WORDPRESS,
-  PHPMYADMIN
+  NGINX
 ];
 
 export { FORMULAS };
