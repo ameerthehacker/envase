@@ -3,6 +3,7 @@ import { render } from '../../../tests/test-util';
 import AppForm from './app-form';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
 import { Formik } from 'formik';
+import { AppStatusProvider } from '../../contexts/app-status/app-status';
 
 jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
@@ -20,9 +21,11 @@ const renderWitFormik = (
 ) =>
   render(
     /* eslint-disable @typescript-eslint/no-empty-function */
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {children}
-    </Formik>
+    <AppStatusProvider>
+      <Formik initialValues={initialValues} onSubmit={() => {}}>
+        {children}
+      </Formik>
+    </AppStatusProvider>
   );
 
 describe('AppForm', () => {

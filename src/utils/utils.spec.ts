@@ -186,9 +186,9 @@ describe('utils', () => {
   });
 
   it('requiredValidator() should return error message when value is given', () => {
-    const validator = requiredValidator('field');
+    const validator = requiredValidator('field_name');
 
-    expect(validator('')).toBe('field is required');
+    expect(validator('')).toBe('Field name is required');
   });
 
   it('getAllTags() should return all available tags', () => {

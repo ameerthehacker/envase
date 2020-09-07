@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { render, fireEvent, waitFor } from '../../../tests/test-util';
 import AppFormModal from './app-form-modal';
 import { FORMULA } from '../../../tests/fixtures/app.fixture';
+import { AppStatusProvider } from '../../contexts/app-status/app-status';
 
 jest.mock('../../services/native/native', () => ({
   ipcRenderer: {
@@ -11,9 +12,12 @@ jest.mock('../../services/native/native', () => ({
   }
 }));
 
+const renderWithAppStatusProvider = (children: ReactNode) =>
+  render(<AppStatusProvider>{children}</AppStatusProvider>);
+
 describe('AppFormModal', () => {
   it('should render the heading', async () => {
-    const { getByText } = render(
+    const { getByText } = renderWithAppStatusProvider(
       <AppFormModal
         onSubmit={() => null}
         isOpen={true}
@@ -29,7 +33,7 @@ describe('AppFormModal', () => {
 
   it('should call onClose when cancel is clicked', async () => {
     const onClose = jest.fn();
-    const { getByText } = render(
+    const { getByText } = renderWithAppStatusProvider(
       <AppFormModal
         onSubmit={() => null}
         isOpen={true}
