@@ -23,4 +23,4 @@ Show your support by 🌟 the repo
 
 ## License
 
-MIT © [Ameer Jhan](mailto:ameerjhanprof@gmail.com)
+GPL3 © [Ameer Jhan](mailto:ameerjhanprof@gmail.com)
