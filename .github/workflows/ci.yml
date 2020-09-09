@@ -33,6 +33,9 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      - name: Generate Icons
+        run: yarn generate-icons
+
       - name: Buile React
         run: yarn build-react
 
