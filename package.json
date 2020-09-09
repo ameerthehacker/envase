@@ -13,11 +13,12 @@
     "lint:staged": "eslint --fix",
     "prettify": "prettier --write",
     "coverage": "cross-env CI=true yarn test --coverage",
-    "build": "yarn build-react && electron-builder --config electron.build.json",
+    "build": "electron-builder --config electron.build.json",
     "build-mac": "yarn build --mac",
     "build-win": "yarn build --win",
     "build-linux": "yarn build --linux",
     "build-react": "react-scripts build",
+    "generate-icons": "electron-icon-maker --input=images/logo.png --output=images",
     "release": "electron-builder --config electron.build.json --publish onTagOrDraft"
   },
   "engines": {
@@ -56,6 +57,7 @@
     "electron": "^8.2.0",
     "electron-builder": "^22.5.1",
     "electron-debug": "^3.0.1",
+    "electron-icon-maker": "0.0.5",
     "emotion-theming": "^10.0.27",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",

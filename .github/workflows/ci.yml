@@ -33,6 +33,9 @@ jobs:
       - name: Run tests
         run: yarn test
 
+      - name: Buile React
+        run: yarn build-react
+
       - name: Build & Release for mac
         run: yarn build-mac --publish onTagOrDraft
         env:

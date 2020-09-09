@@ -17,6 +17,10 @@ yarn dev
 
 Show your support by 🌟 the repo
 
+## Logo used:
+
+[Container Crane Icon](https://iconscout.com/icons/container-crane) by [Vichanon Chaimsuk](https://iconscout.com/contributors/ferdizzimo)
+
 ## License
 
 MIT © [Ameer Jhan](mailto:ameerjhanprof@gmail.com)
