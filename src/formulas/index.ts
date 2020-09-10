@@ -20,6 +20,7 @@ import ELASTICSEARCH from './elasticsearch/elasticsearch';
 import KIBANA from './kibana/kibana';
 import PGADMIN from './pgadmin/pgadmin';
 import RABBITMQ from './rabbitmq/rabbitmq';
+import APACHE from './apache/apache';
 
 const FORMULAS = [
   MYSQL,
@@ -40,6 +41,7 @@ const FORMULAS = [
   MONGO,
   RUBY,
   SCIPY_NOTBOOK,
+  APACHE,
   NGINX,
   ELASTICSEARCH,
   KIBANA,

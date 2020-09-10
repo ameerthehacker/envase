@@ -3,20 +3,20 @@ import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
 import { FaGlobe } from 'react-icons/fa';
 
-const NGINX: Formula = {
-  name: 'Nginx',
+const APACHE: Formula = {
+  name: 'Apache',
   defaultShell: '/bin/bash',
   logo,
   data: {
     name: {
       type: 'string',
-      description: 'Name of the Nginx instance',
+      description: 'Name of the Apache instance',
       required: true
     },
     port: {
       type: 'number',
-      description: 'Port on which Nginx server should run',
-      default: 80,
+      description: 'Port on which Apache server should run',
+      default: 8080,
       required: true
     },
     static_files_folder: {
@@ -25,17 +25,17 @@ const NGINX: Formula = {
     },
     configurations_folder: {
       type: 'path',
-      description: 'Folder where Nginx configurations should be stored'
+      description: 'Folder where Apache configurations should be stored'
     }
   },
-  image: 'library/nginx',
+  image: 'library/httpd',
   ports: {
     80: '%port%'
   },
   env: {},
   volumes: {
-    '/usr/share/nginx/html': '%static_files_folder%',
-    '/etc/nginx/': '%configurations_folder%'
+    '/usr/local/apache2/htdocs': '%static_files_folder%',
+    '/usr/local/apache2/conf/': '%configurations_folder%'
   },
   actions: [
     {
@@ -49,4 +49,4 @@ const NGINX: Formula = {
   tags: ['Application']
 };
 
-export default NGINX;
+export default APACHE;
