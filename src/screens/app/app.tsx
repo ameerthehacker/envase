@@ -82,7 +82,7 @@ export default function App() {
       if (info) {
         console.log('update available, showing the update dialog', info);
 
-        const { version, releaseNotes } = info.updateInfo;
+        const { version, releaseNotes } = info;
         const changes = getReleaseNotes(releaseNotes);
 
         const updateDetails = (
