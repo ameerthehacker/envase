@@ -18,6 +18,7 @@ import WORDPRESS from './wordpress/wordpress';
 import PHPMYADMIN from './phpmyadmin/phpmyadmin';
 import ELASTICSEARCH from './elasticsearch/elasticsearch';
 import KIBANA from './kibana/kibana';
+import PGADMIN from './pgadmin/pgadmin';
 
 const FORMULAS = [
   MYSQL,
@@ -26,6 +27,7 @@ const FORMULAS = [
   VSCODE,
   NODE,
   POSTGRES,
+  PGADMIN,
   HASURA,
   REDIS,
   GOLANG,
