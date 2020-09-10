@@ -15,7 +15,7 @@ const PGADMIN: Formula = {
     port: {
       type: 'number',
       description: 'Port on which pgAdmin server should run',
-      default: 80,
+      default: 8080,
       required: true
     },
     user: {

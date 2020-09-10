@@ -17,7 +17,7 @@ const WORDPRESS: Formula = {
     site_port: {
       type: 'number',
       description: 'Port on which wordpress site will be available',
-      default: 80,
+      default: 8080,
       required: true
     },
     MySQL_username: {

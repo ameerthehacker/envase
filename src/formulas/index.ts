@@ -19,6 +19,7 @@ import PHPMYADMIN from './phpmyadmin/phpmyadmin';
 import ELASTICSEARCH from './elasticsearch/elasticsearch';
 import KIBANA from './kibana/kibana';
 import PGADMIN from './pgadmin/pgadmin';
+import RABBITMQ from './rabbitmq/rabbitmq';
 
 const FORMULAS = [
   MYSQL,
@@ -41,7 +42,8 @@ const FORMULAS = [
   SCIPY_NOTBOOK,
   NGINX,
   ELASTICSEARCH,
-  KIBANA
+  KIBANA,
+  RABBITMQ
 ];
 
 export { FORMULAS };

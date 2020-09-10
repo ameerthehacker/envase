@@ -78,11 +78,10 @@ export default function App() {
       });
     });
 
-    ipcRenderer.send(CHECK_FOR_UPDATE);
-
     ipcRenderer.on(CHECK_FOR_UPDATE, (evt, info) => {
       if (info) {
-        console.log(info);
+        console.log('update available, showing the update dialog', info);
+
         const { version, releaseNotes } = info.updateInfo;
         const changes = getReleaseNotes(releaseNotes);
 
@@ -104,6 +103,8 @@ export default function App() {
         onUpdateDialogOpen();
       }
     });
+
+    ipcRenderer.send(CHECK_FOR_UPDATE);
 
     ipcRenderer.on(SAVE_SETTINGS, () => {
       load();

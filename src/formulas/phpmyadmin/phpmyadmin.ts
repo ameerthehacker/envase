@@ -17,7 +17,7 @@ const PHPMYADMIN: Formula = {
     site_port: {
       type: 'number',
       description: 'Port on which phpMyAdmin will be available',
-      default: 80,
+      default: 8080,
       required: true
     },
     MySQL_username: {
