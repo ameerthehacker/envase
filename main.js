@@ -132,7 +132,7 @@ app.whenReady().then(() => {
   ipcMain.on(CHECK_FOR_UPDATE, (evt) => {
     autoUpdater.checkForUpdatesAndNotify();
 
-    autoUpdater.on('update-available', (updateInfo) => {
+    autoUpdater.on('update-downloaded', (updateInfo) => {
       if (updateInfo) {
         evt.reply(CHECK_FOR_UPDATE, updateInfo);
       }
