@@ -21,11 +21,13 @@ import KIBANA from './kibana/kibana';
 import PGADMIN from './pgadmin/pgadmin';
 import RABBITMQ from './rabbitmq/rabbitmq';
 import APACHE from './apache/apache';
+import JOOMLA from './joomla/joomla';
 
 const FORMULAS = [
   MYSQL,
   PHPMYADMIN,
   WORDPRESS,
+  JOOMLA,
   VSCODE,
   NODE,
   POSTGRES,

@@ -13,6 +13,7 @@ import {
 export interface ConfirmDialogModalProps {
   isOpen: boolean;
   title: string;
+  size?: string;
   description: ReactNode;
   onSubmit: (ok: boolean) => void;
 }
@@ -21,10 +22,11 @@ export default function ConfirmDialogModal({
   title,
   description,
   isOpen,
+  size = 'md',
   onSubmit
 }: ConfirmDialogModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={() => onSubmit(false)}>
+    <Modal isOpen={isOpen} size={size} onClose={() => onSubmit(false)}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{title}</ModalHeader>

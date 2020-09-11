@@ -80,8 +80,6 @@ export default function App() {
 
     ipcRenderer.on(CHECK_FOR_UPDATE, (evt, info) => {
       if (info) {
-        console.log('update available, showing the update dialog', info);
-
         const { version, releaseNotes } = info;
         const changes = getReleaseNotes(releaseNotes);
 
@@ -198,6 +196,7 @@ export default function App() {
       )}
       <ConfirmDialogModal
         title="Update Available"
+        size="lg"
         description={updateDescription}
         isOpen={isUpdateDialogOpen}
         onSubmit={(ok) => {
