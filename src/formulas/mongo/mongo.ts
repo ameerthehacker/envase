@@ -29,8 +29,7 @@ const MONGO: Formula = {
     },
     data: {
       type: 'path',
-      description: 'Database storage path for Mongo DB',
-      required: true
+      description: 'Database storage path for Mongo DB'
     }
   },
   image: 'library/mongo',

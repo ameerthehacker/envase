@@ -23,6 +23,7 @@ import RABBITMQ from './rabbitmq/rabbitmq';
 import APACHE from './apache/apache';
 import JOOMLA from './joomla/joomla';
 import MARIADB from './mariadb/mariadb';
+import NEO4J from './neo4j/neo4j';
 
 const FORMULAS = [
   MYSQL,
@@ -49,7 +50,8 @@ const FORMULAS = [
   NGINX,
   ELASTICSEARCH,
   KIBANA,
-  RABBITMQ
+  RABBITMQ,
+  NEO4J
 ];
 
 export { FORMULAS };
