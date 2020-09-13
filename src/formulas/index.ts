@@ -24,6 +24,7 @@ import APACHE from './apache/apache';
 import JOOMLA from './joomla/joomla';
 import MARIADB from './mariadb/mariadb';
 import NEO4J from './neo4j/neo4j';
+import DYNAMODB from './dynamodb/dynamodb';
 
 const FORMULAS = [
   MYSQL,
@@ -51,7 +52,8 @@ const FORMULAS = [
   KIBANA,
   RABBITMQ,
   NEO4J,
-  SCIPY_NOTEBOOK
+  SCIPY_NOTEBOOK,
+  DYNAMODB
 ];
 
 export { FORMULAS };
