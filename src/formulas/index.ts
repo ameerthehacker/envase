@@ -11,7 +11,7 @@ import GCC from './gcc/gcc';
 import JENKINS from './jenkins/jenkins';
 import MONGO from './mongo/mongo';
 import RUBY from './ruby/ruby';
-import SCIPY_NOTBOOK from './scipy-notebook/scipy-notebook';
+import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
 import NGINX from './nginx/nginx';
 import HASURA from './hasura/hasura';
 import WORDPRESS from './wordpress/wordpress';
@@ -45,13 +45,13 @@ const FORMULAS = [
   JENKINS,
   MONGO,
   RUBY,
-  SCIPY_NOTBOOK,
   APACHE,
   NGINX,
   ELASTICSEARCH,
   KIBANA,
   RABBITMQ,
-  NEO4J
+  NEO4J,
+  SCIPY_NOTEBOOK
 ];
 
 export { FORMULAS };

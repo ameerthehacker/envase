@@ -3,7 +3,7 @@ import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
 import { FaCode } from 'react-icons/fa';
 
-const SCIPY_NOTBOOK: Formula = {
+const SCIPY_NOTEBOOK: Formula = {
   name: 'SciPy Notebook',
   defaultShell: '/bin/bash',
   logo,
@@ -54,4 +54,4 @@ const SCIPY_NOTBOOK: Formula = {
   tags: ['Application']
 };
 
-export default SCIPY_NOTBOOK;
+export default SCIPY_NOTEBOOK;
