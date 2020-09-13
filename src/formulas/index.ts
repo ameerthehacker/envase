@@ -22,9 +22,11 @@ import PGADMIN from './pgadmin/pgadmin';
 import RABBITMQ from './rabbitmq/rabbitmq';
 import APACHE from './apache/apache';
 import JOOMLA from './joomla/joomla';
+import MARIADB from './mariadb/mariadb';
 
 const FORMULAS = [
   MYSQL,
+  MARIADB,
   PHPMYADMIN,
   WORDPRESS,
   JOOMLA,
