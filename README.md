@@ -5,9 +5,15 @@ Run almost all docker recipies without a sweat 🎉
 ## Setup
 
 - Install node v10
-- Install yarm
+- Install yarn
 - Install docker
 - Clone the repo
+
+Install Dependencies
+```sh
+cd envase
+yarn
+```
 
 To start the project in development
 
