@@ -25,6 +25,7 @@ import JOOMLA from './joomla/joomla';
 import MARIADB from './mariadb/mariadb';
 import NEO4J from './neo4j/neo4j';
 import DYNAMODB from './dynamodb/dynamodb';
+import ORIENTDB from './orientdb/orientdb';
 
 const FORMULAS = [
   MYSQL,
@@ -53,7 +54,8 @@ const FORMULAS = [
   RABBITMQ,
   NEO4J,
   SCIPY_NOTEBOOK,
-  DYNAMODB
+  DYNAMODB,
+  ORIENTDB
 ];
 
 export { FORMULAS };
