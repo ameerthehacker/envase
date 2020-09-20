@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode, useMemo } from 'react';
 import Navbar from '../../components/navbar/navbar';
 import {
   Tabs,
@@ -64,6 +64,10 @@ export default function App() {
     onClose: onUpdateDialogClose,
     onOpen: onUpdateDialogOpen
   } = useDisclosure();
+  const sortedFormulas = useMemo(
+    () => FORMULAS.sort((x, y) => x.name.localeCompare(y.name)),
+    [FORMULAS]
+  );
 
   useEffect(() => {
     load(true).then(() => {
@@ -184,7 +188,7 @@ export default function App() {
               </TabPanel>
               <TabPanel>
                 <AllAppsWithFilters
-                  apps={FORMULAS}
+                  apps={sortedFormulas}
                   searchText={searchText}
                   isFiltersOpen={tabIndex === 1 && isFiltersOpen}
                   onFiltersClose={onFiltersClose}
