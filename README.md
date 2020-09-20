@@ -20,7 +20,7 @@
 ### Installation
 
 1. You need to download and install docker if you don't have it already from [docker.com](https://www.docker.com/products/docker-desktop)
-2. Now download and install the prebuilt envase binaries for windows, linux and mac [here](https://github.com/ameerthehacker/envase/releases)
+2. Now download and install the prebuilt envase binaries for windows, linux and mac from [here](https://github.com/ameerthehacker/envase/releases)
 
 ### Development Workflow
 
