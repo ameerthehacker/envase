@@ -66,7 +66,7 @@ export default function App() {
   } = useDisclosure();
   const sortedFormulas = useMemo(
     () => FORMULAS.sort((x, y) => x.name.localeCompare(y.name)),
-    [FORMULAS]
+    []
   );
 
   useEffect(() => {

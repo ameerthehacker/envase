@@ -28,6 +28,22 @@ const store = new Store();
 // check for update
 autoUpdater.autoDownload = true;
 
+const debounce = (fn, timeout) => {
+  let timer = null;
+
+  return (...args) => {
+    const debouncedFn = () => {
+      timer = null;
+
+      fn(...args);
+    };
+
+    if (timer === null) {
+      timer = setTimeout(debouncedFn, timeout);
+    }
+  };
+};
+
 if (!fs.existsSync(store.path)) {
   const dockerConfig = new Docker().modem;
   const terminalConfig = {
@@ -50,7 +66,6 @@ function createWindow(url, savedWindowSize = true) {
   const width = (savedWindowSize && winDimension && winDimension.width) || 900;
   const height =
     (savedWindowSize && winDimension && winDimension.height) || 600;
-
   const win = new BrowserWindow({
     width,
     height,
@@ -64,6 +79,20 @@ function createWindow(url, savedWindowSize = true) {
   win.loadURL(url);
 
   win.on('ready-to-show', () => win.show());
+
+  win.on(
+    'resize',
+    debounce(() => {
+      if (!win.isDestroyed()) {
+        const [width, height] = win.getSize();
+
+        store.set(WIN_DIMENSION, {
+          width,
+          height
+        });
+      }
+    }, 3000)
+  );
 
   return win;
 }
