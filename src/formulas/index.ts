@@ -11,7 +11,6 @@ import GCC from './gcc/gcc';
 import JENKINS from './jenkins/jenkins';
 import MONGO from './mongo/mongo';
 import RUBY from './ruby/ruby';
-import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
 import NGINX from './nginx/nginx';
 import HASURA from './hasura/hasura';
 import WORDPRESS from './wordpress/wordpress';
@@ -53,7 +52,6 @@ const FORMULAS = [
   KIBANA,
   RABBITMQ,
   NEO4J,
-  SCIPY_NOTEBOOK,
   DYNAMODB,
   ORIENTDB
 ];
