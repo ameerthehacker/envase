@@ -1,5 +1,5 @@
 import { ColorModeProvider, CSSReset, ThemeProvider } from '@chakra-ui/core';
-import App from './app';
+import App from '../components/app/app';
 
 export default function Index() {
   return (

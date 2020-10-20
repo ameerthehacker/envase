@@ -1,0 +1,31 @@
+.navLinks > a + a {
+  margin-left: 15px;
+}
+
+.navContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 10px;
+}
+
+.navItem {
+  grid-column: 1 / span 3;
+}
+
+@media only screen and (min-width: 760px) {
+  .navItem {
+    grid-column: 2 / span 2;
+  }
+  .navContainer {
+    padding: 0;
+  }
+}
+
+.navLink {
+  border-bottom: 2px solid #e2e8f0;
+}
+
+
+.navLink:hover {
+  border-bottom: 2px solid red;
+}
