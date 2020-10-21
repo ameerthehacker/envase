@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/core';
+import { Flex, Image, Text } from '@chakra-ui/core';
 import { ReactNode } from 'react';
 import { GITHUB_REPO } from '../../constants';
 import styles from './navbar.module.css';
@@ -8,32 +8,27 @@ export default function Navbar() {
   return (
     <Flex
       alignItems="center"
-      width="100%"
       position="fixed"
       top={0}
       height="60px"
-      boxShadow="sm"
+      width="100%"
+      justifyContent="center"
     >
-      <Box className={styles.navContainer}>
+      <Flex fontSize="md" gridColumn={2}>
+        <BrandLogo />
         <Flex
-          fontSize="md"
-          className={styles.navItem}
-          justifyContent="space-between"
-          width="100%"
+          marginLeft={10}
+          fontSize="lg"
+          alignItems="center"
+          className={styles.navLinks}
         >
-          <BrandLogo />
-          <Flex marginLeft={10} alignItems="center" className={styles.navLinks}>
-            <NavLink href="#why-envase">🤷‍♀️ Why Envase?</NavLink>
-            <NavLink href="#solutions">🔨 Solutions</NavLink>
-            <NavLink
-              isExternal={true}
-              href={`https://github.com/${GITHUB_REPO}`}
-            >
-              💻 View Source
-            </NavLink>
-          </Flex>
+          <NavLink href="#why-envase">🤷‍♀️ Why Envase?</NavLink>
+          <NavLink href="#solutions">🔨 Solutions</NavLink>
+          <NavLink isExternal={true} href={`https://github.com/${GITHUB_REPO}`}>
+            💻 View Source
+          </NavLink>
         </Flex>
-      </Box>
+      </Flex>
     </Flex>
   );
 }
