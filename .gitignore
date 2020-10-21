@@ -110,4 +110,4 @@ dist
 
 build/
 electron-build/
-images/icons/
+media/icons/

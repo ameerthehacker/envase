@@ -18,7 +18,7 @@
     "build-win": "yarn build --win",
     "build-linux": "yarn build --linux",
     "build-react": "react-scripts build",
-    "generate-icons": "electron-icon-maker --input=images/logo.png --output=images",
+    "generate-icons": "electron-icon-maker --input=media/logo.png --output=media",
     "release": "electron-builder --config electron.build.json --publish onTagOrDraft"
   },
   "engines": {

@@ -14,7 +14,7 @@
 <p align="center">Envase remove the pain 😢 from running apps using docker by an amazing Developer experience and an one stop shop app store for almost all popular applications 🎉</p>
 
 <p align="center">
- <img src="./images/demo.gif" />
+ <img src="./media/demo.gif" />
 </p>
 
 ### Installation
