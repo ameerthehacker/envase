@@ -465,7 +465,7 @@ export function createEnvaseNetwork() {
       .catch((err) => {
         if (err.statusCode === 404) {
           dockerode
-            .createNetwork({ name: ENVASE_NET, driver: 'bridge' })
+            .createNetwork({ Name: ENVASE_NET, Driver: 'bridge' })
             .then(resolve)
             .catch(reject);
         } else {

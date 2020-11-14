@@ -28,7 +28,7 @@ export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
   } = useDisclosure();
 
   return (
-    <Flex p={2} width="auto" pos="fixed" right={0} top={0}>
+    <Flex p={2} width="auto" pos="fixed" right={0} top={0} zIndex={2}>
       <Box mr={3}>
         <Tooltip label="Filters" aria-label="Open preferences">
           <Button

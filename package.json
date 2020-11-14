@@ -5,18 +5,18 @@
   "main": "main.js",
   "homepage": "./",
   "scripts": {
-    "dev": "concurrently -k yarn:dev-electron yarn:dev-ui",
+    "dev": "concurrently -k npm:dev-electron npm:dev-ui",
     "dev-electron": "cross-env NODE_ENV=development electron ./main.js",
     "dev-ui": "cross-env BROWSER=none react-scripts start",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "lint": "eslint . --ext .ts,.tsx --fix",
     "lint:staged": "eslint --fix",
     "prettify": "prettier --write",
-    "coverage": "cross-env CI=true yarn test --coverage",
+    "coverage": "cross-env CI=true npm test --coverage",
     "build": "electron-builder --config electron.build.json",
-    "build-mac": "yarn build --mac",
-    "build-win": "yarn build --win",
-    "build-linux": "yarn build --linux",
+    "build-mac": "npm run build --mac",
+    "build-win": "npm run build --win",
+    "build-linux": "npm run build --linux",
     "build-react": "react-scripts build",
     "generate-icons": "electron-icon-maker --input=media/logo.png --output=media",
     "release": "electron-builder --config electron.build.json --publish onTagOrDraft"
@@ -92,13 +92,14 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx,html,json,scss,md,yml,spec}": [
-      "yarn prettify"
+      "npm run prettify"
     ],
     "*.{spec,js,ts,tsx}": [
-      "yarn lint:staged"
+      "npm run lint:staged"
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.0.0",
     "axios": "^0.19.2",
     "dockerode": "^3.2.0",
     "electron-store": "^5.1.1",

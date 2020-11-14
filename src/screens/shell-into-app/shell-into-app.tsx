@@ -29,8 +29,8 @@ export default function ShellIntoApp() {
       shellOrExecIntoApp(containerId, cmd)
         .then((exec) => {
           exec.start(
-            { hijack: true, stdin: true, stdout: true, tty: true },
-            (err: any, stream: NodeJS.ReadWriteStream) => {
+            { hijack: true, stdin: true, Tty: true },
+            (err: any, stream: NodeJS.ReadWriteStream | undefined) => {
               setStream(stream);
             }
           );

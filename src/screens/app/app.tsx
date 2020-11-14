@@ -13,7 +13,9 @@ import {
   List,
   ListItem,
   ListIcon,
-  Stack
+  Stack,
+  useColorMode,
+  useTheme
 } from '@chakra-ui/core';
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
@@ -34,6 +36,7 @@ import withFilters from '../../hoc/with-filters';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import { getReleaseNotes } from '../../utils/utils';
 import { createEnvaseNetwork } from '../../services/docker/docker';
+import { Global, css } from '@emotion/react';
 
 const { SAVE_SETTINGS, CHECK_FOR_UPDATE, INSTALL_UPDATE } = IPC_CHANNELS;
 const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
@@ -68,6 +71,8 @@ export default function App() {
     () => FORMULAS.sort((x, y) => x.name.localeCompare(y.name)),
     []
   );
+  const { colorMode } = useColorMode();
+  const theme = useTheme();
 
   useEffect(() => {
     load(true).then(() => {
@@ -118,6 +123,25 @@ export default function App() {
       <Helmet>
         <title>Envase</title>
       </Helmet>
+      <Global
+        styles={css`
+          ::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
+
+          ::-webkit-scrollbar {
+            width: 6px;
+            position: absolute;
+          }
+
+          ::-webkit-scrollbar-thumb {
+            background-color: ${colorMode === 'dark'
+              ? theme.colors.gray[300]
+              : theme.colors.gray[500]};
+            border-radius: 5px;
+          }
+        `}
+      />
       {allAppStatus.error?.errno && (
         <>
           <NoConnection
@@ -158,7 +182,12 @@ export default function App() {
             }}
           />
           <Tabs index={tabIndex} onChange={handleTabChange}>
-            <TabList>
+            <TabList
+              position="fixed"
+              width="100%"
+              bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+              zIndex={1}
+            >
               <Tab p={4} className="no-box-shadow">
                 <IconText icon={<Box as={FaRocket} />} text="My Apps" />
               </Tab>
@@ -166,7 +195,7 @@ export default function App() {
                 <IconText icon={<Box as={FaListUl} />} text="All Apps" />
               </Tab>
             </TabList>
-            <TabPanels p={6} pb={0} pt={0}>
+            <TabPanels padding={15} paddingTop={16}>
               <TabPanel>
                 {allAppStatus.isFetching && <AppCardSkeleton count={3} />}
                 {!allAppStatus.isFetching &&
