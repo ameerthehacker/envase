@@ -29,31 +29,31 @@ jobs:
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
       - name: Install Dependencies
-        run: yarn install
+        run: npm install
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Run tests
-        run: yarn test
+        run: npm test
 
       - name: Generate Icons
-        run: yarn generate-icons
+        run: npm run generate-icons
 
       - name: Buile React
-        run: yarn build-react
+        run: npm run build-react
 
       - name: Build & Release for mac
-        run: yarn build-mac --publish onTagOrDraft
+        run: npm run build-mac --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for windows
-        run: yarn build-win --publish onTagOrDraft
+        run: npm run build-win --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for linux
-        run: yarn build-linux --publish onTagOrDraft
+        run: npm run build-linux --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
