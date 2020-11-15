@@ -44,16 +44,16 @@ jobs:
         run: npm run build-react
 
       - name: Build & Release for mac
-        run: npm run build-mac --publish onTagOrDraft
+        run: npm run build-mac -- --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for windows
-        run: npm run build-win --publish onTagOrDraft
+        run: npm run build-win -- --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Release for linux
-        run: npm run build-linux --publish onTagOrDraft
+        run: npm run build-linux -- --publish onTagOrDraft
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
