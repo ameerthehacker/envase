@@ -40,7 +40,7 @@ jobs:
       - name: Generate Icons
         run: npm run generate-icons
 
-      - name: Buile React
+      - name: Bundle UI
         run: npm run build-react
 
       - name: Build & Release for mac
