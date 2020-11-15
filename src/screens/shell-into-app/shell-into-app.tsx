@@ -10,7 +10,7 @@ import { parse } from 'query-string';
 import { Helmet } from 'react-helmet';
 
 export default function ShellIntoApp() {
-  const { containerId } = useParams();
+  const { containerId } = useParams<{ containerId: string }>();
   const location = useLocation();
   const toast = useToast();
   const queryParams = parse(location.search);

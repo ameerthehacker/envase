@@ -1,4 +1,4 @@
-import { IpcRenderer } from 'electron';
+import { IpcRenderer, Clipboard } from 'electron';
 import Dockerode from 'dockerode';
 import { IPC_CHANNELS } from '../../constants';
 import { AllSettings } from '../../contracts/all-settings';
@@ -9,12 +9,14 @@ import { AllSettings } from '../../contracts/all-settings';
 const {
   ipcRenderer,
   open,
-  Docker
+  Docker,
+  clipboard
 }: {
   ipcRenderer: IpcRenderer;
   open: (URI: string) => void;
   Docker: any;
   allSettings: AllSettings;
+  clipboard: Clipboard;
 } = window as any;
 let { allSettings } = window as any;
 let dockerode: Dockerode = new Docker(allSettings);
@@ -24,4 +26,4 @@ ipcRenderer.on(IPC_CHANNELS.SAVE_SETTINGS, (evt, newSettings) => {
   dockerode = new Docker(newSettings);
 });
 
-export { ipcRenderer, open, dockerode, allSettings };
+export { ipcRenderer, open, dockerode, allSettings, clipboard };

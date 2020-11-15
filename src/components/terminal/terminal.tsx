@@ -6,7 +6,7 @@ import { Unicode11Addon } from 'xterm-addon-unicode11';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import { ResizeObserver } from 'resize-observer';
 import ansiColors from 'ansi-colors';
-import { allSettings } from '../../services/native/native';
+import { allSettings, clipboard } from '../../services/native/native';
 import './terminal.css';
 
 export interface TerminalProps {
@@ -19,6 +19,30 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
   const terminalContainerRef = useRef<HTMLDivElement>();
   const isStreamOpen = useRef<boolean>(true);
   const terminalRef = useRef<XTerm>();
+  const asciiKeyMap = useRef({
+    CTRL_C: '\x03',
+    CTRL_A: '\x01',
+    CTRL_E: '\x05',
+    CTRL_Z: '\x1A',
+    ESC: '\x1B',
+    TAB: '\x09',
+    LEFT_ARROW: '\u001b[D',
+    UP_ARROW: '\u001b[A',
+    RIGHT_ARROW: '\u001b[C',
+    DOWN_ARROW: '\u001b[B',
+    ENTER: '\r',
+    BACKSPACE: '\b'
+  });
+  const keyCodeMap = useRef({
+    ESC: 27,
+    TAB: 9,
+    LEFT_ARROW: 37,
+    UP_ARROW: 38,
+    RIGHT_ARROW: 39,
+    DOWN_ARROW: 40,
+    ENTER: 13,
+    BACKSPACE: 8
+  });
 
   useEffect(() => {
     const terminal = new XTerm({
@@ -60,27 +84,27 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
             const ev = e.domEvent;
 
             if (ev.ctrlKey) {
-              if (ev.key === 'c') stream.write('\x03');
-              if (ev.key === 'a') stream.write('\x01');
-              if (ev.key === 'e') stream.write('\x05');
-              if (ev.key === 'z') stream.write('\x1A');
-            }
-            // ESC
-            else if (ev.keyCode === 27) stream.write('\x1B');
-            // Tab
-            else if (ev.keyCode === 9) stream.write('\x09');
-            // LArrow
-            else if (ev.keyCode === 37) stream.write('\u001b[D');
-            // UArrow
-            else if (ev.keyCode === 38) stream.write('\u001b[A');
-            // RArrow
-            else if (ev.keyCode === 39) stream.write('\u001b[C');
-            // DArrow
-            else if (ev.keyCode === 40) stream.write('\u001b[B');
-            // enter key
-            else if (ev.keyCode === 13) stream.write('\r');
-            // backspace key
-            else if (ev.keyCode === 8) stream.write('\b');
+              if (ev.key === 'c') stream.write(asciiKeyMap.current.CTRL_C);
+              if (ev.key === 'a') stream.write(asciiKeyMap.current.CTRL_A);
+              if (ev.key === 'e') stream.write(asciiKeyMap.current.CTRL_E);
+              if (ev.key === 'z') stream.write(asciiKeyMap.current.CTRL_Z);
+              if (ev.key === 'v') stream.write(clipboard.readText('clipboard'));
+            } else if (ev.keyCode === keyCodeMap.current.ESC)
+              stream.write(asciiKeyMap.current.ESC);
+            else if (ev.keyCode === keyCodeMap.current.TAB)
+              stream.write(asciiKeyMap.current.TAB);
+            else if (ev.keyCode === keyCodeMap.current.LEFT_ARROW)
+              stream.write(asciiKeyMap.current.LEFT_ARROW);
+            else if (ev.keyCode === keyCodeMap.current.UP_ARROW)
+              stream.write(asciiKeyMap.current.UP_ARROW);
+            else if (ev.keyCode === keyCodeMap.current.RIGHT_ARROW)
+              stream.write(asciiKeyMap.current.RIGHT_ARROW);
+            else if (ev.keyCode === keyCodeMap.current.DOWN_ARROW)
+              stream.write(asciiKeyMap.current.DOWN_ARROW);
+            else if (ev.keyCode === keyCodeMap.current.ENTER)
+              stream.write(asciiKeyMap.current.ENTER);
+            else if (ev.keyCode === keyCodeMap.current.BACKSPACE)
+              stream.write(asciiKeyMap.current.BACKSPACE);
             else stream.write(ev.key);
           }
         });
@@ -90,7 +114,7 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
     return () => {
       stream.removeListener('data', dataListener);
     };
-  }, [stream, stdin]);
+  }, [stream, stdin, keyCodeMap, asciiKeyMap]);
 
   useEffect(() => {
     const listener = () => {
