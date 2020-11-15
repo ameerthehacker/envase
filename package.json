@@ -14,9 +14,9 @@
     "prettify": "prettier --write",
     "coverage": "cross-env CI=true npm test --coverage",
     "build": "electron-builder --config electron.build.json",
-    "build-mac": "npm run build --mac",
-    "build-win": "npm run build --win",
-    "build-linux": "npm run build --linux",
+    "build-mac": "npm run build -- --mac",
+    "build-win": "npm run build -- --win",
+    "build-linux": "npm run build -- --linux",
     "build-react": "react-scripts build",
     "generate-icons": "electron-icon-maker --input=media/logo.png --output=media",
     "release": "electron-builder --config electron.build.json --publish onTagOrDraft"
