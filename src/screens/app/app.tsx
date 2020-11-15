@@ -126,7 +126,9 @@ export default function App() {
       <Global
         styles={css`
           ::-webkit-scrollbar-track {
-            background-color: transparent;
+            background-color: ${colorMode === 'dark'
+              ? theme.colors.gray[800]
+              : 'white'};
           }
 
           ::-webkit-scrollbar {
