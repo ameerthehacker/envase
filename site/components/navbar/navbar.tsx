@@ -1,8 +1,9 @@
-import { Flex, Image, Text } from '@chakra-ui/core';
+import { Box, Flex, Image, Text } from '@chakra-ui/core';
 import { ReactNode } from 'react';
 import { GITHUB_REPO } from '../../constants';
 import styles from './navbar.module.css';
 import logo from './logo.png';
+import { MdMenu } from 'react-icons/md';
 
 export default function Navbar() {
   return (
@@ -13,14 +14,26 @@ export default function Navbar() {
       height="60px"
       width="100%"
       justifyContent="center"
+      bg="white"
+      marginLeft={3}
     >
       <Flex fontSize="md" gridColumn={2}>
-        <BrandLogo />
+        <Flex alignItems="center">
+          <Box
+            cursor="pointer"
+            visibility={['visible', 'visible', 'visible', 'hidden']}
+            fontSize="5xl"
+            as={MdMenu}
+            marginRight={2}
+          />
+          <BrandLogo />
+        </Flex>
         <Flex
           marginLeft={10}
           fontSize="lg"
           alignItems="center"
           className={styles.navLinks}
+          visibility={['hidden', 'hidden', 'hidden', 'visible']}
         >
           <NavLink href="#why-envase">🤷‍♀️ Why Envase?</NavLink>
           <NavLink href="#solutions">🔨 Solutions</NavLink>

@@ -44,11 +44,19 @@ export default function Hero({
   }, []);
 
   return (
-    <Flex paddingTop={8} paddingBottom={8} justifyContent="center" bg="#EBF4FF">
-      <Stack gridColumn={2} direction="row" flexWrap="wrap" spacing={5}>
+    <Flex paddingTop={6} paddingBottom={8} justifyContent="center" bg="#EBF4FF">
+      <Stack
+        gridColumn={2}
+        direction="row"
+        flexWrap="wrap"
+        justifyContent="center"
+        spacing={5}
+        p={4}
+        paddingTop={0}
+      >
         <Box maxWidth="500px">
-          <Text fontSize="3xl">Homebrew for docker 🎉</Text>
-          <Text fontSize="2xl" fontWeight="250" marginTop={3}>
+          <Text fontSize={['2xl', '4xl']}>Homebrew for docker 🎉</Text>
+          <Text fontSize={['xl', '2xl']} fontWeight="250" marginTop={3}>
             Envase remove the pain from running apps using docker by providing
             an amazing user experience and an one stop shop app store for almost
             all popular applications.
@@ -58,7 +66,7 @@ export default function Hero({
             onClick={() => {
               window.open(downloadLink);
             }}
-            marginTop={10}
+            marginTop={5}
             size="lg"
             variantColor="purple"
             variant="solid"
@@ -70,7 +78,12 @@ export default function Hero({
             Download
           </Button>
         </Box>
-        <Image boxShadow="lg" width="600px" src={demo} />
+        <Image
+          marginTop={[5, 5, 5, 0]}
+          boxShadow="lg"
+          width="600px"
+          src={demo}
+        />
       </Stack>
     </Flex>
   );
