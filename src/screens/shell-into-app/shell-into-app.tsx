@@ -5,23 +5,15 @@ import {
   getContainerAppInfo
 } from '../../services/docker/docker';
 import Terminal from '../../components/terminal/terminal';
-import {
-  Box,
-  Flex,
-  IconButton,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useToast
-} from '@chakra-ui/core';
+import { Box, Flex, IconButton, Text, useToast } from '@chakra-ui/core';
 import { parse } from 'query-string';
 import { Helmet } from 'react-helmet';
 
 export default function ShellIntoApp() {
   const { containerId } = useParams<{ containerId: string }>();
   const currentId = useRef(1);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [appName, setAppName] = useState<string>();
   const [shellTabs, setShellTabs] = useState([
     {
       containerId,
@@ -34,37 +26,83 @@ export default function ShellIntoApp() {
     ? queryParams.cmd[0]
     : queryParams.cmd;
 
-  return (
-    <Tabs size="sm" variant="enclosed">
-      <Flex>
-        <TabList>
-          {shellTabs.map((shellTab, index) => (
-            <Tab key={shellTab.id}>Shell {index + 1}</Tab>
-          ))}
-        </TabList>
-        <IconButton
-          onClick={(evt) => {
-            currentId.current += 1;
+  useEffect(() => {
+    getContainerAppInfo(containerId).then((containerAppInfo) => {
+      setAppName(containerAppInfo.formValues.name);
+    });
+  }, [containerId]);
 
-            setShellTabs((tabs) => [
-              ...tabs,
+  return (
+    <Box>
+      <Helmet>
+        <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
+      </Helmet>
+      <Flex alignItems="center" overflowY="auto">
+        {shellTabs.map((shellTab, index) => (
+          <Flex
+            minWidth={40}
+            onClick={() => setCurrentTab(index)}
+            bg={index === currentTab ? 'gray.800' : 'gray.900'}
+            color={index === currentTab ? 'blue.300' : 'white'}
+            cursor="pointer"
+            py={2}
+            borderWidth={1}
+            borderLeftWidth={0}
+            px={4}
+            key={shellTab.id}
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Text>{`${appName} [${shellTab.id}]`}</Text>
+            {shellTabs.length > 1 && (
+              <IconButton
+                onClick={(evt) => {
+                  evt.stopPropagation();
+
+                  setShellTabs((tabs) =>
+                    tabs.filter((tab) => tab.id !== shellTab.id)
+                  );
+
+                  if (currentTab >= index)
+                    setCurrentTab((currentTab) => currentTab - 1);
+                }}
+                ml={4}
+                aria-label="close"
+                icon="close"
+                size="xs"
+                variant="ghost"
+              />
+            )}
+          </Flex>
+        ))}
+        <IconButton
+          onClick={() => {
+            currentId.current = currentId.current + 1;
+
+            setShellTabs([
+              ...shellTabs,
               { containerId, id: currentId.current }
             ]);
+            setCurrentTab(shellTabs.length);
           }}
-          size="sm"
-          variant="ghost"
-          aria-label="add-tab"
+          aria-label="add-terminal"
           icon="add"
+          variant="ghost"
         />
       </Flex>
-      <TabPanels>
-        {shellTabs.map((shellTab) => (
-          <TabPanel key={shellTab.id}>
-            <Shell cmd={cmd} containerId={containerId} />
-          </TabPanel>
+      <Flex>
+        {shellTabs.map((shellTab, index) => (
+          <Box
+            key={shellTab.id}
+            position="absolute"
+            width="100%"
+            zIndex={index === currentTab ? 1 : 0}
+          >
+            <Shell cmd={cmd} containerId={shellTab.containerId} />
+          </Box>
         ))}
-      </TabPanels>
-    </Tabs>
+      </Flex>
+    </Box>
   );
 }
 
@@ -76,12 +114,8 @@ type ShellProps = {
 function Shell({ containerId, cmd }: ShellProps) {
   const toast = useToast();
   const [stream, setStream] = useState<NodeJS.ReadWriteStream>();
-  const [appName, setAppName] = useState<string>();
 
   useEffect(() => {
-    getContainerAppInfo(containerId).then((containerAppInfo) => {
-      setAppName(containerAppInfo.formValues.name);
-    });
     shellOrExecIntoApp(containerId, cmd)
       .then((exec) => {
         exec.start(
@@ -102,13 +136,8 @@ function Shell({ containerId, cmd }: ShellProps) {
   }, [containerId, cmd, toast]);
 
   return (
-    <>
-      <Helmet>
-        <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
-      </Helmet>
-      <Box height="calc(100vh - 29px)" bg="black">
-        {stream && <Terminal stdin={true} stream={stream} />}
-      </Box>
-    </>
+    <Box height="calc(100vh - 42px)" width="100%" bg="black">
+      {stream && <Terminal stdin={true} stream={stream} />}
+    </Box>
   );
 }

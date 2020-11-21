@@ -65,7 +65,7 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
 
       const resizeObserver = new ResizeObserver(() => {
         if (terminalContainerRef.current) {
-          // fitAddon.fit();
+          fitAddon.fit();
         }
       });
 
