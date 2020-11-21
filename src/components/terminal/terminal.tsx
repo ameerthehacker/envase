@@ -19,6 +19,7 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
   const terminalContainerRef = useRef<HTMLDivElement>();
   const isStreamOpen = useRef<boolean>(true);
   const terminalRef = useRef<XTerm>();
+  const cmdPressed = useRef(false);
   const asciiKeyMap = useRef({
     CTRL_C: '\x03',
     CTRL_A: '\x01',
@@ -58,6 +59,24 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(unicodeAddon);
     terminal.loadAddon(webLinksAddon);
+    // special handling for mac keybindings
+    terminal.attachCustomKeyEventHandler((evt) => {
+      if (evt.key === 'Meta') {
+        if (evt.type === 'keydown') {
+          cmdPressed.current = true;
+        } else {
+          cmdPressed.current = false;
+        }
+      }
+
+      if (cmdPressed.current) {
+        // cmd + v handling for mac
+        if (evt.key === 'v') stream.write(clipboard.readText('clipboard'));
+        if (evt.key === 'k') terminal.clear();
+      }
+
+      return true;
+    });
     terminalRef.current = terminal;
 
     if (terminalContainerRef.current) {
