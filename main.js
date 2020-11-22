@@ -69,6 +69,8 @@ function createWindow(url, savedWindowSize = true) {
   const win = new BrowserWindow({
     width,
     height,
+    minWidth: 700,
+    minHeight: 500,
     show: false,
     webPreferences: {
       nodeIntegration: true,
