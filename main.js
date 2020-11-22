@@ -176,9 +176,9 @@ app.whenReady().then(() => {
     const url = `${uiURL}/shell/${args.containerId}`;
 
     if (args.cmd) {
-      createWindow(`${url}?cmd=${args.cmd}`, false);
+      createWindow(`${url}?cmd=${args.cmd}&allowTabs=no`, false);
     } else {
-      createWindow(`${url}`, false);
+      createWindow(`${url}?allowTabs=yes`, false);
     }
   });
 

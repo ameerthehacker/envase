@@ -19,7 +19,7 @@ const GOLANG: Formula = {
     }
   },
   volumes: {
-    '/projects': '%projects_folder%'
+    '/go': '%projects_folder%'
   },
   isCli: true,
   image: 'library/golang',
