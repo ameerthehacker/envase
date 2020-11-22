@@ -83,7 +83,8 @@
     "xterm": "^4.5.0",
     "xterm-addon-fit": "^0.3.0",
     "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.3.0"
+    "xterm-addon-web-links": "^0.3.0",
+    "@emotion/react": "^11.0.0"
   },
   "husky": {
     "hooks": {
@@ -99,12 +100,10 @@
     ]
   },
   "dependencies": {
-    "@emotion/react": "^11.0.0",
     "axios": "^0.19.2",
     "dockerode": "^3.2.0",
     "electron-store": "^5.1.1",
     "electron-updater": "^4.3.1",
-    "next-images": "^1.6.0",
     "open": "^7.0.3"
   },
   "browserslist": {
