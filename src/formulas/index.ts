@@ -25,6 +25,7 @@ import MARIADB from './mariadb/mariadb';
 import NEO4J from './neo4j/neo4j';
 import DYNAMODB from './dynamodb/dynamodb';
 import ORIENTDB from './orientdb/orientdb';
+import MONGO_EXPRESS from './mongo-express/mongo-express';
 
 const FORMULAS = [
   MYSQL,
@@ -53,7 +54,8 @@ const FORMULAS = [
   RABBITMQ,
   NEO4J,
   DYNAMODB,
-  ORIENTDB
+  ORIENTDB,
+  MONGO_EXPRESS
 ];
 
 export { FORMULAS };
