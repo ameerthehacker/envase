@@ -8,8 +8,6 @@ export default function Index({
 }: {
   latestReleaseTag: string;
 }) {
-  console.log(latestReleaseTag);
-
   return (
     <ThemeProvider>
       <CSSReset />
