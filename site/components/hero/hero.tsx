@@ -3,6 +3,7 @@ import { GITHUB_REPO } from '../../constants';
 import demo from './demo.gif';
 import { FaApple, FaWindows, FaLinux } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import Section from '../section/section';
 
 function getPlatformBinary(platform: string, tag: string) {
   const version = tag.substring(1);
@@ -44,20 +45,15 @@ export default function Hero({
   }, []);
 
   return (
-    <Flex padding={6} justifyContent="center" bg="#EBF4FF">
-      <Stack
-        maxWidth="1100px"
-        gridColumn={2}
-        direction="row"
-        flexWrap="wrap"
-        spacing={5}
-      >
+    <Section bg="#EBF4FF">
+      <Stack gridColumn={2} direction="row" flexWrap="wrap" spacing={5}>
         <Box maxWidth={['100%', '100%', '100%', '450px']}>
           <Text fontSize={['2xl', '4xl']}>Homebrew for docker 🎉</Text>
           <Text fontSize={['xl', '2xl']} fontWeight="250" marginTop={3}>
-            Envase remove the pain from running apps using docker by providing
-            an amazing user experience and an one stop shop app store for almost
-            all popular applications.
+            <strong>Envase</strong> removes the pain from running apps using{' '}
+            <strong>docker</strong> by providing an amazing{' '}
+            <strong>developer experience</strong> and an one stop shop app store
+            for almost all popular applications.
           </Text>
           <Button
             leftIcon={getPlatformIcon(platform)}
@@ -76,8 +72,8 @@ export default function Hero({
             Download
           </Button>
         </Box>
-        <Image marginTop={5} boxShadow="lg" width="600px" src={demo} />
+        <Image marginTop={3} boxShadow="lg" width="600px" src={demo} />
       </Stack>
-    </Flex>
+    </Section>
   );
 }

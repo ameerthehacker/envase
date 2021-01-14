@@ -23,17 +23,16 @@ export default function Navbar() {
   const menuRef = useRef(null);
 
   return (
-    <Flex justifyContent="center">
-      <Flex
-        alignItems="center"
-        position="fixed"
-        top={0}
-        height="60px"
-        bg="white"
-        width="100%"
-        paddingLeft={4}
-        maxWidth="1100px"
-      >
+    <Flex
+      position="fixed"
+      height="60px"
+      bg="#fff"
+      width="100%"
+      top={0}
+      paddingLeft={[6, 6, 6, 0]}
+      justifyContent="center"
+    >
+      <Flex alignItems="center" maxWidth="1100px" width="100%" bg="#fff">
         <Flex fontSize="md" gridColumn={2}>
           <Flex alignItems="center">
             <Box
@@ -41,8 +40,9 @@ export default function Navbar() {
               cursor="pointer"
               onClick={onOpen}
               display={['block', 'block', 'block', 'none']}
-              fontSize="5xl"
+              fontSize="4xl"
               as={MdMenu}
+              marginRight={1}
             />
             <BrandLogo />
           </Flex>
@@ -63,35 +63,35 @@ export default function Navbar() {
             </NavLink>
           </Flex>
         </Flex>
+        <Drawer
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          finalFocusRef={menuRef}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <MenuLink onClick={onClose} href="#why-envase" paddingTop={0}>
+                🤷‍♀️ Why Envase?
+              </MenuLink>
+              <MenuLink onClick={onClose} href="#solutions">
+                🔨 Solutions
+              </MenuLink>
+              <MenuLink
+                onClick={onClose}
+                isExternal={true}
+                href={`https://github.com/${GITHUB_REPO}`}
+              >
+                💻 View Source
+              </MenuLink>
+            </DrawerBody>
+            <DrawerFooter></DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </Flex>
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        finalFocusRef={menuRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Menu</DrawerHeader>
-          <DrawerBody>
-            <MenuLink onClick={onClose} href="#why-envase" paddingTop={0}>
-              🤷‍♀️ Why Envase?
-            </MenuLink>
-            <MenuLink onClick={onClose} href="#solutions">
-              🔨 Solutions
-            </MenuLink>
-            <MenuLink
-              onClick={onClose}
-              isExternal={true}
-              href={`https://github.com/${GITHUB_REPO}`}
-            >
-              💻 View Source
-            </MenuLink>
-          </DrawerBody>
-          <DrawerFooter></DrawerFooter>
-        </DrawerContent>
-      </Drawer>
     </Flex>
   );
 }
@@ -130,7 +130,7 @@ function BrandLogo() {
   return (
     <Flex alignItems="center">
       <Image height="30px" src={logo} alt="logo" />
-      <Text marginLeft={1} fontSize="2xl" fontWeight={250}>
+      <Text marginLeft={1} fontSize="2xl">
         Envase
       </Text>
     </Flex>
