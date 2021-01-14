@@ -44,17 +44,15 @@ export default function Hero({
   }, []);
 
   return (
-    <Flex paddingTop={6} paddingBottom={8} justifyContent="center" bg="#EBF4FF">
+    <Flex padding={6} justifyContent="center" bg="#EBF4FF">
       <Stack
+        maxWidth="1100px"
         gridColumn={2}
         direction="row"
         flexWrap="wrap"
-        justifyContent="center"
         spacing={5}
-        p={4}
-        paddingTop={0}
       >
-        <Box maxWidth="500px">
+        <Box maxWidth={['100%', '100%', '100%', '450px']}>
           <Text fontSize={['2xl', '4xl']}>Homebrew for docker 🎉</Text>
           <Text fontSize={['xl', '2xl']} fontWeight="250" marginTop={3}>
             Envase remove the pain from running apps using docker by providing
@@ -78,12 +76,7 @@ export default function Hero({
             Download
           </Button>
         </Box>
-        <Image
-          marginTop={[5, 5, 5, 0]}
-          boxShadow="lg"
-          width="600px"
-          src={demo}
-        />
+        <Image marginTop={5} boxShadow="lg" width="600px" src={demo} />
       </Stack>
     </Flex>
   );

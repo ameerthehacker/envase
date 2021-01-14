@@ -23,16 +23,16 @@ export default function Navbar() {
   const menuRef = useRef(null);
 
   return (
-    <>
+    <Flex justifyContent="center">
       <Flex
         alignItems="center"
         position="fixed"
         top={0}
         height="60px"
-        width="100%"
-        justifyContent="center"
         bg="white"
-        paddingLeft={[10, 10, 10, 0]}
+        width="100%"
+        paddingLeft={4}
+        maxWidth="1100px"
       >
         <Flex fontSize="md" gridColumn={2}>
           <Flex alignItems="center">
@@ -40,7 +40,7 @@ export default function Navbar() {
               ref={menuRef}
               cursor="pointer"
               onClick={onOpen}
-              visibility={['visible', 'visible', 'visible', 'hidden']}
+              display={['block', 'block', 'block', 'none']}
               fontSize="5xl"
               as={MdMenu}
             />
@@ -92,7 +92,7 @@ export default function Navbar() {
           <DrawerFooter></DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Flex>
   );
 }
 
