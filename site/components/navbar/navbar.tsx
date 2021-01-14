@@ -31,6 +31,7 @@ export default function Navbar() {
       top={0}
       paddingLeft={[6, 6, 6, 0]}
       justifyContent="center"
+      zIndex={2}
     >
       <Flex alignItems="center" maxWidth="1100px" width="100%" bg="#fff">
         <Flex fontSize="md" gridColumn={2}>
@@ -54,7 +55,7 @@ export default function Navbar() {
             visibility={['hidden', 'hidden', 'hidden', 'visible']}
           >
             <NavLink href="#why-envase">🤷‍♀️ Why Envase?</NavLink>
-            <NavLink href="#solutions">🔨 Solutions</NavLink>
+            <NavLink href="#features">🔨 Features</NavLink>
             <NavLink
               isExternal={true}
               href={`https://github.com/${GITHUB_REPO}`}
@@ -77,8 +78,8 @@ export default function Navbar() {
               <MenuLink onClick={onClose} href="#why-envase" paddingTop={0}>
                 🤷‍♀️ Why Envase?
               </MenuLink>
-              <MenuLink onClick={onClose} href="#solutions">
-                🔨 Solutions
+              <MenuLink onClick={onClose} href="#features">
+                🔨 Features
               </MenuLink>
               <MenuLink
                 onClick={onClose}

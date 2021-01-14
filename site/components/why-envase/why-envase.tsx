@@ -5,7 +5,9 @@ import Vimeo from '../vimeo/vimeo';
 export default function WhyEnvase() {
   return (
     <Section bg="#fff">
-      <Text fontSize={['2xl', '4xl']}>🤷‍♀️ Why Envase?</Text>
+      <Text id="why-envase" fontSize={['2xl', '4xl']}>
+        🤷‍♀️ Why Envase?
+      </Text>
       <Text marginTop={1} fontSize="lg">
         Using docker for development is <strong>not easy</strong> as it seems,
         you need to search for the right container image in DockerHub and then

@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/core';
+import Features from '../features/features';
 import Hero from '../hero/hero';
 import Navbar from '../navbar/navbar';
 import WhyEnvase from '../why-envase/why-envase';
@@ -14,6 +15,7 @@ export default function App({
       <Box marginTop="60px">
         <Hero latestReleaseTag={latestReleaseTag} />
         <WhyEnvase />
+        <Features />
       </Box>
     </Box>
   );

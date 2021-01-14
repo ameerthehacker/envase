@@ -57,14 +57,16 @@ export default function AllApps({
         toast({
           title: 'Done',
           description: `A new ${app.name} has been created, you can start it in My Apps section`,
-          status: 'success'
+          status: 'success',
+          isClosable: true
         });
       })
       .catch((err) => {
         toast({
           title: `Error creating ${app.name} app`,
           description: `${err}`,
-          status: 'error'
+          status: 'error',
+          isClosable: true
         });
       })
       .finally(() => load());
