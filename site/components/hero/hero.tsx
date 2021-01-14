@@ -4,6 +4,7 @@ import demo from './demo.gif';
 import { FaApple, FaWindows, FaLinux } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import Section from '../section/section';
+import PlaceHolderImage from './placeholder.png';
 
 function getPlatformBinary(platform: string, tag: string) {
   const version = tag.substring(1);
@@ -72,7 +73,13 @@ export default function Hero({
             Download
           </Button>
         </Box>
-        <Image marginTop={3} boxShadow="lg" width="600px" src={demo} />
+        <Image
+          fallbackSrc={PlaceHolderImage}
+          marginTop={3}
+          boxShadow="lg"
+          width="600px"
+          src={demo}
+        />
       </Stack>
     </Section>
   );

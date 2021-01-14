@@ -1,5 +1,6 @@
-import { Text } from '@chakra-ui/core';
+import { Box, Text } from '@chakra-ui/core';
 import Section from '../section/section';
+import Vimeo from '../vimeo/vimeo';
 
 export default function WhyEnvase() {
   return (
@@ -13,8 +14,13 @@ export default function WhyEnvase() {
         nightmares for someone who is new to Docker. If you need to run
         containers which depened on other like <strong>Wordpress</strong> needs{' '}
         <strong>MySQL</strong> frustrates even experienced developers. Envase
-        lets you to do all the above without tears 😢
+        lets you to do all the above without 😢 tears. Below video shows how
+        damn easy it is to run a <strong>MySQL database</strong> in{' '}
+        <strong>Envase</strong>.
       </Text>
+      <Box marginTop={5}>
+        <Vimeo id="500412505" />
+      </Box>
     </Section>
   );
 }
