@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Stack, Text } from '@chakra-ui/core';
+import { Box, Button, Image, Stack, Text } from '@chakra-ui/core';
 import { GITHUB_REPO } from '../../constants';
 import demo from './demo.gif';
 import { FaApple, FaWindows, FaLinux } from 'react-icons/fa';
