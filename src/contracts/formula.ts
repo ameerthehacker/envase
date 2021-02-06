@@ -42,4 +42,5 @@ interface FormulaField {
   required?: boolean;
   description: string;
   default?: string | number;
+  hint?: string;
 }

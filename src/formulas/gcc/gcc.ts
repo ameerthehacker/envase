@@ -15,6 +15,7 @@ const GCC: Formula = {
     projects_folder: {
       type: 'path',
       description: 'Folder location where you have all your projects',
+      hint: 'This folder will be mounted at /projects in the container',
       required: true
     }
   },

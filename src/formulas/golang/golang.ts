@@ -14,7 +14,9 @@ const GOLANG: Formula = {
     },
     projects_folder: {
       type: 'path',
-      description: 'Folder location where you have all your projects',
+      description:
+        'Folder location where you have all your go projects are located',
+      hint: 'This folder will be mounted as $GOPATH in the container',
       required: true
     }
   },

@@ -17,7 +17,10 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
-  Image
+  Image,
+  Tooltip,
+  Icon,
+  Flex
 } from '@chakra-ui/core';
 import {
   isValidContainerName,
@@ -147,9 +150,22 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
             <FormControl
               isInvalid={form.errors[fieldName] && form.touched[fieldName]}
             >
-              <FormLabel htmlFor={fieldId}>
-                {keyToLabelText(fieldName)}
-              </FormLabel>
+              <Flex alignItems="center">
+                <FormLabel paddingRight={1} htmlFor={fieldId}>
+                  {keyToLabelText(fieldName)}
+                </FormLabel>
+                {data[fieldName].hint && (
+                  <Tooltip
+                    zIndex={9999}
+                    aria-label="hint for label"
+                    hasArrow
+                    label={data[fieldName].hint}
+                    placement="top"
+                  >
+                    <Icon size="12px" name="info" />
+                  </Tooltip>
+                )}
+              </Flex>
               {isInputField && (
                 <Input
                   isDisabled={isReadOnly}
