@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Box } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/react';
 import { Terminal as XTerm } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { Unicode11Addon } from 'xterm-addon-unicode11';
@@ -16,7 +16,7 @@ export interface TerminalProps {
 }
 
 export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
-  const terminalContainerRef = useRef<HTMLDivElement>();
+  const terminalContainerRef = useRef<any>();
   const isStreamOpen = useRef<boolean>(true);
   const terminalRef = useRef<XTerm>();
   const cmdPressed = useRef(false);
@@ -149,5 +149,5 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
     };
   }, [stream, followTail]);
 
-  return <Box ref={terminalContainerRef} width="100%" height="100%" />;
+  return <Box ref={terminalContainerRef} boxSize="100%" />;
 }

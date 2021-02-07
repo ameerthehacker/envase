@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, KeyboardEvent, useEffect } from 'react';
-import { InputGroup, Input, InputRightElement, Box } from '@chakra-ui/core';
+import { InputGroup, Input, InputRightElement, Box } from '@chakra-ui/react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import { useDebounce } from 'use-debounce';
 

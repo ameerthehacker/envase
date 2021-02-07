@@ -7,11 +7,12 @@ import {
   useDisclosure,
   Flex,
   Button
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useApp } from '../../hooks/use-app/use-app';
 import Preferences from '../../screens/preferences/preferences';
 import Search from '../search/search';
 import { FaFilter } from 'react-icons/fa';
+import { MoonIcon, RepeatIcon, SettingsIcon, SunIcon } from '@chakra-ui/icons';
 
 export interface NavbarProps {
   onFiltersClick: () => void;
@@ -28,8 +29,8 @@ export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
   } = useDisclosure();
 
   return (
-    <Flex p={2} width="auto" pos="fixed" right={0} top={0} zIndex={2}>
-      <Box mr={3}>
+    <Flex p={2} pos="fixed" right={0} top={0} zIndex={2}>
+      <Flex mr={3}>
         <Tooltip label="Filters" aria-label="Open preferences">
           <Button
             onClick={onFiltersClick}
@@ -45,7 +46,7 @@ export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
             opacity={0.65}
             fontSize="xl"
             variant="ghost"
-            icon="settings"
+            icon={<SettingsIcon />}
             onClick={onPreferencesOpen}
             aria-label="Open preferences"
           />
@@ -56,7 +57,7 @@ export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
             fontSize="xl"
             variant="ghost"
             onClick={() => load()}
-            icon="repeat"
+            icon={<RepeatIcon />}
             aria-label="reload-apps"
           />
         </Tooltip>
@@ -69,11 +70,11 @@ export default function Navbar({ onFiltersClick, onSearch }: NavbarProps) {
             fontSize="xl"
             variant="ghost"
             onClick={() => toggleColorMode()}
-            icon={colorMode === 'light' ? 'moon' : 'sun'}
+            icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
             aria-label="toggle-dark-mode"
           />
         </Tooltip>
-      </Box>
+      </Flex>
       <Search onSearch={onSearch} />
       <Preferences isOpen={isPreferencesOpen} onClose={onPreferencesClose} />
     </Flex>

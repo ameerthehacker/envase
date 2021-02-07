@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, forwardRef } from 'react';
 import { IPC_CHANNELS } from '../../constants';
 import { IpcRendererEvent } from 'electron';
-import { Stack, Input, Box, Button } from '@chakra-ui/core';
+import { Stack, Input, Box, Button } from '@chakra-ui/react';
 import { FaFolderOpen } from 'react-icons/fa';
 import { useFormikContext } from 'formik';
 import { ipcRenderer } from '../../services/native/native';
@@ -60,7 +60,7 @@ const FolderPicker = forwardRef<HTMLInputElement, FolderPickerProps>(
         />
         <Button
           aria-label="browse-folder"
-          variantColor="blue"
+          colorScheme="blue"
           onClick={() =>
             ipcRenderer.send(OPEN_FOLDER_DIALOG, {
               id

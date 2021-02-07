@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
-import { Box, Text, Stack, Flex, Badge } from '@chakra-ui/core';
+import { Box, Text, Stack, Flex, Badge } from '@chakra-ui/react';
 
 export interface AppTag {
   variant: 'solid' | 'outline';
-  variantColor: string;
+  colorScheme: string;
   text: string;
 }
 export interface AppInfoCardProps {
@@ -48,7 +48,7 @@ export default function AppInfoCard({
             <Badge
               key={index}
               variant={tag.variant}
-              variantColor={tag.variantColor}
+              colorScheme={tag.colorScheme}
             >
               {tag.text}
             </Badge>

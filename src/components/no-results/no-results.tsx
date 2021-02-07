@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Box, Text } from '@chakra-ui/core';
+import { Stack, Box, Text } from '@chakra-ui/react';
 import { FaTable } from 'react-icons/fa';
 
 export interface NoResultsProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, Stack } from '@chakra-ui/core';
+import { Skeleton, Stack } from '@chakra-ui/react';
 
 interface AppCardSkeletonProps {
   count: number;
@@ -10,7 +10,7 @@ export default function AppCardSkeleton({ count }: AppCardSkeletonProps) {
 
   for (let i = 0; i < count; i++) {
     skeletons.push(
-      <Skeleton key={i} borderRadius={5} width="160px" height="200px" />
+      <Skeleton key={i} borderRadius={5} width="140px" height="260px" />
     );
   }
 

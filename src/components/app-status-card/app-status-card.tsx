@@ -10,10 +10,11 @@ import {
   MenuList,
   MenuItem,
   MenuGroup
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { FaPlay, FaStop, FaWrench } from 'react-icons/fa';
 import { Action } from '../../contracts/action';
 import { CustomAction } from '../../contracts/formula';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 export interface AppStatucCardProps extends AppInfoCardProps {
   state: 'running' | 'stopped';
@@ -32,6 +33,7 @@ export default function AppStatusCard({
   name,
   logo,
   state,
+  tags,
   description,
   inStateTransit,
   onStartClick,
@@ -44,13 +46,13 @@ export default function AppStatusCard({
   isDeleting
 }: AppStatucCardProps) {
   return (
-    <AppInfoCard description={description} name={name} logo={logo}>
+    <AppInfoCard tags={tags} description={description} name={name} logo={logo}>
       <Stack direction="row">
         {state === 'stopped' && (
           <Button
             isLoading={inStateTransit}
             onClick={onStartClick}
-            variantColor="green"
+            colorScheme="green"
             aria-label="start-app"
           >
             <Box as={FaPlay} />
@@ -60,16 +62,16 @@ export default function AppStatusCard({
           <Button
             isLoading={inStateTransit}
             onClick={onStopClick}
-            variantColor="red"
+            colorScheme="red"
             aria-label="stop-app"
           >
             <Box as={FaStop} />
           </Button>
         )}
         <IconButton
-          variantColor="red"
+          colorScheme="red"
           onClick={onDeleteClick}
-          icon="delete"
+          icon={<DeleteIcon />}
           isLoading={isDeleting}
           aria-label="delete-app"
           isDisabled={state === 'running'}

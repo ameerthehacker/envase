@@ -15,7 +15,7 @@ import {
   ListIcon,
   Stack,
   useColorMode
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import { IconText } from '../../components/icon-text/icon-text';
@@ -41,7 +41,7 @@ const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
 const MyAppsWithFilters = withFilters<MyAppsProps>(MyApps);
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = useState(0);
   const [searchText, setSearchText] = useState('');
   const { allAppStatus } = useAppStatus();
   const [updateDescription, setUpdateDescription] = useState<ReactNode>();

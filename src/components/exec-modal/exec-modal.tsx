@@ -12,7 +12,7 @@ import {
   FormLabel,
   Input,
   FormErrorMessage
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { Formik, Form, Field } from 'formik';
 import { requiredValidator } from '../../utils/utils';
 
@@ -60,11 +60,11 @@ export default function ExecModal({ isOpen, onSubmit }: ExecModalProps) {
                 variant="outline"
                 mr={3}
                 onClick={submitForm}
-                variantColor="green"
+                colorScheme="green"
               >
                 Execute
               </Button>
-              <Button variantColor="red" onClick={() => onSubmit(null)}>
+              <Button colorScheme="red" onClick={() => onSubmit(null)}>
                 Cancel
               </Button>
             </ModalFooter>

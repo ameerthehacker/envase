@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import Categories from '../components/categories/catrgories';
 import { getAllTags } from '../utils/utils';
 import { FORMULAS } from '../formulas';
-import { Box, Text, Flex, Stack } from '@chakra-ui/core';
+import { Box, Text, Flex, Stack } from '@chakra-ui/react';
 import { FaInfoCircle } from 'react-icons/fa';
 
 export interface FilterProps {

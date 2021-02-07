@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Stack, Box, useToast, useDisclosure, Text } from '@chakra-ui/core';
+import { Stack, Box, useToast, useDisclosure, Text } from '@chakra-ui/react';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { AppStatus, AllAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
@@ -155,11 +155,18 @@ export default function MyApps({
       {!allAppStatus.isFetching &&
         filteredApps.length > 0 &&
         filteredApps.map((status, index) => (
-          <Box marginTop={4} key={index}>
+          <Box key={index}>
             <AppStatusCard
               name={status.name}
               logo={status.formula.logo}
               state={status.state}
+              tags={[
+                {
+                  text: status.formula.name,
+                  variant: 'solid',
+                  colorScheme: 'purple'
+                }
+              ]}
               inStateTransit={status.inTransit}
               isDeleting={status.isDeleting}
               onStartClick={() =>
