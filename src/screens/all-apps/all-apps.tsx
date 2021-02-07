@@ -24,6 +24,7 @@ import { useAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
 import { Category } from '../../contracts/category';
 import NoResults from '../../components/no-results/no-results';
+import { AppTag } from '../../components/app-info-card/app-info-card';
 
 export interface AllAppsProps {
   apps: Formula[];
@@ -56,6 +57,48 @@ export default function AllApps({
   const currentStream = useRef<DockerStream>();
   const { allAppStatus } = useAppStatus();
   const { load } = useApp();
+
+  function generateTags(app: Formula): AppTag[] | undefined {
+    return app.tags?.map((tag) => {
+      if (tag === 'Application') {
+        return {
+          variantColor: 'green',
+          text: 'Application',
+          variant: 'solid'
+        };
+      } else if (tag === 'Database') {
+        return {
+          variantColor: 'orange',
+          text: 'Database',
+          variant: 'solid'
+        };
+      } else if (tag === 'Language') {
+        return {
+          variantColor: 'yellow',
+          text: 'Language',
+          variant: 'solid'
+        };
+      } else if (tag === 'OS') {
+        return {
+          variantColor: 'indigo',
+          text: 'OS',
+          variant: 'solid'
+        };
+      } else if (tag === 'Platform') {
+        return {
+          variantColor: 'teal',
+          text: 'Platform',
+          variant: 'solid'
+        };
+      } else {
+        return {
+          variantColor: 'orange',
+          text: tag,
+          variant: 'solid'
+        };
+      }
+    });
+  }
 
   function createNewApp(values: AppFormResult, app: Formula) {
     createContainerFromApp(values, app)
@@ -114,6 +157,7 @@ export default function AllApps({
                   logo={app.logo}
                   description={app.description}
                   website={app.website}
+                  tags={generateTags(app)}
                 />
               </Box>
             ))}

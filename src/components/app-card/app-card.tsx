@@ -17,10 +17,11 @@ export default function AppCard({
   isLoading,
   onCreateClick,
   description,
-  website
+  website,
+  tags
 }: AppCardProps) {
   return (
-    <AppInfoCard description={description} name={name} logo={logo}>
+    <AppInfoCard tags={tags} description={description} name={name} logo={logo}>
       <Flex>
         <Button
           isDisabled={isDisabled}

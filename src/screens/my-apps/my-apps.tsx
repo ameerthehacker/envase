@@ -160,6 +160,13 @@ export default function MyApps({
               name={status.name}
               logo={status.formula.logo}
               state={status.state}
+              tags={[
+                {
+                  text: status.formula.name,
+                  variant: 'solid',
+                  variantColor: 'purple'
+                }
+              ]}
               inStateTransit={status.inTransit}
               isDeleting={status.isDeleting}
               onStartClick={() =>
