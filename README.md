@@ -11,49 +11,22 @@
   </a>
 </p>
 
-<p align="center">Envase remove the pain 😢 from running apps using docker by an amazing Developer experience and an one stop shop app store for almost all popular applications 🎉</p>
+<p align="center">Envase removes the pain 😢 of running apps using docker by providing an amazing developer experience and an one stop shop app store for almost all popular applications. Stop breaking your heads with docker commands and start envasing 🎉</p>
 
 <p align="center">
- <img src="./media/demo.gif" />
+ <img src="./media/demo.png" />
 </p>
 
 ### Installation
 
 1. You need to download and install docker if you don't have it already from [docker.com](https://www.docker.com/products/docker-desktop)
-2. Now download and install the prebuilt envase binaries for windows, linux and mac from [here](https://github.com/ameerthehacker/envase/releases)
-
-### Development Workflow
-
-Envase is built using [Electron](https://www.electronjs.org/) and [Chakra UI](https://chakra-ui.com/)
-
-### Prerequisite
-
-- Node v10
-- Yarn
-- Docker
-
-### Setup
-
-1. Clone the repo
-
-2. Install Dependencies
-
-```sh
-cd envase
-npm install
-```
-
-3. Start the project in development
-
-```sh
-npm run dev
-```
+2. Now download and install the prebuilt envase binaries for windows, linux and mac from [the website](https://getenvase.com)
 
 Show your support by 🌟 the repo
 
-### Thanks
+### Thanks 🙏
 
-[Container Crane Icon](https://iconscout.com/icons/container-crane) by [Vichanon Chaimsuk](https://iconscout.com/contributors/ferdizzimo)O
+[Container Crane Icon](https://iconscout.com/icons/container-crane) by [Vichanon Chaimsuk](https://iconscout.com/contributors/ferdizzimo)
 
 ### License
 
