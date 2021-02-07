@@ -177,18 +177,16 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                 />
               )}
               {isNumberField && (
-                <NumberInput>
-                  <NumberInputField
-                    id={fieldId}
-                    isDisabled={isReadOnly}
-                    placeholder={placeholder}
-                    {...field}
-                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                      if (evt.target.value.match(/^[0-9]*$/))
-                        form.setFieldValue(field.name, evt.target.value);
-                    }}
-                  />
-                </NumberInput>
+                <Input
+                  id={fieldId}
+                  isDisabled={isReadOnly}
+                  placeholder={placeholder}
+                  {...field}
+                  onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                    if (evt.target.value.match(/^[0-9]*$/))
+                      form.setFieldValue(field.name, evt.target.value);
+                  }}
+                />
               )}
               {isSelectField && (
                 <Select
