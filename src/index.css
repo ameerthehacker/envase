@@ -1,1 +1,5 @@
 @import '../node_modules/xterm/css/xterm.css';
+
+.chakra-collapse {
+  overflow: visible !important;
+}

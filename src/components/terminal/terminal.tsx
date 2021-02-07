@@ -149,5 +149,5 @@ export default function Terminal({ stream, stdin, followTail }: TerminalProps) {
     };
   }, [stream, followTail]);
 
-  return <Box ref={terminalContainerRef} width="100%" height="100%" />;
+  return <Box ref={terminalContainerRef} boxSize="100%" />;
 }

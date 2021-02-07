@@ -5,7 +5,15 @@ import {
   getContainerAppInfo
 } from '../../services/docker/docker';
 import Terminal from '../../components/terminal/terminal';
-import { Box, Flex, IconButton, Text, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  IconButton,
+  LightMode,
+  Text,
+  useColorModeValue,
+  useToast
+} from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { Helmet } from 'react-helmet';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
@@ -31,6 +39,9 @@ export default function ShellIntoApp() {
     ? queryParams.cmd[0]
     : queryParams.cmd;
   const allowTabs = queryParams.allowTabs;
+  const activeTabBg = useColorModeValue('white', 'gray.800');
+  const inActiveTabBg = useColorModeValue('white', 'gray.900');
+  const inActiveTabColor = useColorModeValue('gray.700', 'white');
 
   useEffect(() => {
     getContainerAppInfo(containerId).then((containerAppInfo) => {
@@ -38,81 +49,84 @@ export default function ShellIntoApp() {
     });
   }, [containerId]);
 
+  // without the light mode wrapper a wierd bug in terminal happens
   return (
-    <Box>
-      <Helmet>
-        <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
-      </Helmet>
-      {allowTabs === 'yes' && (
-        <Flex alignItems="center" overflowY="auto">
-          {shellTabs.map((shellTab, index) => (
-            <Flex
-              minWidth={40}
-              onClick={() => setCurrentTab(index)}
-              bg={index === currentTab ? 'gray.800' : 'gray.900'}
-              color={index === currentTab ? 'blue.300' : 'white'}
-              cursor="pointer"
-              py={2}
-              borderWidth={1}
-              borderLeftWidth={0}
-              px={4}
-              key={shellTab.id}
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Text>{`${appName} [${shellTab.id}]`}</Text>
-              {shellTabs.length > 1 && (
-                <IconButton
-                  onClick={(evt) => {
-                    evt.stopPropagation();
+    <LightMode>
+      <Box>
+        <Helmet>
+          <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
+        </Helmet>
+        {allowTabs === 'yes' && (
+          <Flex alignItems="center" overflowY="auto">
+            {shellTabs.map((shellTab, index) => (
+              <Flex
+                minWidth={40}
+                onClick={() => setCurrentTab(index)}
+                bg={index === currentTab ? activeTabBg : inActiveTabBg}
+                color={index === currentTab ? 'blue.600' : inActiveTabColor}
+                cursor="pointer"
+                py={2}
+                borderWidth={1}
+                borderLeftWidth={0}
+                px={4}
+                key={shellTab.id}
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Text>{`${appName} [${shellTab.id}]`}</Text>
+                {shellTabs.length > 1 && (
+                  <IconButton
+                    onClick={(evt) => {
+                      evt.stopPropagation();
 
-                    setShellTabs((tabs) =>
-                      tabs.filter((tab) => tab.id !== shellTab.id)
-                    );
+                      setShellTabs((tabs) =>
+                        tabs.filter((tab) => tab.id !== shellTab.id)
+                      );
 
-                    if (currentTab >= index)
-                      setCurrentTab((currentTab) => currentTab - 1);
-                  }}
-                  ml={4}
-                  aria-label="close"
-                  icon={<CloseIcon />}
-                  size="xs"
-                  variant="ghost"
-                />
-              )}
-            </Flex>
-          ))}
-          <IconButton
-            onClick={() => {
-              currentId.current = currentId.current + 1;
+                      if (currentTab >= index)
+                        setCurrentTab((currentTab) => currentTab - 1);
+                    }}
+                    ml={4}
+                    aria-label="close"
+                    icon={<CloseIcon />}
+                    size="xs"
+                    variant="ghost"
+                  />
+                )}
+              </Flex>
+            ))}
+            <IconButton
+              onClick={() => {
+                currentId.current = currentId.current + 1;
 
-              setShellTabs([
-                ...shellTabs,
-                { containerId, id: currentId.current }
-              ]);
-              setCurrentTab(shellTabs.length);
-            }}
-            aria-label="add-terminal"
-            icon={<AddIcon />}
-            variant="ghost"
-          />
-        </Flex>
-      )}
-      {shellTabs.map((shellTab, index) => (
-        <Box
-          key={shellTab.id}
-          position="absolute"
-          width="100%"
-          zIndex={index === currentTab ? 1 : 0}
-        >
-          <Shell
-            height={allowTabs === 'yes' ? 'calc(100vh - 42px)' : '100vh'}
-            cmd={cmd}
-            containerId={shellTab.containerId}
-          />
-        </Box>
-      ))}
-    </Box>
+                setShellTabs([
+                  ...shellTabs,
+                  { containerId, id: currentId.current }
+                ]);
+                setCurrentTab(shellTabs.length);
+              }}
+              aria-label="add-terminal"
+              icon={<AddIcon />}
+              variant="ghost"
+            />
+          </Flex>
+        )}
+        {shellTabs.map((shellTab, index) => (
+          <Box
+            key={shellTab.id}
+            position="absolute"
+            width="100%"
+            zIndex={index === currentTab ? 1 : 0}
+          >
+            <Shell
+              height={allowTabs === 'yes' ? 'calc(100vh - 42px)' : '100vh'}
+              cmd={cmd}
+              containerId={shellTab.containerId}
+            />
+          </Box>
+        ))}
+      </Box>
+    </LightMode>
   );
 }
 

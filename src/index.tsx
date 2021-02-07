@@ -8,7 +8,7 @@ import './index.css';
 
 ReactDOM.render(
   <>
-    <ColorModeScript initialColorMode="dark" />
+    <ColorModeScript initialColorMode="system" />
     <UnhandledError>
       <AppStatusProvider>
         <ChakraProvider>
