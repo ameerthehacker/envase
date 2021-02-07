@@ -41,7 +41,7 @@ const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
 const MyAppsWithFilters = withFilters<MyAppsProps>(MyApps);
 
 export default function App() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(1);
   const [searchText, setSearchText] = useState('');
   const { allAppStatus } = useAppStatus();
   const [updateDescription, setUpdateDescription] = useState<ReactNode>();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chakra-ui/core';
+import { Button, Flex } from '@chakra-ui/core';
 import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
 
 export interface AppCardProps extends AppInfoCardProps {
@@ -17,14 +17,20 @@ export default function AppCard({
 }: AppCardProps) {
   return (
     <AppInfoCard name={name} logo={logo}>
-      <Button
-        isDisabled={isDisabled}
-        variantColor="green"
-        onClick={onCreateClick}
-        isLoading={isLoading}
-      >
-        Create
-      </Button>
+      <Flex>
+        <Button
+          isDisabled={isDisabled}
+          variantColor="green"
+          onClick={onCreateClick}
+          isLoading={isLoading}
+          width="full"
+        >
+          Create
+        </Button>
+        <Button variantColor="orange" ml={2} width="100%" variant="outline">
+          Visit Site
+        </Button>
+      </Flex>
     </AppInfoCard>
   );
 }

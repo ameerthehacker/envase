@@ -40,13 +40,13 @@ Envase is built using [Electron](https://www.electronjs.org/) and [Chakra UI](ht
 
 ```sh
 cd envase
-yarn
+npm install
 ```
 
 3. Start the project in development
 
 ```sh
-yarn dev
+npm run dev
 ```
 
 Show your support by 🌟 the repo

@@ -1,6 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { Formula } from '../../contracts/formula';
-import { Box, Stack, useDisclosure, useToast } from '@chakra-ui/core';
+import {
+  Box,
+  Flex,
+  SimpleGrid,
+  useDisclosure,
+  useToast
+} from '@chakra-ui/core';
 import AppFormModal, {
   AppFormResult
 } from '../../components/app-form-modal/app-form-modal';
@@ -88,128 +94,135 @@ export default function AllApps({
     <>
       {filteredApps.length === 0 && <NoResults height="calc(100vh - 90px)" />}
       {filteredApps.length > 0 && (
-        <Stack direction="row" flexWrap="wrap">
-          {filteredApps.map((app, index) => (
-            <Box key={index} marginTop={4}>
-              <AppCard
-                isDisabled={allAppStatus.error !== undefined}
-                onCreateClick={() => {
-                  setSelectedApp(filteredApps[index]);
-                  onFormOpen();
-                }}
-                isLoading={allAppStatus.isFetching}
-                name={app.name}
-                logo={app.logo}
-              />
-            </Box>
-          ))}
-          {/* modal to show image pull progress */}
-          <ProgressModal
-            tag={appFormResult.current?.version || ''}
-            image={selectedApp?.image || ''}
-            isOpen={isProgressOpen}
-            onClose={() => {
-              onProgressClose();
-              // clear the previous progress messages
-              setPullProgress(undefined);
-              currentStream.current?.destroy();
-            }}
-            progress={pullProgress}
-          />
-          {/* modal to get app details like name, port etc. */}
-          <AppFormModal
-            isValidating={isValidating}
-            app={selectedApp}
-            isOpen={isFormOpen}
-            onSubmit={async (values) => {
-              setIsValidating(true);
+        <Flex justifyContent="center">
+          <SimpleGrid
+            mt={4}
+            display="inline-grid"
+            columns={{ sm: 3, md: 3, lg: 5 }}
+            spacing={2}
+          >
+            {filteredApps.map((app, index) => (
+              <Box marginRight="auto" key={index}>
+                <AppCard
+                  isDisabled={allAppStatus.error !== undefined}
+                  onCreateClick={() => {
+                    setSelectedApp(filteredApps[index]);
+                    onFormOpen();
+                  }}
+                  isLoading={allAppStatus.isFetching}
+                  name={app.name}
+                  logo={app.logo}
+                />
+              </Box>
+            ))}
+            {/* modal to show image pull progress */}
+            <ProgressModal
+              tag={appFormResult.current?.version || ''}
+              image={selectedApp?.image || ''}
+              isOpen={isProgressOpen}
+              onClose={() => {
+                onProgressClose();
+                // clear the previous progress messages
+                setPullProgress(undefined);
+                currentStream.current?.destroy();
+              }}
+              progress={pullProgress}
+            />
+            {/* modal to get app details like name, port etc. */}
+            <AppFormModal
+              isValidating={isValidating}
+              app={selectedApp}
+              isOpen={isFormOpen}
+              onSubmit={async (values) => {
+                setIsValidating(true);
 
-              if (selectedApp) {
-                appFormResult.current = values;
+                if (selectedApp) {
+                  appFormResult.current = values;
 
-                const { name } = values;
-                const appsWithSameName = await getAppsWithName(name);
+                  const { name } = values;
+                  const appsWithSameName = await getAppsWithName(name);
 
-                // there is already an app with same name
-                if (appsWithSameName.length > 0) {
-                  toast({
-                    title: 'Sorry!',
-                    description: 'There is already an app with same name',
-                    status: 'error',
-                    isClosable: true
-                  });
-                  setIsValidating(false);
+                  // there is already an app with same name
+                  if (appsWithSameName.length > 0) {
+                    toast({
+                      title: 'Sorry!',
+                      description: 'There is already an app with same name',
+                      status: 'error',
+                      isClosable: true
+                    });
+                    setIsValidating(false);
 
-                  return;
-                }
-
-                const { image } = selectedApp;
-                const { version } = values;
-                const {
-                  errorWhileChecking,
-                  exists,
-                  availableLocally
-                } = await checkImageExistence(image, version);
-
-                if (!errorWhileChecking && exists) {
-                  onFormClose();
-                  // the image is available locally
-                  if (availableLocally) {
-                    createNewApp(values, selectedApp);
-                  } else {
-                    onProgressOpen();
-
-                    currentStream.current = await pullImage(
-                      image,
-                      version,
-                      (evt) => {
-                        setPullProgress((pullProgress) => ({
-                          ...pullProgress,
-                          [evt.id]: {
-                            ...evt
-                          }
-                        }));
-                      },
-                      () => {
-                        onProgressClose();
-                        setPullProgress(undefined);
-
-                        if (
-                          currentStream.current &&
-                          !currentStream.current.aborted
-                        ) {
-                          createNewApp(values, selectedApp);
-                        } else {
-                          console.log('aborted');
-                        }
-                      }
-                    );
+                    return;
                   }
-                } else if (!errorWhileChecking && !exists) {
-                  toast({
-                    title: 'Error',
-                    description: `Image ${image} with tag ${version} does not exists`,
-                    isClosable: true,
-                    status: 'error'
-                  });
-                } else if (errorWhileChecking) {
-                  toast({
-                    title: 'Error',
-                    description: `Image ${image} with tag ${version} does not exist locally and you are offline`,
-                    isClosable: true,
-                    status: 'error'
-                  });
-                }
 
+                  const { image } = selectedApp;
+                  const { version } = values;
+                  const {
+                    errorWhileChecking,
+                    exists,
+                    availableLocally
+                  } = await checkImageExistence(image, version);
+
+                  if (!errorWhileChecking && exists) {
+                    onFormClose();
+                    // the image is available locally
+                    if (availableLocally) {
+                      createNewApp(values, selectedApp);
+                    } else {
+                      onProgressOpen();
+
+                      currentStream.current = await pullImage(
+                        image,
+                        version,
+                        (evt) => {
+                          setPullProgress((pullProgress) => ({
+                            ...pullProgress,
+                            [evt.id]: {
+                              ...evt
+                            }
+                          }));
+                        },
+                        () => {
+                          onProgressClose();
+                          setPullProgress(undefined);
+
+                          if (
+                            currentStream.current &&
+                            !currentStream.current.aborted
+                          ) {
+                            createNewApp(values, selectedApp);
+                          } else {
+                            console.log('aborted');
+                          }
+                        }
+                      );
+                    }
+                  } else if (!errorWhileChecking && !exists) {
+                    toast({
+                      title: 'Error',
+                      description: `Image ${image} with tag ${version} does not exists`,
+                      isClosable: true,
+                      status: 'error'
+                    });
+                  } else if (errorWhileChecking) {
+                    toast({
+                      title: 'Error',
+                      description: `Image ${image} with tag ${version} does not exist locally and you are offline`,
+                      isClosable: true,
+                      status: 'error'
+                    });
+                  }
+
+                  setIsValidating(false);
+                }
+              }}
+              onClose={() => {
+                onFormClose();
                 setIsValidating(false);
-              }
-            }}
-            onClose={() => {
-              onFormClose();
-              setIsValidating(false);
-            }}
-          />
-        </Stack>
+              }}
+            />
+          </SimpleGrid>
+        </Flex>
       )}
     </>
   );
