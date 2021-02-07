@@ -68,9 +68,9 @@ export default function VersionDropdown({
 
     return inputLength === 0 || !options
       ? []
-      : options.filter((option) =>
-          option.label.toLowerCase().startsWith(inputValue)
-        );
+      : options
+          .filter((option) => option.label.toLowerCase().startsWith(inputValue))
+          .slice(0, 6);
   };
 
   // When suggestion is clicked, Autosuggest needs to populate the input
@@ -87,8 +87,8 @@ export default function VersionDropdown({
       p={1}
       px={3}
       className="suggestions-container"
-      color={isHighlighted ? 'white' : undefined}
-      bg={highlightColor}
+      color={isHighlighted ? highlightColor : undefined}
+      bg={bgColor}
     >
       {suggestion.label}
     </Box>
@@ -117,12 +117,12 @@ export default function VersionDropdown({
     <Box position="relative">
       <Box
         bg={bgColor}
-        zIndex={99999}
         width="100%"
         position="absolute"
         borderRadius={5}
-        borderWidth={suggestions && suggestions.length > 0 ? '1px' : 0}
+        zIndex={2}
         shadow="lg"
+        borderWidth={suggestions && suggestions.length > 0 ? '1px' : 0}
         {...containerProps}
         className="suggestions-container"
       >
