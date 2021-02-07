@@ -1,16 +1,25 @@
 import React, { ReactNode } from 'react';
 import { Box, Text, Stack, Flex, Badge } from '@chakra-ui/core';
 
+export interface AppTag {
+  variant: 'solid' | 'outline';
+  variantColor: string;
+  text: string;
+}
 export interface AppInfoCardProps {
   name: string;
   logo: string;
+  description?: string;
   children?: ReactNode;
+  tags?: AppTag[];
 }
 
 export default function AppInfoCard({
   name,
   logo,
-  children
+  description,
+  children,
+  tags
 }: AppInfoCardProps) {
   return (
     <Box
@@ -34,12 +43,21 @@ export default function AppInfoCard({
         <Text fontSize="2xl" fontWeight="bolder">
           {name}
         </Text>
-        <Badge variantColor="green" variant="subtle">
-          Database
-        </Badge>
-        <Text textAlign="center" fontSize="sm">
-          Apache is a free and open-source cross-platform web server software
-        </Text>
+        {tags &&
+          tags.map((tag, index) => (
+            <Badge
+              key={index}
+              variant={tag.variant}
+              variantColor={tag.variantColor}
+            >
+              {tag.text}
+            </Badge>
+          ))}
+        {description && (
+          <Text textAlign="center" fontSize="sm">
+            {description}
+          </Text>
+        )}
         <Box mt={1}>{children}</Box>
       </Stack>
     </Box>

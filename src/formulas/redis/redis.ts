@@ -5,6 +5,8 @@ const REDIS: Formula = {
   name: 'Redis',
   defaultShell: '/bin/bash',
   logo,
+  description: 'Redis is an in-memory data structure store',
+  website: 'https://redis.io/',
   data: {
     name: {
       type: 'string',

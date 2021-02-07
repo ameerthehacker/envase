@@ -5,6 +5,8 @@ import logo from './logo.svg';
 const GOLANG: Formula = {
   name: 'Go',
   defaultShell: '/bin/bash',
+  description: 'Go is a statically typed, compiled programming language',
+  website: 'https://golang.org/',
   logo,
   data: {
     name: {

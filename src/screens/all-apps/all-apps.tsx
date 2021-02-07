@@ -98,11 +98,11 @@ export default function AllApps({
           <SimpleGrid
             mt={4}
             display="inline-grid"
-            columns={{ sm: 3, md: 3, lg: 5 }}
+            columns={{ sm: 2, md: 3, lg: 4 }}
             spacing={2}
           >
             {filteredApps.map((app, index) => (
-              <Box marginRight="auto" key={index}>
+              <Box minWidth="150px" maxWidth="280px" key={index}>
                 <AppCard
                   isDisabled={allAppStatus.error !== undefined}
                   onCreateClick={() => {
@@ -112,6 +112,8 @@ export default function AllApps({
                   isLoading={allAppStatus.isFetching}
                   name={app.name}
                   logo={app.logo}
+                  description={app.description}
+                  website={app.website}
                 />
               </Box>
             ))}

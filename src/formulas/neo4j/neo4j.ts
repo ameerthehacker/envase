@@ -7,6 +7,8 @@ const NEO4J: Formula = {
   name: 'neo4J',
   logo,
   defaultShell: '/bin/bash',
+  description: 'Neo4j is a graph database management system',
+  website: 'https://neo4j.com/',
   data: {
     name: {
       type: 'string',

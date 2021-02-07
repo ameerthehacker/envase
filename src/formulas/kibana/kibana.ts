@@ -7,6 +7,8 @@ const KIBANA: Formula = {
   name: 'Kibana',
   logo,
   defaultShell: '/bin/bash',
+  description: 'Kibana is a data visualization dashboard for Elasticsearch',
+  website: 'https://www.elastic.co/kibana',
   data: {
     name: {
       type: 'string',

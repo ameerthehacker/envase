@@ -6,6 +6,9 @@ import { FaNodeJs } from 'react-icons/fa';
 const NODE: Formula = {
   name: 'Node.js',
   defaultShell: '/bin/bash',
+  description:
+    'Node.js is a cross-platform, back-end JavaScript runtime environment',
+  website: 'https://nodejs.org/',
   logo,
   data: {
     name: {

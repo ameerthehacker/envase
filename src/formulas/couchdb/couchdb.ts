@@ -4,6 +4,9 @@ import logo from './logo.png';
 const COUCHDB: Formula = {
   name: 'Couch DB',
   logo,
+  description:
+    'CouchDB is an open-source NoSQL database, implemented in Erlang',
+  website: 'https://couchdb.apache.org/',
   defaultShell: '/bin/bash',
   data: {
     name: {

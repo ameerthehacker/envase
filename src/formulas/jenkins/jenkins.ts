@@ -7,6 +7,8 @@ const JENKINS: Formula = {
   name: 'Jenkins',
   defaultShell: '/bin/bash',
   logo,
+  description: 'Jenkins is a free and open source automation server',
+  website: 'https://www.jenkins.io/',
   data: {
     name: {
       type: 'string',

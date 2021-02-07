@@ -5,6 +5,8 @@ const RABBITMQ: Formula = {
   name: 'RabbitMQ',
   logo,
   defaultShell: '/bin/bash',
+  description: 'RabbitMQ is an open-source message-broker software',
+  website: 'https://www.rabbitmq.com/',
   data: {
     name: {
       type: 'string',

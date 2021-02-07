@@ -6,6 +6,8 @@ import { FaPython } from 'react-icons/fa';
 const PYTHON: Formula = {
   name: 'Python',
   defaultShell: '/bin/bash',
+  description: 'Python is an interpreted, general-purpose programming language',
+  website: 'https://www.python.org/',
   logo,
   data: {
     name: {

@@ -6,6 +6,8 @@ const POSTGRES: Formula = {
   name: 'Postgres',
   logo,
   defaultShell: '/bin/bash',
+  description: 'PostgreSQL is a relational database management system',
+  website: 'https://www.postgresql.org/',
   data: {
     name: {
       type: 'string',

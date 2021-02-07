@@ -7,6 +7,8 @@ import POSTGRES from '../postgres/postgres';
 const HASURA: Formula = {
   name: 'Hasura',
   defaultShell: '/bin/sh',
+  description: 'Instant GraphQL with built-in authorization',
+  website: 'https://hasura.io/',
   logo,
   data: {
     name: {

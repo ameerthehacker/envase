@@ -6,6 +6,8 @@ import { FaGlobe } from 'react-icons/fa';
 const NGINX: Formula = {
   name: 'Nginx',
   defaultShell: '/bin/bash',
+  description: 'NGINX is used for web serving, reverse proxying and more',
+  website: 'https://www.nginx.com/',
   logo,
   data: {
     name: {

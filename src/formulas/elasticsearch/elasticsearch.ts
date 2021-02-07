@@ -5,6 +5,8 @@ const ELASTICSEARCH: Formula = {
   name: 'Elasticsearch',
   logo,
   defaultShell: '/bin/bash',
+  description: 'Elasticsearch is a search engine based on the Lucene library',
+  website: 'https://www.elastic.co/',
   data: {
     name: {
       type: 'string',

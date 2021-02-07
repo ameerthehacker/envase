@@ -1,11 +1,13 @@
 import React from 'react';
 import { Button, Flex } from '@chakra-ui/core';
 import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
+import { open } from '../../services/native/native';
 
 export interface AppCardProps extends AppInfoCardProps {
   onCreateClick: () => void;
   isDisabled?: boolean;
   isLoading?: boolean;
+  website?: string;
 }
 
 export default function AppCard({
@@ -13,10 +15,12 @@ export default function AppCard({
   logo,
   isDisabled,
   isLoading,
-  onCreateClick
+  onCreateClick,
+  description,
+  website
 }: AppCardProps) {
   return (
-    <AppInfoCard name={name} logo={logo}>
+    <AppInfoCard description={description} name={name} logo={logo}>
       <Flex>
         <Button
           isDisabled={isDisabled}
@@ -27,9 +31,17 @@ export default function AppCard({
         >
           Create
         </Button>
-        <Button variantColor="orange" ml={2} width="100%" variant="outline">
-          Visit Site
-        </Button>
+        {website && (
+          <Button
+            onClick={() => open(website)}
+            variantColor="orange"
+            ml={2}
+            width="100%"
+            variant="outline"
+          >
+            Visit Site
+          </Button>
+        )}
       </Flex>
     </AppInfoCard>
   );

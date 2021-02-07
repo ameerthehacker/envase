@@ -7,6 +7,9 @@ const VSCODE: Formula = {
   name: 'VS Code',
   defaultShell: '/bin/bash',
   logo,
+  description:
+    'Visual Studio Code is a free source-code editor made by Microsoft',
+  website: 'https://code.visualstudio.com/',
   data: {
     name: {
       type: 'string',

@@ -6,6 +6,9 @@ const PGADMIN: Formula = {
   name: 'pgAdmin',
   logo,
   defaultShell: '/bin/sh',
+  description:
+    'pgAdmin is an administration and development platform for PostgreSQL',
+  website: 'https://www.pgadmin.org/',
   data: {
     name: {
       type: 'string',

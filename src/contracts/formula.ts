@@ -21,7 +21,7 @@ export interface Formula {
     name: FormulaField;
     [key: string]: FormulaField;
   };
-  descriptions?: string;
+  description?: string;
   website?: string;
   env: Record<string, string>;
   image: string;

@@ -8,6 +8,8 @@ const WORDPRESS: Formula = {
   name: 'Wordpress',
   defaultShell: '/bin/bash',
   logo,
+  description: 'WordPress is a free and open-source content management system',
+  website: 'https://wordpress.org/',
   data: {
     name: {
       type: 'string',

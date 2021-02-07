@@ -6,6 +6,8 @@ const RUBY: Formula = {
   name: 'Ruby',
   defaultShell: '/bin/bash',
   logo,
+  description: 'Ruby is an interpreted, general-purpose programming language',
+  website: 'https://www.ruby-lang.org/',
   data: {
     name: {
       type: 'string',

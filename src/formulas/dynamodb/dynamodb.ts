@@ -3,8 +3,11 @@ import logo from './logo.png';
 
 const DYNAMODB: Formula = {
   name: 'Dynamo DB',
+  website: 'https://aws.amazon.com/dynamodb/',
   logo,
   defaultShell: '/bin/bash',
+  description:
+    'DynamoDB is a fully managed NoSQL database service offered by AWS',
   data: {
     name: {
       type: 'string',

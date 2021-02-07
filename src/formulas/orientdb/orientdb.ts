@@ -7,6 +7,8 @@ const ORIENTDB: Formula = {
   name: 'OrientDB',
   logo,
   defaultShell: '/bin/bash',
+  description: 'OrientDB is a NoSQL database management system written in Java',
+  website: 'https://www.orientdb.org/',
   data: {
     name: {
       type: 'string',

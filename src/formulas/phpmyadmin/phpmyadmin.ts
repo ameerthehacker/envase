@@ -7,6 +7,9 @@ import MYSQL from '../mysql/mysql';
 const PHPMYADMIN: Formula = {
   name: 'phpMyAdmin',
   defaultShell: '/bin/bash',
+  description:
+    'phpMyAdmin is an administration and development platform for MySQL',
+  website: 'https://www.phpmyadmin.net/',
   logo,
   data: {
     name: {

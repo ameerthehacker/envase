@@ -6,6 +6,8 @@ const MARIADB: Formula = {
   name: 'MariaDB',
   logo,
   defaultShell: '/bin/bash',
+  description: 'MariaDB is a commercially supported fork of the MySQL',
+  website: 'https://mariadb.org/',
   data: {
     name: {
       type: 'string',

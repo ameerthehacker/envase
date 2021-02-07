@@ -7,6 +7,8 @@ const APACHE: Formula = {
   name: 'Apache',
   defaultShell: '/bin/bash',
   logo,
+  description: `Apache is a free and open-source cross-platform web server software`,
+  website: 'https://httpd.apache.org/',
   data: {
     name: {
       type: 'string',

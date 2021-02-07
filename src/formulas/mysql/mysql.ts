@@ -6,6 +6,8 @@ const MYSQL: Formula = {
   name: 'MySQL',
   logo,
   defaultShell: '/bin/bash',
+  description: 'MySQL is an open-source relational database management system',
+  website: 'https://www.mysql.com/',
   data: {
     name: {
       type: 'string',

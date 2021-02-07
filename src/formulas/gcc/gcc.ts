@@ -6,6 +6,8 @@ const GCC: Formula = {
   name: 'GCC',
   defaultShell: '/bin/bash',
   logo,
+  description: 'GCC is a compiler supporting various programming languages',
+  website: 'https://gcc.gnu.org/',
   data: {
     name: {
       type: 'string',

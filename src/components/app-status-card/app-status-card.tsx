@@ -32,6 +32,7 @@ export default function AppStatusCard({
   name,
   logo,
   state,
+  description,
   inStateTransit,
   onStartClick,
   onStopClick,
@@ -43,7 +44,7 @@ export default function AppStatusCard({
   isDeleting
 }: AppStatucCardProps) {
   return (
-    <AppInfoCard name={name} logo={logo}>
+    <AppInfoCard description={description} name={name} logo={logo}>
       <Stack direction="row">
         {state === 'stopped' && (
           <Button

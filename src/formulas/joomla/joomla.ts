@@ -8,6 +8,8 @@ const JOOMLA: Formula = {
   name: 'Joomla',
   defaultShell: '/bin/bash',
   logo,
+  description: 'Joomla is a free and open-source content management system',
+  website: 'https://www.joomla.org/',
   data: {
     name: {
       type: 'string',

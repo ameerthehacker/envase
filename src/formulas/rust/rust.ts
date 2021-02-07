@@ -6,6 +6,9 @@ const RUST: Formula = {
   name: 'Rust',
   defaultShell: '/bin/bash',
   logo,
+  description:
+    'Rust is a programming language designed for performance and safety',
+  website: 'https://www.rust-lang.org/',
   data: {
     name: {
       type: 'string',

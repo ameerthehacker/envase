@@ -5,6 +5,8 @@ const MONGO: Formula = {
   name: 'Mongo DB',
   logo,
   defaultShell: '/bin/bash',
+  description: 'MongoDB is a NoSQL document-oriented database program',
+  website: 'https://www.mongodb.com/',
   data: {
     name: {
       type: 'string',

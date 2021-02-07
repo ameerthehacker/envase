@@ -7,6 +7,8 @@ const MONGO_EXPRESS: Formula = {
   name: 'Mongo Express',
   logo,
   defaultShell: '/bin/bash',
+  description: 'Web-based MongoDB admin interface',
+  website: 'https://github.com/mongo-express/mongo-express',
   data: {
     name: {
       type: 'string',
