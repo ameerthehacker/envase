@@ -83,7 +83,8 @@
     "xterm": "^4.5.0",
     "xterm-addon-fit": "^0.3.0",
     "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.3.0"
+    "xterm-addon-web-links": "^0.3.0",
+    "@chakra-ui/icons": "^1.0.5"
   },
   "husky": {
     "hooks": {
@@ -99,7 +100,6 @@
     ]
   },
   "dependencies": {
-    "@chakra-ui/icons": "^1.0.5",
     "axios": "^0.21.1",
     "dockerode": "^3.2.0",
     "electron-store": "^5.1.1",
