@@ -9,7 +9,7 @@ import {
   ModalFooter,
   Button,
   Stack
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { Formik } from 'formik';
 import Settings from '../settings/settings';
 import { AllSettings } from '../../contracts/all-settings';
@@ -49,12 +49,12 @@ export default function SettingsModal({
               <Stack direction="row">
                 <Button
                   onClick={submitForm}
-                  variantColor="green"
+                  colorScheme="green"
                   variant="outline"
                 >
                   Save
                 </Button>
-                <Button variantColor="red" mr={3} onClick={() => resetForm()}>
+                <Button colorScheme="red" mr={3} onClick={() => resetForm()}>
                   Reset
                 </Button>
               </Stack>

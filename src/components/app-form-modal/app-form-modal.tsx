@@ -9,7 +9,7 @@ import {
   ModalFooter,
   Button,
   Stack
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { Formula } from '../../contracts/formula';
 import AppForm from '../app-form/app-form';
 import { Formik } from 'formik';
@@ -81,13 +81,13 @@ export default function AppFormModal({
                   <Button
                     isLoading={isValidating}
                     onClick={submitForm}
-                    variantColor="green"
+                    colorScheme="green"
                     variant="outline"
                     loadingText="Validating..."
                   >
                     Create
                   </Button>
-                  <Button variantColor="red" mr={3} onClick={onClose}>
+                  <Button colorScheme="red" mr={3} onClick={onClose}>
                     Cancel
                   </Button>
                 </Stack>

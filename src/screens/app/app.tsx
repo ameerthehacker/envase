@@ -15,7 +15,7 @@ import {
   ListIcon,
   Stack,
   useColorMode
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { FaListUl, FaRocket } from 'react-icons/fa';
 import { Helmet } from 'react-helmet';
 import { IconText } from '../../components/icon-text/icon-text';

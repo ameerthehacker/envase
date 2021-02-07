@@ -5,9 +5,10 @@ import {
   getContainerAppInfo
 } from '../../services/docker/docker';
 import Terminal from '../../components/terminal/terminal';
-import { Box, Flex, IconButton, Text, useToast } from '@chakra-ui/core';
+import { Box, Flex, IconButton, Text, useToast } from '@chakra-ui/react';
 import { parse } from 'query-string';
 import { Helmet } from 'react-helmet';
+import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 
 type RouteParams = {
   containerId: string;
@@ -74,7 +75,7 @@ export default function ShellIntoApp() {
                   }}
                   ml={4}
                   aria-label="close"
-                  icon="close"
+                  icon={<CloseIcon />}
                   size="xs"
                   variant="ghost"
                 />
@@ -92,7 +93,7 @@ export default function ShellIntoApp() {
               setCurrentTab(shellTabs.length);
             }}
             aria-label="add-terminal"
-            icon="add"
+            icon={<AddIcon />}
             variant="ghost"
           />
         </Flex>

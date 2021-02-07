@@ -9,7 +9,7 @@ import {
   getContainerAppInfo,
   performOnHealthyAction
 } from '../../services/docker/docker';
-import { useToast } from '@chakra-ui/core';
+import { useToast } from '@chakra-ui/react';
 import { ContainerInspectInfo } from 'dockerode';
 
 export function useApp() {

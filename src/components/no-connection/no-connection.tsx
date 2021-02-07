@@ -1,6 +1,7 @@
 import React from 'react';
-import { Stack, Box, Text, Button } from '@chakra-ui/core';
+import { Stack, Box, Text, Button } from '@chakra-ui/react';
 import { FaSadTear } from 'react-icons/fa';
+import { RepeatIcon, SettingsIcon } from '@chakra-ui/icons';
 
 export interface NoConnectionProps {
   isRetrying: boolean;
@@ -28,15 +29,15 @@ export default function NoConnection({
               isLoading={isRetrying}
               loadingText="Retrying..."
               onClick={onRetryClick}
-              leftIcon="repeat"
-              variantColor="green"
+              leftIcon={<RepeatIcon />}
+              colorScheme="green"
             >
               Retry
             </Button>
             <Button
-              leftIcon="settings"
+              leftIcon={<SettingsIcon />}
               onClick={onPreferencesClick}
-              variantColor="orange"
+              colorScheme="orange"
             >
               Preferences
             </Button>

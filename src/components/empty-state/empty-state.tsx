@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Text, Box, Button } from '@chakra-ui/core';
+import { Stack, Text, Box, Button } from '@chakra-ui/react';
 import { FaBoxOpen } from 'react-icons/fa';
 
 export interface EmptyStateProps {
@@ -20,7 +20,7 @@ export default function EmptyState({ onCreateClick, height }: EmptyStateProps) {
       <Text fontSize="xl" fontWeight="light">
         No apps available!
       </Text>
-      <Button onClick={onCreateClick} variantColor="blue">
+      <Button onClick={onCreateClick} colorScheme="blue">
         Create
       </Button>
     </Stack>

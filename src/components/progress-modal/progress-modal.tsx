@@ -14,7 +14,7 @@ import {
   Spinner,
   Code,
   Collapse
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { PullProgressEvent } from '../../services/docker/docker';
 import { getImageRepoTag } from '../../utils/utils';
 
@@ -101,7 +101,7 @@ export default function ProgressModal({
                   variant="ghost"
                   onClick={() => setShowLogs((showLogs) => !showLogs)}
                 >{`${showLogs ? 'Hide' : 'Show'} Logs`}</Button>
-                <Collapse isOpen={showLogs}>
+                <Collapse in={showLogs}>
                   <Code width="100%" p={3} bg="black" color="white">
                     {Object.keys(progress || {}).map((id, index) => {
                       return (
@@ -129,7 +129,7 @@ export default function ProgressModal({
         </ModalBody>
         <ModalFooter>
           <Stack direction="row">
-            <Button variantColor="red" mr={3} onClick={onClose}>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
               Cancel
             </Button>
           </Stack>

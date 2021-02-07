@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Flex } from '@chakra-ui/core';
+import { Button, Flex } from '@chakra-ui/react';
 import AppInfoCard, { AppInfoCardProps } from '../app-info-card/app-info-card';
 import { open } from '../../services/native/native';
 
@@ -25,7 +25,7 @@ export default function AppCard({
       <Flex>
         <Button
           isDisabled={isDisabled}
-          variantColor="green"
+          colorScheme="green"
           onClick={onCreateClick}
           isLoading={isLoading}
           width="full"
@@ -35,7 +35,7 @@ export default function AppCard({
         {website && (
           <Button
             onClick={() => open(website)}
-            variantColor="orange"
+            colorScheme="orange"
             ml={2}
             width="100%"
             variant="outline"

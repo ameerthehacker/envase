@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider, ColorModeProvider, CSSReset } from '@chakra-ui/core';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import { AppStatusProvider } from './contexts/app-status/app-status';
 import UnhandledError from './components/unhandled-error/unhandled-error';
 import Routes from './routes';
 import './index.css';
 
 ReactDOM.render(
-  <ThemeProvider>
-    <ColorModeProvider>
-      <CSSReset />
-      <UnhandledError>
-        <AppStatusProvider>
+  <>
+    <ColorModeScript initialColorMode="dark" />
+    <UnhandledError>
+      <AppStatusProvider>
+        <ChakraProvider>
           <Routes />
-        </AppStatusProvider>
-      </UnhandledError>
-    </ColorModeProvider>
-  </ThemeProvider>,
+        </ChakraProvider>
+      </AppStatusProvider>
+    </UnhandledError>
+  </>,
   document.getElementById('root')
 );

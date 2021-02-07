@@ -15,7 +15,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { Form, Field } from 'formik';
 import { IconText } from '../icon-text/icon-text';
 import { FaDocker, FaTerminal } from 'react-icons/fa';

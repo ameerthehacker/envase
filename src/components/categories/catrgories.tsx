@@ -9,7 +9,7 @@ import {
   Stack,
   Checkbox,
   Button
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { FaWindowClose } from 'react-icons/fa';
 import { Category } from '../../contracts/category';
 
@@ -45,7 +45,7 @@ export default function Categories({
                 onChange(updatedCategory);
               }}
               size="sm"
-              rightIcon={FaWindowClose}
+              rightIcon={<FaWindowClose />}
             >
               Clear All
             </Button>

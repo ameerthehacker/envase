@@ -6,7 +6,7 @@ import {
   SimpleGrid,
   useDisclosure,
   useToast
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import AppFormModal, {
   AppFormResult
 } from '../../components/app-form-modal/app-form-modal';
@@ -62,37 +62,37 @@ export default function AllApps({
     return app.tags?.map((tag) => {
       if (tag === 'Application') {
         return {
-          variantColor: 'green',
+          colorScheme: 'green',
           text: 'Application',
           variant: 'solid'
         };
       } else if (tag === 'Database') {
         return {
-          variantColor: 'orange',
+          colorScheme: 'orange',
           text: 'Database',
           variant: 'solid'
         };
       } else if (tag === 'Language') {
         return {
-          variantColor: 'yellow',
+          colorScheme: 'yellow',
           text: 'Language',
           variant: 'solid'
         };
       } else if (tag === 'OS') {
         return {
-          variantColor: 'indigo',
+          colorScheme: 'indigo',
           text: 'OS',
           variant: 'solid'
         };
       } else if (tag === 'Platform') {
         return {
-          variantColor: 'teal',
+          colorScheme: 'teal',
           text: 'Platform',
           variant: 'solid'
         };
       } else {
         return {
-          variantColor: 'orange',
+          colorScheme: 'orange',
           text: tag,
           variant: 'solid'
         };

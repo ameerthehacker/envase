@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo } from 'react';
-import { Stack, Box, Text, Button } from '@chakra-ui/core';
+import { Stack, Box, Text, Button } from '@chakra-ui/react';
 import { FaSadCry } from 'react-icons/fa';
 import { open } from '../../services/native/native';
 
@@ -45,7 +45,7 @@ export default class UnhandledError extends Component<{}, UnhandledErrorState> {
 
                   open(issueLink);
                 }}
-                variantColor="orange"
+                colorScheme="orange"
               >
                 Report Issue
               </Button>

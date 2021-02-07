@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
   Button
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 export interface ConfirmDialogModalProps {
   isOpen: boolean;
@@ -37,12 +37,12 @@ export default function ConfirmDialogModal({
           <Button
             variant="outline"
             mr={3}
-            variantColor="green"
+            colorScheme="green"
             onClick={() => onSubmit(true)}
           >
             Yes
           </Button>
-          <Button variantColor="red" onClick={() => onSubmit(false)}>
+          <Button colorScheme="red" onClick={() => onSubmit(false)}>
             No
           </Button>
         </ModalFooter>

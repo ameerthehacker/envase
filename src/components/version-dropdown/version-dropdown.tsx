@@ -5,7 +5,7 @@ import React, {
   useRef,
   ReactNode
 } from 'react';
-import { useToast, Input, Box, theme, useColorMode } from '@chakra-ui/core';
+import { useToast, Input, Box, useColorModeValue } from '@chakra-ui/react';
 import { ipcRenderer } from '../../services/native/native';
 import { IPC_CHANNELS } from '../../constants';
 import { IpcRendererEvent } from 'electron';
@@ -54,15 +54,11 @@ export default function VersionDropdown({
   const currentPage = useRef(1);
   const toast = useToast();
   const [inputValue, setInputValue] = useState<string>(field.value || '');
-  const { colorMode } = useColorMode();
-  const highlightColor = {
-    light: theme.colors.teal[500],
-    dark: theme.colors.blue[500]
-  };
-  const bgColor = {
-    light: theme.colors.white,
-    dark: theme.colors.gray[700]
-  };
+  const highlightColor = useColorModeValue<string, string>(
+    'teal.500',
+    'blue.500'
+  );
+  const bgColor = useColorModeValue<string, string>('white', 'gray.700');
   const [isTagsLoading, setIsTagLoading] = useState(false);
 
   // Teach Autosuggest how to calculate suggestions for any given input value.
@@ -92,7 +88,7 @@ export default function VersionDropdown({
       px={3}
       className="suggestions-container"
       color={isHighlighted ? 'white' : undefined}
-      bg={isHighlighted ? highlightColor[colorMode] : undefined}
+      bg={highlightColor}
     >
       {suggestion.label}
     </Box>
@@ -120,8 +116,8 @@ export default function VersionDropdown({
   }) => (
     <Box position="relative">
       <Box
-        bg={bgColor[colorMode]}
-        zIndex={2}
+        bg={bgColor}
+        zIndex={99999}
         width="100%"
         position="absolute"
         borderRadius={5}

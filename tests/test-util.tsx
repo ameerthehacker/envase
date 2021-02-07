@@ -1,9 +1,9 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from '@chakra-ui/core';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return <ChakraProvider>{children}</ChakraProvider>;
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

@@ -3,7 +3,7 @@ import { Route, HashRouter } from 'react-router-dom';
 import App from './screens/app/app';
 import ShellIntoApp from './screens/shell-into-app/shell-into-app';
 import { Global, css } from '@emotion/react';
-import { useColorMode, useTheme } from '@chakra-ui/core';
+import { useColorMode, useTheme } from '@chakra-ui/react';
 
 export default function Routes() {
   const { colorMode } = useColorMode();

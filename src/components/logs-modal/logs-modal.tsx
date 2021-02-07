@@ -10,7 +10,7 @@ import {
   Stack,
   FormLabel,
   Box
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import Terminal from '../terminal/terminal';
 
 export interface LogsModalProps {

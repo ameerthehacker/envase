@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Stack, Text } from '@chakra-ui/core';
+import { Stack, Text } from '@chakra-ui/react';
 
 export interface IconTextProps {
   text: string;

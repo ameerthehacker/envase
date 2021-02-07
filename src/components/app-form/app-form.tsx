@@ -12,7 +12,7 @@ import {
   Link,
   Select,
   Accordion,
-  AccordionHeader,
+  AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
@@ -21,7 +21,7 @@ import {
   Tooltip,
   Icon,
   Flex
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import {
   isValidContainerName,
   keyToLabelText,
@@ -32,8 +32,9 @@ import FolderPicker from '../folder-picker/folder-picker';
 import VersionDropdown from '../version-dropdown/version-dropdown';
 import { getDockerHubLinkToTags } from '../../utils/utils';
 import { open } from '../../services/native/native';
-import { IconButton } from '@chakra-ui/core/dist';
+import { IconButton } from '@chakra-ui/react';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 
 export interface AppFormProps {
   app: Formula;
@@ -224,12 +225,12 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
     <Form>
       <Accordion defaultIndex={isReadOnly ? [0, 1] : [0]} allowMultiple>
         <AccordionItem>
-          <AccordionHeader pl={1} pr={1}>
+          <AccordionButton pl={1} pr={1}>
             <Box flex={1} textAlign="left">
               Basic
             </Box>
             <AccordionIcon />
-          </AccordionHeader>
+          </AccordionButton>
           <AccordionPanel p={1}>
             <Stack spacing={2}>
               <Box>
@@ -273,12 +274,12 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem mt={2} pb={2}>
-          <AccordionHeader pl={1} pr={1}>
+          <AccordionButton pl={1} pr={1}>
             <Box flex={1} textAlign="left">
               Advanced
             </Box>
             <AccordionIcon />
-          </AccordionHeader>
+          </AccordionButton>
           <AccordionPanel p={1}>
             <FieldArray name={'additionalPorts'}>
               {(helpers) => (
@@ -333,8 +334,8 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                                     <IconButton
                                       onClick={() => helpers.remove(index)}
                                       aria-label={'delete'}
-                                      icon={'delete'}
-                                      variantColor={'red'}
+                                      icon={<DeleteIcon />}
+                                      colorScheme={'red'}
                                     />
                                   )}
                                 </Stack>
@@ -348,9 +349,9 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                   {!isReadOnly && (
                     <Button
                       onClick={() => helpers.push('')}
-                      variantColor="blue"
+                      colorScheme="blue"
                       mt={2}
-                      leftIcon="add"
+                      leftIcon={<AddIcon />}
                       size="sm"
                     >
                       Add Port
