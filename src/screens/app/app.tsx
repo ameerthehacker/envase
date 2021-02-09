@@ -35,6 +35,7 @@ import withFilters from '../../hoc/with-filters';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import { getReleaseNotes } from '../../utils/utils';
 import { createEnvaseNetwork } from '../../services/docker/docker';
+import { MdCheckCircle } from 'react-icons/md';
 
 const { SAVE_SETTINGS, CHECK_FOR_UPDATE, INSTALL_UPDATE } = IPC_CHANNELS;
 const AllAppsWithFilters = withFilters<AllAppsProps>(AllApps);
@@ -95,7 +96,7 @@ export default function App() {
             <List spacing={3}>
               {changes.map((change, key) => (
                 <ListItem key={key}>
-                  <ListIcon icon="check-circle" color="green.500" />
+                  <ListIcon as={MdCheckCircle} color="green.500" />
                   {change}
                 </ListItem>
               ))}

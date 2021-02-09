@@ -35,7 +35,7 @@ export default function LogsModal({
         <ModalHeader>{`${appName} logs`}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Stack>
+          <Stack height="100%">
             <Stack direction="row" alignItems="center">
               <Switch
                 id="switch-follow-tail"
@@ -44,10 +44,8 @@ export default function LogsModal({
               />
               <FormLabel htmlFor="switch-follow-tail">Follow tail</FormLabel>
             </Stack>
-            <Box width="100%" p={2} pb={3} pr={0} pl={0}>
-              <Box height="100%" p={2} bg="black">
-                {stream && <Terminal stream={stream} followTail={followTail} />}
-              </Box>
+            <Box width="100%" height="94%" p={2} pr={0} pl={0}>
+              {stream && <Terminal stream={stream} followTail={followTail} />}
             </Box>
           </Stack>
         </ModalBody>

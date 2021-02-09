@@ -19,7 +19,6 @@ import {
   Button,
   Image,
   Tooltip,
-  Icon,
   Flex
 } from '@chakra-ui/react';
 import {
@@ -34,7 +33,7 @@ import { getDockerHubLinkToTags } from '../../utils/utils';
 import { open } from '../../services/native/native';
 import { IconButton } from '@chakra-ui/react';
 import { useAppStatus, AppStatus } from '../../contexts/app-status/app-status';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, InfoIcon } from '@chakra-ui/icons';
 
 export interface AppFormProps {
   app: Formula;
@@ -151,8 +150,8 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
             <FormControl
               isInvalid={form.errors[fieldName] && form.touched[fieldName]}
             >
-              <Flex alignItems="center">
-                <FormLabel paddingRight={1} htmlFor={fieldId}>
+              <Flex>
+                <FormLabel mr={2} htmlFor={fieldId}>
                   {keyToLabelText(fieldName)}
                 </FormLabel>
                 {data[fieldName].hint && (
@@ -163,7 +162,7 @@ export default function AppForm({ app, isReadOnly }: AppFormProps) {
                     label={data[fieldName].hint}
                     placement="top"
                   >
-                    <Icon size="12px" name="info" />
+                    <InfoIcon mt="0.29rem" />
                   </Tooltip>
                 )}
               </Flex>
