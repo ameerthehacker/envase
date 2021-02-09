@@ -27,7 +27,8 @@ const GA_ACTIONS = {
   VIEW_APP_INFO: 'View Application Info',
   START_APP: 'Start Application',
   STOP_APP: 'Stop Application',
-  NEW_SHELL_TAB: 'New Shell Tab'
+  NEW_SHELL_TAB: 'New Shell Tab',
+  CUSTOM_ACTION: 'Custom Application Action'
 };
 
 module.exports = {

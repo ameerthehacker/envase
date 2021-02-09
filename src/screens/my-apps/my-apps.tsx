@@ -242,6 +242,12 @@ export default function MyApps({
                 handleAction(status, action);
               }}
               onCustomActionClick={(action) => {
+                ReactGA.event({
+                  category: GA_CATEGORIES.APP_OPS,
+                  action: GA_ACTIONS.CUSTOM_ACTION,
+                  label: action.text
+                });
+
                 handleCustomAction(status, action);
               }}
             />
