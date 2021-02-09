@@ -92,7 +92,7 @@ export default function App() {
 
         const updateDetails = (
           <Stack spacing={2}>
-            <Text fontSize="1xl">Release Notes ({version})</Text>
+            <Text fontSize="xl">Release Notes ({version})</Text>
             <List spacing={3}>
               {changes.map((change, key) => (
                 <ListItem key={key}>
