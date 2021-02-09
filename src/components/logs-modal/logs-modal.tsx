@@ -29,7 +29,12 @@ export default function LogsModal({
   const [followTail, setFollowTail] = useState(true);
 
   return (
-    <Modal size="full" isOpen={isOpen} onClose={onClose}>
+    <Modal
+      size="full"
+      scrollBehavior="inside"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{`${appName} logs`}</ModalHeader>
