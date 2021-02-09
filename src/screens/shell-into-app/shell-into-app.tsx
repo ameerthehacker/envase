@@ -17,6 +17,9 @@ import {
 import { parse } from 'query-string';
 import { Helmet } from 'react-helmet';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
+import ReactGA from 'react-ga';
+import { GA_ACTIONS, GA_CATEGORIES } from '../../constants';
+import { ContainerAppInfo } from '../../contracts/container-app-info';
 
 type RouteParams = {
   containerId: string;
@@ -26,7 +29,7 @@ export default function ShellIntoApp() {
   const { containerId } = useParams<RouteParams>();
   const currentId = useRef(1);
   const [currentTab, setCurrentTab] = useState(0);
-  const [appName, setAppName] = useState<string>();
+  const [appInfo, setAppInfo] = useState<ContainerAppInfo>();
   const [shellTabs, setShellTabs] = useState([
     {
       containerId,
@@ -44,9 +47,7 @@ export default function ShellIntoApp() {
   const inActiveTabColor = useColorModeValue('gray.700', 'white');
 
   useEffect(() => {
-    getContainerAppInfo(containerId).then((containerAppInfo) => {
-      setAppName(containerAppInfo.formValues.name);
-    });
+    getContainerAppInfo(containerId).then(setAppInfo);
   }, [containerId]);
 
   // without the light mode wrapper a wierd bug in terminal happens
@@ -54,7 +55,9 @@ export default function ShellIntoApp() {
     <LightMode>
       <Box>
         <Helmet>
-          <title>{`Terminal${appName ? ` [${appName}]` : ''}`}</title>
+          <title>{`Terminal${
+            appInfo ? ` [${appInfo.formValues.name}]` : ''
+          }`}</title>
         </Helmet>
         {allowTabs === 'yes' && (
           <Flex alignItems="center" overflowY="auto">
@@ -73,7 +76,7 @@ export default function ShellIntoApp() {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Text>{`${appName} [${shellTab.id}]`}</Text>
+                <Text>{`${appInfo?.formValues.name} [${shellTab.id}]`}</Text>
                 {shellTabs.length > 1 && (
                   <IconButton
                     onClick={(evt) => {
@@ -97,6 +100,13 @@ export default function ShellIntoApp() {
             ))}
             <IconButton
               onClick={() => {
+                const appFormula = appInfo?.getInterpolatedFormula();
+                // track when user adds a new tab
+                ReactGA.event({
+                  category: GA_CATEGORIES.SHELL_OPS,
+                  action: GA_ACTIONS.NEW_SHELL_TAB,
+                  label: appFormula?.name
+                });
                 currentId.current = currentId.current + 1;
 
                 setShellTabs([

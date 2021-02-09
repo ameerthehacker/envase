@@ -42,6 +42,8 @@ jobs:
 
       - name: Bundle UI
         run: npm run build-react
+        env:
+          REACT_APP_GA_ID: ${{ secrets.GA_ID }}
 
       - name: Build & Release for mac
         run: npm run build-mac -- --publish onTagOrDraft

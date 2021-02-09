@@ -384,7 +384,9 @@ export function startApp(containerId: string) {
   const container = dockerode.getContainer(containerId);
 
   return getContainerAppInfo(containerId).then(({ getInterpolatedFormula }) => {
-    if (getInterpolatedFormula()?.isCli) {
+    const appFormula = getInterpolatedFormula();
+
+    if (appFormula.isCli) {
       return new Promise((resolve, reject) => {
         container
           .start()

@@ -25,7 +25,8 @@ import { useApp } from '../../hooks/use-app/use-app';
 import { Category } from '../../contracts/category';
 import NoResults from '../../components/no-results/no-results';
 import { AppTag } from '../../components/app-info-card/app-info-card';
-
+import ReactGA from 'react-ga';
+import { GA_ACTIONS, GA_CATEGORIES } from '../../constants';
 export interface AllAppsProps {
   apps: Formula[];
   searchText?: string;
@@ -180,6 +181,13 @@ export default function AllApps({
               app={selectedApp}
               isOpen={isFormOpen}
               onSubmit={async (values) => {
+                // track new app creation
+                ReactGA.event({
+                  category: GA_CATEGORIES.APP_LIFE,
+                  action: GA_ACTIONS.CREATE_APP,
+                  label: selectedApp?.name
+                });
+
                 setIsValidating(true);
 
                 if (selectedApp) {

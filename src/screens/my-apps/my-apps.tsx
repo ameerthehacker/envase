@@ -9,7 +9,7 @@ import {
 } from '../../services/docker/docker';
 import LogsModal from '../../components/logs-modal/logs-modal';
 import { ipcRenderer } from '../../services/native/native';
-import { IPC_CHANNELS } from '../../constants';
+import { GA_CATEGORIES, GA_ACTIONS, IPC_CHANNELS } from '../../constants';
 import ConfirmDialogModal from '../../components/confirm-dialog-modal/confirm-dialog-modal';
 import ExecModal from '../../components/exec-modal/exec-modal';
 import { FaTerminal, FaScroll, FaRunning, FaInfo } from 'react-icons/fa';
@@ -18,6 +18,7 @@ import { CustomAction } from '../../contracts/formula';
 import { Category } from '../../contracts/category';
 import NoResults from '../../components/no-results/no-results';
 import AppFormModal from '../../components/app-form-modal/app-form-modal';
+import ReactGA from 'react-ga';
 
 const { ATTACH_SHELL } = IPC_CHANNELS;
 
@@ -102,6 +103,13 @@ export default function MyApps({
 
       switch (action) {
         case 'SHOW_LOGS': {
+          // track when user views app logs
+          ReactGA.event({
+            category: GA_CATEGORIES.APP_OPS,
+            action: GA_ACTIONS.VIEW_APP_LOGS,
+            label: status.formula.name
+          });
+
           getContainerAppLogs(status.id)
             .then((stream) => {
               setSelectedAppLogs(stream);
@@ -120,16 +128,37 @@ export default function MyApps({
           break;
         }
         case 'ATTACH_SHELL': {
+          // track when user shells into an app
+          ReactGA.event({
+            category: GA_CATEGORIES.APP_OPS,
+            action: GA_ACTIONS.SHELL_INTO_APP,
+            label: status.formula.name
+          });
+
           ipcRenderer.send(ATTACH_SHELL, {
             containerId: status.id
           });
           break;
         }
         case 'EXEC': {
+          // track when user executes command in an app
+          ReactGA.event({
+            category: GA_CATEGORIES.APP_OPS,
+            action: GA_ACTIONS.EXEC_APP,
+            label: status.formula.name
+          });
+
           onExecOpen();
           break;
         }
         case 'SHOW_INFO': {
+          // track when user view info in an app
+          ReactGA.event({
+            category: GA_CATEGORIES.APP_OPS,
+            action: GA_ACTIONS.VIEW_APP_INFO,
+            label: status.formula.name
+          });
+
           onAppFormDialogOpen();
         }
       }
@@ -169,7 +198,14 @@ export default function MyApps({
               ]}
               inStateTransit={status.inTransit}
               isDeleting={status.isDeleting}
-              onStartClick={() =>
+              onStartClick={() => {
+                // track when user starts an app
+                ReactGA.event({
+                  category: GA_CATEGORIES.APP_LIFECYCLE,
+                  action: GA_ACTIONS.START_APP,
+                  label: status.formula.name
+                });
+
                 start(status.id).catch((err) => {
                   toast({
                     title: `Unable to start ${status.name}`,
@@ -177,9 +213,16 @@ export default function MyApps({
                     isClosable: true,
                     status: 'error'
                   });
-                })
-              }
-              onStopClick={() =>
+                });
+              }}
+              onStopClick={() => {
+                // track when user stops an app
+                ReactGA.event({
+                  category: GA_CATEGORIES.APP_LIFECYCLE,
+                  action: GA_ACTIONS.STOP_APP,
+                  label: status.formula.name
+                });
+
                 stop(status.id).catch((err) => {
                   toast({
                     title: `Unable to stop ${status.name}`,
@@ -187,8 +230,8 @@ export default function MyApps({
                     isClosable: true,
                     status: 'error'
                   });
-                })
-              }
+                });
+              }}
               onDeleteClick={() => {
                 setSelectedApp(status);
                 onConfirmDialogOpen();
@@ -233,6 +276,13 @@ export default function MyApps({
         }
         onSubmit={(ok) => {
           if (ok && selectedApp) {
+            // track when user deletes an app
+            ReactGA.event({
+              category: GA_CATEGORIES.APP_LIFECYCLE,
+              action: GA_ACTIONS.DELETE_APP,
+              label: selectedApp.formula.name
+            });
+
             del(selectedApp.id).catch((err) => {
               toast({
                 title: `Unable to delete ${selectedApp.name}`,
