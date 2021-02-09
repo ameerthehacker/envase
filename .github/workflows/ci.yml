@@ -44,6 +44,7 @@ jobs:
         run: npm run build-react
         env:
           REACT_APP_GA_ID: ${{ secrets.GA_ID }}
+          REACT_APP_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
       - name: Build & Release for mac
         run: npm run build-mac -- --publish onTagOrDraft

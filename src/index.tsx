@@ -6,6 +6,9 @@ import UnhandledError from './components/unhandled-error/unhandled-error';
 import Routes from './routes';
 import './index.css';
 import ReactGA from 'react-ga';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
+import { name, version } from '../package.json';
 
 if (process.env.REACT_APP_GA_ID) {
   ReactGA.initialize(process.env.REACT_APP_GA_ID, {
@@ -20,16 +23,25 @@ if (process.env.REACT_APP_GA_ID) {
   ReactGA.pageview(window.location.href);
 }
 
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+    release: `${name}@${version}`
+  });
+}
+
 ReactDOM.render(
   <>
     <ColorModeScript initialColorMode="system" />
-    <UnhandledError>
+    <Sentry.ErrorBoundary fallback={UnhandledError}>
       <AppStatusProvider>
         <ChakraProvider>
           <Routes />
         </ChakraProvider>
       </AppStatusProvider>
-    </UnhandledError>
+    </Sentry.ErrorBoundary>
   </>,
   document.getElementById('root')
 );

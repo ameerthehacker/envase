@@ -1,60 +1,43 @@
-import React, { Component, ErrorInfo } from 'react';
+import React from 'react';
 import { Stack, Box, Text, Button } from '@chakra-ui/react';
 import { FaSadCry } from 'react-icons/fa';
 import { open } from '../../services/native/native';
 
-interface UnhandledErrorState {
-  hasError: boolean;
+interface UnhandledErrorProps {
+  componentStack: string;
   error?: Error;
+  resetError: () => any;
 }
 
-export default class UnhandledError extends Component<{}, UnhandledErrorState> {
-  private errorInfo: any;
+export default function UnhandledError({
+  error,
+  componentStack
+}: UnhandledErrorProps) {
+  return (
+    <Stack height="100vh" alignItems="center" justifyContent="center">
+      <Stack alignItems="center" spacing={5}>
+        <Box as={FaSadCry} size="xs" />
+        <Box>
+          <Text fontSize="2xl" fontWeight="light">
+            Sorry, something went wrong!
+          </Text>
+        </Box>
+        <Box>
+          <Button
+            onClick={() => {
+              const issueBody = `${error}${componentStack}`;
+              const issueLink = encodeURI(
+                `https://github.com/ameerthehacker/envase/issues/new?title=Unhandled Error&body=${issueBody}`
+              );
 
-  constructor(props: {}) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.errorInfo = errorInfo;
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <Stack height="100vh" alignItems="center" justifyContent="center">
-          <Stack alignItems="center" spacing={5}>
-            <Box as={FaSadCry} size="xs" />
-            <Box>
-              <Text fontSize="2xl" fontWeight="light">
-                Sorry, something went wrong!
-              </Text>
-            </Box>
-            <Box>
-              <Button
-                onClick={() => {
-                  const issueBody = `${this.state.error}${this.errorInfo.componentStack}`;
-                  const issueLink = encodeURI(
-                    `https://github.com/ameerthehacker/envase/issues/new?title=Unhandled Error&body=${issueBody}`
-                  );
-
-                  open(issueLink);
-                }}
-                colorScheme="orange"
-              >
-                Report Issue
-              </Button>
-            </Box>
-          </Stack>
-        </Stack>
-      );
-    }
-
-    return this.props.children;
-  }
+              open(issueLink);
+            }}
+            colorScheme="orange"
+          >
+            Report Issue
+          </Button>
+        </Box>
+      </Stack>
+    </Stack>
+  );
 }

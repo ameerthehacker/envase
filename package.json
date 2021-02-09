@@ -101,6 +101,8 @@
     ]
   },
   "dependencies": {
+    "@sentry/react": "^6.1.0",
+    "@sentry/tracing": "^6.1.0",
     "axios": "^0.21.1",
     "dockerode": "^3.2.0",
     "electron-store": "^5.1.1",
