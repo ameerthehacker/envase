@@ -101,6 +101,7 @@ export default function App() {
                 </ListItem>
               ))}
             </List>
+            <Text>Do you want to quit and install?</Text>
           </Stack>
         );
 
