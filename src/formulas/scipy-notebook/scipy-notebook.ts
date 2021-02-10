@@ -12,7 +12,7 @@ const SCIPY_NOTEBOOK: Formula = {
   data: {
     name: {
       type: 'string',
-      description: 'Name of the SciPy notbook instance',
+      description: 'Name of the SciPy notebook instance',
       required: true
     },
     port: {
@@ -23,7 +23,7 @@ const SCIPY_NOTEBOOK: Formula = {
     },
     projects_folder: {
       type: 'path',
-      description: 'Folder location where you have all your projects',
+      description: 'Folder location where you want to store the notebooks',
       required: true
     }
   },
