@@ -6,6 +6,8 @@ import { FaCode } from 'react-icons/fa';
 const SCIPY_NOTEBOOK: Formula = {
   name: 'SciPy Notebook',
   defaultShell: '/bin/bash',
+  description: 'SciPy jupyter notebook for experimenting with data',
+  website: 'https://www.scipy.org/',
   logo,
   data: {
     name: {

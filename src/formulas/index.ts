@@ -26,6 +26,8 @@ import NEO4J from './neo4j/neo4j';
 import DYNAMODB from './dynamodb/dynamodb';
 import ORIENTDB from './orientdb/orientdb';
 import MONGO_EXPRESS from './mongo-express/mongo-express';
+import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
+import OPEN_JDK from './open-jdk/open-jdk';
 
 const FORMULAS = [
   MYSQL,
@@ -55,7 +57,9 @@ const FORMULAS = [
   NEO4J,
   DYNAMODB,
   ORIENTDB,
-  MONGO_EXPRESS
+  MONGO_EXPRESS,
+  SCIPY_NOTEBOOK,
+  OPEN_JDK
 ];
 
 export { FORMULAS };
