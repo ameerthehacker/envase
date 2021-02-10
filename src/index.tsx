@@ -32,7 +32,7 @@ if (GA_TRACKING_ID) {
   ReactGA.ga('create', GA_TRACKING_ID, 'auto');
   ReactGA.ga('set', 'location', ORIGIN);
   ReactGA.ga('set', 'checkProtocolTask', null);
-  ReactGA.pageview(`/`);
+  ReactGA.pageview(`/?v=${version}`);
 }
 
 if (process.env.NODE_ENV === 'production') {
