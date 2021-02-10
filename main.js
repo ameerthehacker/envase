@@ -6,7 +6,6 @@ const Store = require('electron-store');
 const fs = require('fs');
 const Docker = require('dockerode');
 const { autoUpdater } = require('electron-updater');
-
 const {
   IPC_CHANNELS,
   ALL_SETTINGS,

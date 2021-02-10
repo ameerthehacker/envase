@@ -85,7 +85,9 @@
     "xterm": "^4.5.0",
     "xterm-addon-fit": "^0.3.0",
     "xterm-addon-unicode11": "^0.1.1",
-    "xterm-addon-web-links": "^0.3.0"
+    "xterm-addon-web-links": "^0.3.0",
+    "@sentry/react": "^6.1.0",
+    "@sentry/tracing": "^6.1.0"
   },
   "husky": {
     "hooks": {
@@ -101,8 +103,7 @@
     ]
   },
   "dependencies": {
-    "@sentry/react": "^6.1.0",
-    "@sentry/tracing": "^6.1.0",
+    "@exponent/electron-cookies": "^2.0.0",
     "axios": "^0.21.1",
     "dockerode": "^3.2.0",
     "electron-store": "^5.1.1",

@@ -10,13 +10,15 @@ const {
   ipcRenderer,
   open,
   Docker,
-  clipboard
+  clipboard,
+  ElectronCookies
 }: {
   ipcRenderer: IpcRenderer;
   open: (URI: string) => void;
   Docker: any;
   allSettings: AllSettings;
   clipboard: Clipboard;
+  ElectronCookies: any;
 } = window as any;
 let { allSettings } = window as any;
 let dockerode: Dockerode = new Docker(allSettings);
@@ -26,4 +28,11 @@ ipcRenderer.on(IPC_CHANNELS.SAVE_SETTINGS, (evt, newSettings) => {
   dockerode = new Docker(newSettings);
 });
 
-export { ipcRenderer, open, dockerode, allSettings, clipboard };
+export {
+  ipcRenderer,
+  open,
+  dockerode,
+  allSettings,
+  clipboard,
+  ElectronCookies
+};

@@ -9,9 +9,17 @@ import ReactGA from 'react-ga';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { name, version } from '../package.json';
+import { ElectronCookies } from './services/native/native';
 
-if (process.env.REACT_APP_GA_ID) {
-  ReactGA.initialize(process.env.REACT_APP_GA_ID, {
+const GA_TRACKING_ID = process.env.REACT_APP_GA_ID;
+const ORIGIN = 'https://getenvase.com';
+
+ElectronCookies.enable({
+  origin: ORIGIN
+});
+
+if (GA_TRACKING_ID) {
+  ReactGA.initialize(GA_TRACKING_ID, {
     debug: process.env.NODE_ENV === 'development',
     gaOptions:
       process.env.NODE_ENV === 'development'
@@ -20,7 +28,11 @@ if (process.env.REACT_APP_GA_ID) {
           }
         : {}
   });
-  ReactGA.pageview(window.location.href);
+  // ga does not work in file protocol so we need this
+  ReactGA.ga('create', GA_TRACKING_ID, 'auto');
+  ReactGA.ga('set', 'location', ORIGIN);
+  ReactGA.ga('set', 'checkProtocolTask', null);
+  ReactGA.pageview(`/`);
 }
 
 if (process.env.NODE_ENV === 'production') {
