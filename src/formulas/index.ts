@@ -30,6 +30,7 @@ import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
 import OPEN_JDK from './open-jdk/open-jdk';
 import ELIXIR from './elixir/elixir';
 import RLANG from './rlang/rlang';
+import DENO from './deno/deno';
 
 const FORMULAS = [
   MYSQL,
@@ -63,7 +64,8 @@ const FORMULAS = [
   SCIPY_NOTEBOOK,
   OPEN_JDK,
   ELIXIR,
-  RLANG
+  RLANG,
+  DENO
 ];
 
 export { FORMULAS };

@@ -140,7 +140,7 @@ export default function AllApps({
       {filteredApps.length > 0 && (
         <Flex justifyContent="center">
           <SimpleGrid
-            mt={4}
+            mt={1}
             display="inline-grid"
             columns={{ sm: 2, md: 3, lg: 4 }}
             spacing={2}

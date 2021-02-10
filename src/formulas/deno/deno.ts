@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
-import { FaRProject } from 'react-icons/fa';
+import { FaTerminal } from 'react-icons/fa';
 
-const RLANG: Formula = {
-  name: 'R',
-  defaultShell: '/bin/bash',
+const DENO: Formula = {
+  name: 'Deno',
+  defaultShell: '/bin/sh',
   logo,
-  description: 'R is a system for statistical computation and graphics',
-  website: 'https://www.r-project.org/',
+  description:
+    'Deno is a runtime for JavaScript and TypeScript built on the V8 engine',
+  website: 'https://deno.land/',
   data: {
     name: {
       type: 'string',
-      description: 'Name of the R instance',
+      description: 'Name of the Deno instance',
       required: true
     },
     projects_folder: {
@@ -26,18 +27,18 @@ const RLANG: Formula = {
     '/projects': '%projects_folder%'
   },
   isCli: true,
-  image: 'library/r-base',
+  image: 'hayd/deno',
   env: {},
   actions: [
     {
-      text: 'R REPL',
-      value: 'R_REPL',
-      exec: 'R',
-      icon: FaRProject,
+      text: 'Deno REPL',
+      value: 'DENO_REPL',
+      exec: 'deno',
+      icon: FaTerminal,
       shouldBeRunning: true
     }
   ],
   tags: ['Language']
 };
 
-export default RLANG;
+export default DENO;

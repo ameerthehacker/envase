@@ -1,5 +1,12 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { Stack, Box, useToast, useDisclosure, Text } from '@chakra-ui/react';
+import {
+  Stack,
+  Box,
+  useToast,
+  useDisclosure,
+  Text,
+  HStack
+} from '@chakra-ui/react';
 import AppStatusCard from '../../components/app-status-card/app-status-card';
 import { AppStatus, AllAppStatus } from '../../contexts/app-status/app-status';
 import { useApp } from '../../hooks/use-app/use-app';
@@ -179,12 +186,12 @@ export default function MyApps({
     );
 
   return (
-    <Stack flexWrap="wrap" direction="row">
+    <HStack flexWrap="wrap">
       {filteredApps.length === 0 && <NoResults height="calc(100vh - 90px)" />}
       {!allAppStatus.isFetching &&
         filteredApps.length > 0 &&
         filteredApps.map((status, index) => (
-          <Box key={index}>
+          <Box style={{ marginLeft: 0 }} padding={1} key={index}>
             <AppStatusCard
               name={status.name}
               logo={status.formula.logo}
@@ -309,6 +316,6 @@ export default function MyApps({
         isOpen={isAppFormDialogOpen}
         onClose={onAppFormDialogClose}
       />
-    </Stack>
+    </HStack>
   );
 }
