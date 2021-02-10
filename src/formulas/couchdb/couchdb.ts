@@ -2,7 +2,7 @@ import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
 
 const COUCHDB: Formula = {
-  name: 'Couch DB',
+  name: 'CouchDB',
   logo,
   description:
     'CouchDB is an open-source NoSQL database, implemented in Erlang',

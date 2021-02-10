@@ -29,6 +29,7 @@ import MONGO_EXPRESS from './mongo-express/mongo-express';
 import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
 import OPEN_JDK from './open-jdk/open-jdk';
 import ELIXIR from './elixir/elixir';
+import RLANG from './rlang/rlang';
 
 const FORMULAS = [
   MYSQL,
@@ -61,7 +62,8 @@ const FORMULAS = [
   MONGO_EXPRESS,
   SCIPY_NOTEBOOK,
   OPEN_JDK,
-  ELIXIR
+  ELIXIR,
+  RLANG
 ];
 
 export { FORMULAS };

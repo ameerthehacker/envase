@@ -2,7 +2,7 @@ import { Formula } from '../../contracts/formula';
 import logo from './logo.png';
 
 const DYNAMODB: Formula = {
-  name: 'Dynamo DB',
+  name: 'DynamoDB',
   website: 'https://aws.amazon.com/dynamodb/',
   logo,
   defaultShell: '/bin/bash',
