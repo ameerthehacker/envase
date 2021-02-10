@@ -28,6 +28,7 @@ import ORIENTDB from './orientdb/orientdb';
 import MONGO_EXPRESS from './mongo-express/mongo-express';
 import SCIPY_NOTEBOOK from './scipy-notebook/scipy-notebook';
 import OPEN_JDK from './open-jdk/open-jdk';
+import ELIXIR from './elixir/elixir';
 
 const FORMULAS = [
   MYSQL,
@@ -59,7 +60,8 @@ const FORMULAS = [
   ORIENTDB,
   MONGO_EXPRESS,
   SCIPY_NOTEBOOK,
-  OPEN_JDK
+  OPEN_JDK,
+  ELIXIR
 ];
 
 export { FORMULAS };
