@@ -84,7 +84,7 @@ export default function App() {
         });
       });
     });
-  }, []);
+  }, [load, toast]);
 
   useEffect(() => {
     ipcRenderer.on(CHECK_FOR_UPDATE, (evt, info) => {
@@ -117,7 +117,7 @@ export default function App() {
     ipcRenderer.on(SAVE_SETTINGS, () => {
       load();
     });
-  }, [load, onUpdateDialogOpen, toast]);
+  }, [onUpdateDialogOpen, load]);
 
   return (
     <>
