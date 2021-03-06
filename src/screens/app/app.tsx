@@ -84,7 +84,9 @@ export default function App() {
         });
       });
     });
+  }, []);
 
+  useEffect(() => {
     ipcRenderer.on(CHECK_FOR_UPDATE, (evt, info) => {
       if (info) {
         const { version, releaseNotes } = info;

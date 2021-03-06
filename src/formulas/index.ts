@@ -31,6 +31,7 @@ import OPEN_JDK from './open-jdk/open-jdk';
 import ELIXIR from './elixir/elixir';
 import RLANG from './rlang/rlang';
 import DENO from './deno/deno';
+import GIT from './git/git';
 
 const FORMULAS = [
   MYSQL,
@@ -65,7 +66,8 @@ const FORMULAS = [
   OPEN_JDK,
   ELIXIR,
   RLANG,
-  DENO
+  DENO,
+  GIT
 ];
 
 export { FORMULAS };
