@@ -22,6 +22,11 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
+      - name: Install python
+        uses: MatteoH2O1999/setup-python@v2
+        with:
+          python-version: '2.7'
+
       - name: Setup Apple code signing
         uses: apple-actions/import-codesign-certs@v1
         with:
