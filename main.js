@@ -206,9 +206,11 @@ app.whenReady().then(() => {
 
   ipcMain.on(CHECK_IMAGE_EXISTS, (evt, args) => {
     const { image, tag } = args;
-
+    const [namespace, repository] = image.split('/');
     axios
-      .get(`https://index.docker.io/v1/repositories/${image}/tags/${tag}`)
+      .get(
+        `https://hub.docker.com/v2/namespaces/${namespace}/repositories/${repository}/tags/${tag}`
+      )
       .then(() => {
         evt.reply(CHECK_IMAGE_EXISTS, {
           error: false,
